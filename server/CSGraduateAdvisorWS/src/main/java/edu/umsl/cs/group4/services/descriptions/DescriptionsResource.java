@@ -10,7 +10,7 @@ import javax.xml.bind.Unmarshaller;
 
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
 import edu.umsl.cs.group4.services.descriptions.service.DescriptionsService;
-import edu.umsl.cs.group4.services.descriptions.service.DescriptionsServiceImpl;
+import edu.umsl.cs.group4.services.descriptions.service.DescriptionsServiceURLImpl;
 
 
 /**
@@ -19,14 +19,14 @@ import edu.umsl.cs.group4.services.descriptions.service.DescriptionsServiceImpl;
 @Path("descriptions")
 public class DescriptionsResource {
 	
-	private DescriptionsService service = new DescriptionsServiceImpl();
+	private DescriptionsService service = new DescriptionsServiceURLImpl();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Descriptions getDescriptions() throws JAXBException {
     	JAXBContext context = JAXBContext.newInstance(Descriptions.class);
     	Unmarshaller um = context.createUnmarshaller();
-        Descriptions descriptions = (Descriptions) um.unmarshal(service.getDescriptionsURL());
+        Descriptions descriptions = (Descriptions) um.unmarshal(service.getDescriptionsSource());
     	return descriptions;
     }
 }

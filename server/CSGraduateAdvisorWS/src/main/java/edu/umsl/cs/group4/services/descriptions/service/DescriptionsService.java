@@ -1,8 +1,8 @@
 package edu.umsl.cs.group4.services.descriptions.service;
 
-import java.net.URL;
+import javax.xml.transform.Source;
 
 public interface DescriptionsService {
 
-	public URL getDescriptionsURL();
+	public Source getDescriptionsSource();
 }
