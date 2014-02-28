@@ -1,0 +1,5 @@
+<ul class="tiles five_up twelve columns">
+  <li ng-repeat="class in classes track by $index" 
+	  ng-class="{ taken: class.status == 'T', waived: class.status == 'W'}"
+	  ng-click="toggle(class)">{{class.name}}</li>
+</ul>
