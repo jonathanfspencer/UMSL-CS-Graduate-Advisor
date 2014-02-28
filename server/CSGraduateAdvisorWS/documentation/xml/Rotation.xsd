@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Rotations">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="rotation_year" minOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="year" maxOccurs="1" minOccurs="1" nillable="false"
+                                type="xs:integer"/>
+                            <xs:element maxOccurs="unbounded" name="course" minOccurs="1"
+                                nillable="false">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="subject" type="xs:string" maxOccurs="1"
+                                            minOccurs="1" nillable="false"/>
+                                        <xs:element name="course_number" type="xs:string"
+                                            maxOccurs="1" minOccurs="1" nillable="false"/>
+                                        <xs:element name="course_name" type="xs:string"
+                                            maxOccurs="1" minOccurs="1" nillable="false"/>
+                                        <xs:element maxOccurs="2" minOccurs="2" name="rotation_term"
+                                            nillable="false">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="term" nillable="false"
+                                                  type="xs:string" maxOccurs="1" minOccurs="1"/>
+                                                  <xs:element maxOccurs="1" minOccurs="1"
+                                                  name="time_code" nillable="true">
+                                                  <xs:simpleType>
+                                                  <xs:list itemType="xs:string"/>
+                                                  </xs:simpleType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

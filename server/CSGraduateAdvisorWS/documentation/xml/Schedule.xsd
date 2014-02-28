@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="schedule">
+        <xs:complexType mixed="true">
+            <xs:sequence maxOccurs="1" minOccurs="1">
+                <xs:element name="scheduled_course" maxOccurs="unbounded">
+                    <xs:complexType mixed="true">
+                        <xs:sequence maxOccurs="1">
+                            <xs:element name="term" type="xs:string"/>
+                            <xs:element name="year" type="xs:int"/>
+                            <xs:element maxOccurs="unbounded" name="session">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="session_name"/>
+                                        <xs:element name="course" maxOccurs="unbounded">
+                                            <xs:complexType mixed="true">
+                                                <xs:sequence maxOccurs="1">
+                                                  <xs:element name="subject" type="xs:string"/>
+                                                  <xs:element name="course_number" type="xs:int"/>
+                                                  <xs:element name="course_name" type="xs:string"/>
+                                                  <xs:element name="catalog_number" type="xs:int"/>
+                                                  <xs:element name="class_section" type="xs:string"/>
+                                                  <xs:element name="start_date" type="xs:string"
+                                                  minOccurs="1"/>
+                                                  <xs:element name="end_date" type="xs:string"
+                                                  minOccurs="1"/>
+                                                  <xs:element name="instruction_mode"
+                                                  type="xs:string"/>
+                                                  <xs:element name="uncommon">
+                                                  <xs:complexType mixed="true">
+                                                  <xs:sequence>
+                                                  <xs:element name="uncommon_record"
+                                                  maxOccurs="unbounded" form="unqualified">
+                                                  <xs:complexType mixed="true">
+                                                  <xs:sequence maxOccurs="1">
+                                                  <xs:element name="start_time" maxOccurs="1"
+                                                  minOccurs="1" type="xs:string" nillable="true"/>
+                                                  <xs:element name="end_time" form="qualified"
+                                                  minOccurs="1" nillable="true" type="xs:string"/>
+                                                  <xs:element name="instructor" type="xs:string"
+                                                  minOccurs="1"/>
+                                                  <xs:element name="room" type="xs:string"
+                                                  form="qualified" maxOccurs="1" minOccurs="1"/>
+                                                  <xs:element name="day_code" type="xs:string"
+                                                  minOccurs="1"/>
+					  	  <xs:element name="capacity" type="xs:int" minOccurs="1"/>
+					  	  <xs:element name="current_enrollment" type="xs:int" minOccurs="1"/>	  
+                                                  </xs:sequence>
+                                                  </xs:complexType>
+                                                  </xs:element>
+                                                  </xs:sequence>
+                                                  </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

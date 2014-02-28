@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="CSBSReq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="CoreCourses"/>
+        <xs:element ref="Electives"/>
+        <xs:element ref="MathandStatistcs"/>
+        <xs:element ref="OtherCourses"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CoreCourses">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="corecourse"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="corecourse">
+    <xs:complexType>
+      <xs:sequence>
+	  <xs:element ref="subject"/>
+        <xs:element ref="course_number"/>
+        <xs:element ref="course_name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Electives">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Elective"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>                                                                                                                                     
+  <xs:element name="Elective">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="noofelecctives"/>
+        <xs:element ref="abovelevel"/>
+        <xs:element ref="relationwithotherelectives"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="noofelecctives" type="xs:integer"/>
+  <xs:element name="abovelevel" type="xs:integer"/>
+  <xs:element name="relationwithotherelectives" type="xs:NCName"/>
+  <xs:element name="MathandStatistcs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="course"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OtherCourses">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="course"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="subject" type="xs:string"/>
+  <xs:element name="course_number" type="xs:integer"/>
+  <xs:element name="course_name" type="xs:string"/>
+  <xs:element name="course">
+    <xs:complexType>
+      <xs:sequence>
+	  <xs:element ref="subject"/>
+        <xs:element ref="course_number"/>
+        <xs:element ref="course_name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="descriptions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="course">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="subject" type="xs:string"/>
+                            <xs:element name="course_number" type="xs:integer"/>
+                            <xs:element name="course_name" type="xs:string"/>
+                            <xs:element name="credit" type="xs:string"/>
+                            <xs:element name="course_description" type="xs:string"/>
+                            <xs:element maxOccurs="1" minOccurs="0" name="can_select_multiple"
+                                type="xs:boolean"/>
+                            <xs:element maxOccurs="1" minOccurs="0" name="prerequisite"
+                                nillable="false" form="qualified">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="1" minOccurs="0" name="or_choice">
+                                            <xs:complexType mixed="false">
+                                                <xs:sequence>
+                                                  <xs:element maxOccurs="unbounded" minOccurs="0"
+                                                  name="and_required" nillable="false">
+                                                  <xs:simpleType>
+                                                  <xs:list itemType="xs:string"/>
+                                                  </xs:simpleType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element minOccurs="0" name="additional_preq"
+                                            nillable="false" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
