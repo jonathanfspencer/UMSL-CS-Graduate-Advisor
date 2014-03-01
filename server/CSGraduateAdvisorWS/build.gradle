@@ -1,0 +1,11 @@
+apply plugin: 'war'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile "javax.servlet:servlet-api:2.5"
+    providedCompile fileTree(dir: "src/main/webapp/WEB-INF/lib", include: "*.jar")
+}
+
