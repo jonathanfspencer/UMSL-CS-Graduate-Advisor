@@ -2,13 +2,13 @@
 	'use strict';
 
 	angular.module('advisor.controllers', []).
-		controller('MainCtrl', ['$scope', function($scope) {
-			$scope.classes = [
-				{name: 'CS 1435', status: 'N'},
-				{name: 'CS 1234', status: 'N'},
-				{name: 'CS 2341', status: 'N'},
-				{name: 'CS 2342', status: 'N'},
-				{name: 'CS 2343', status: 'N'}
-			];
+		controller('MainCtrl', ['$scope', '$http',  function($scope, $http) {
+			$http.get('http://gorinsky.net:8080/CSGraduateAdvisorWS/descriptions')
+			  .success(function(data) {
+				  $scope.classes = data.course.filter(function(c) {
+					  c.status = 'N';
+					  return c.course_number > 4000;
+				  });
+			  });
 		}]);
 }());

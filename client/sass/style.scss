@@ -6,6 +6,19 @@ $waived-bg: #EAAB00;
 $darkfont: #333;
 $lightfont: #FFF;
 
+.bold {
+  font-weight: bold;
+}
+.tiles {
+  &.six_up {
+	margin-left: -1.5%;
+	> li, > .tile {
+		margin-left: 1.5%;
+		width: 15.1%;
+        }
+	}
+}
+
 .classchooser {
   h5 {
     margin-bottom: 1.25%;
@@ -23,7 +36,7 @@ $lightfont: #FFF;
 
 .classlist li {
 	display: block;
-	padding: 1em;
+	padding: 0.5em;
 	margin-bottom: 1.25%;
 }
 
