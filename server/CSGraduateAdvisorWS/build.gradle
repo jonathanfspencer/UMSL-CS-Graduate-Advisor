@@ -1,11 +1,17 @@
-apply plugin: 'war'
+apply plugin: 'jetty'
 
 repositories {
     mavenCentral()
 }
 
+task copyToLib(type: Copy) {
+    into "$rootDir/lib"
+    from configurations.runtime
+}
+
 dependencies {
+    compile group: "org.glassfish.jersey.containers", name: "jersey-container-servlet", version: "2.6"
+    compile group: "org.glassfish.jersey.media", name: "jersey-media-moxy", version: "2.6"
     providedCompile "javax.servlet:servlet-api:2.5"
-    providedCompile fileTree(dir: "src/main/webapp/WEB-INF/lib", include: "*.jar")
 }
 
