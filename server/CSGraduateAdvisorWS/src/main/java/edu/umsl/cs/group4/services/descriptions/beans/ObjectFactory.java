@@ -9,6 +9,7 @@
 package edu.umsl.cs.group4.services.descriptions.beans;
 
 import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
@@ -77,7 +78,8 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link List }{@code <}{@link String }{@code >}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "and_required", scope = Descriptions.Course.Prerequisite.OrChoice.class)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@XmlElementDecl(namespace = "", name = "and_required", scope = Descriptions.Course.Prerequisite.OrChoice.class)
     public JAXBElement<List<String>> createDescriptionsCoursePrerequisiteOrChoiceAndRequired(List<String> value) {
         return new JAXBElement<List<String>>(_DescriptionsCoursePrerequisiteOrChoiceAndRequired_QNAME, ((Class) List.class), Descriptions.Course.Prerequisite.OrChoice.class, ((List<String> ) value));
     }
