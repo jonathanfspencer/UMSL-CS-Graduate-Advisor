@@ -5,13 +5,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
-import edu.umsl.cs.group4.services.descriptions.service.DescriptionsService;
-import edu.umsl.cs.group4.services.descriptions.service.DescriptionsServiceURLImpl;
+import edu.umsl.cs.group4.utility.ContentFetcher;
 
 
 /**
@@ -20,14 +17,12 @@ import edu.umsl.cs.group4.services.descriptions.service.DescriptionsServiceURLIm
 @Path("descriptions")
 public class DescriptionsResource {
 	
-	private DescriptionsService service = new DescriptionsServiceURLImpl();
+	private static final String SOURCE_URL = "http://comp.umsl.edu/~xml_data/Courses.xml";
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDescriptions() throws JAXBException {
-    	JAXBContext context = JAXBContext.newInstance(Descriptions.class);
-    	Unmarshaller um = context.createUnmarshaller();
-        Descriptions descriptions = (Descriptions) um.unmarshal(service.getDescriptionsSource());
+    	Descriptions descriptions = (Descriptions) ContentFetcher.fetchContent(SOURCE_URL, Descriptions.class);
         return Response.ok(descriptions).header("Access-Control-Allow-Origin","*").build();
     }
 }
