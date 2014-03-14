@@ -11,6 +11,7 @@ package edu.umsl.cs.group4.services.descriptions.beans;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -185,7 +186,7 @@ public class Descriptions {
         @XmlElement(required = true)
         protected String subject;
         @XmlElement(name = "course_number", required = true)
-        protected BigInteger courseNumber;
+        protected Integer courseNumber;
         @XmlElement(name = "course_name", required = true)
         protected String courseName;
         @XmlElement(required = true)
@@ -228,7 +229,7 @@ public class Descriptions {
          *     {@link BigInteger }
          *     
          */
-        public BigInteger getCourseNumber() {
+        public Integer getCourseNumber() {
             return courseNumber;
         }
 
@@ -240,7 +241,7 @@ public class Descriptions {
          *     {@link BigInteger }
          *     
          */
-        public void setCourseNumber(BigInteger value) {
+        public void setCourseNumber(Integer value) {
             this.courseNumber = value;
         }
 
