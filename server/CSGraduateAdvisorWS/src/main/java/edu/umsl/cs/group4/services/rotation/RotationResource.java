@@ -4,7 +4,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
 import edu.umsl.cs.group4.services.rotation.beans.Rotations;
@@ -17,8 +16,8 @@ public class RotationResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRotation() throws JAXBException  {
+	public Rotations getRotation() throws JAXBException  {
 		Rotations rotations = (Rotations) ContentFetcher.fetchContent(SOURCE_URL, Rotations.class);
-        return Response.ok(rotations).header("Access-Control-Allow-Origin","*").build();
+        return rotations;
 	}
 }

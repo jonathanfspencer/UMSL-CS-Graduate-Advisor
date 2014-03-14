@@ -4,7 +4,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
 import edu.umsl.cs.group4.services.schedule.beans.Schedule;
@@ -17,8 +16,8 @@ public class ScheduleResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSchedule() throws JAXBException {
+	public Schedule getSchedule() throws JAXBException {
 		Schedule schedule = (Schedule) ContentFetcher.fetchContent(SOURCE_URL, Schedule.class);
-        return Response.ok(schedule).header("Access-Control-Allow-Origin","*").build();
+        return schedule;
 	}
 }

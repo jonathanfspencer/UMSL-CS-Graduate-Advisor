@@ -6,7 +6,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
@@ -24,12 +23,12 @@ public class DescriptionsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDescriptions() throws JAXBException {
+    public Descriptions getDescriptions() throws JAXBException {
     	Descriptions descriptions = (Descriptions) ContentFetcher.fetchContent(SOURCE_URL, Descriptions.class);
     	
     	filterCourses(descriptions);
     	
-        return Response.ok(descriptions).header("Access-Control-Allow-Origin","*").build();
+        return descriptions;
     }
 
     /**
