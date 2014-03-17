@@ -1,0 +1,35 @@
+<div ng-repeat="year in years" class="row schedule">
+  <h4 class="twelve columns">{{ year.year }}</h4>
+  <div class="row">
+    <div class="six columns">
+      <h5 class="term">Spring</h5>
+      <ul class="classlist two_up tiles twelve columns">
+        <li class="nottaken" ng-repeat="class in year.course | needed | available:'Spring'">
+          <div>
+            <div class="course-number">
+              {{class.subject}} <span class="bold">{{ class.course_number }}</span>
+            </div>
+            <div class="course-title">
+              {{class.course_name | shortenIntro }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="six columns">
+      <h5 class="term">Fall</h5>
+      <ul class="classlist two_up tiles twelve columns">
+        <li class="nottaken" ng-repeat="class in year.course | needed | available:'Fall'">
+          <div>
+            <div class="course-number">
+              {{class.subject}} <span class="bold">{{ class.course_number}}</span>
+            </div>
+            <div class="course-title">
+              {{class.course_name | shortenIntro }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

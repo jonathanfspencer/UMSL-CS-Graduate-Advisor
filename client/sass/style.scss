@@ -34,16 +34,29 @@ $lightfont: #FFF;
   }
 }
 
-.classlist li {
-	display: block;
-	padding: 0.5em;
-	margin-bottom: 1.25%;
+.classlist {
+    li {
+	    display: block;
+	    padding: 0.5em;
+	    margin-bottom: 1.25%;
+
+        &:hover {
+	        background-color: $nottaken-hover;
+	        cursor: pointer;
+        }
+    }
+    .course-title {
+        font-size: 75%;
+    }
 }
 
-.classlist li:hover {
-	background-color: $nottaken-hover;
-	cursor: pointer;
+.schedule {
+    .term {
+        font-weight: bold;
+    }
 }
+
+
 li.nottaken {
 	background-color: $nottaken-bg;
 	border: 1px solid darken($nottaken-bg, 13);

@@ -2,14 +2,21 @@
 	'use strict';
 
 	angular.module('advisor', [
-		'ngRoute',
-		'advisor.controllers',
-		'advisor.directives'
+	  'ngRoute',
+	  'advisor.controllers',
+	  'advisor.directives',
+      'advisor.services'
 	])
+    .constant('serviceUrl', 'http://gorinsky.net:8080/CSGraduateAdvisorWS')
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/', {
 			templateUrl: 'partials/main.html',
 			controller: 'MainCtrl'
-		}).otherwise({ redirectTo: '/' });
+		})
+        .when('/schedule', {
+          templateUrl: 'partials/schedule.html',
+          controller: 'ScheduleCtrl'
+        })
+        .otherwise({ redirectTo: '/' });
 	}]);
-}());
+})();

@@ -1,9 +1,19 @@
-<ul class="classlist tiles six_up twelve columns">
+<ul class="classlist tiles three_up twelve columns">
   <li ng-repeat="class in classes" 
 	  ng-class="{ 
 			completed: class.status == 'T', 
 			waived: class.status == 'W',
 			nottaken: class.status == 'N'
 		}"
-	  ng-click="toggle(class)">{{class.subject}} <span class="bold">{{ class.course_number}}</span></li>
+	  ng-click="toggle(class)">
+    <div>
+      <div class="course-number">
+        {{class.subject}} <span class="bold">{{ class.course_number}}</span>
+      </div>
+      <div class="course-title">
+        {{class.course_name | shortenIntro }}
+      </div>
+    </div>
+  </li>
+
 </ul>
