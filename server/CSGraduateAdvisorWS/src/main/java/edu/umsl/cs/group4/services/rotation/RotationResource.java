@@ -1,6 +1,7 @@
 package edu.umsl.cs.group4.services.rotation;
 
 
+import java.util.Calendar;
 import java.util.Iterator;
 
 import javax.ws.rs.GET;
@@ -28,14 +29,19 @@ public class RotationResource {
 	}
 
 	private void filterRotations(Rotations rotations) {
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		Iterator<RotationYear> rotationYearIterator = rotations.getRotationYear().iterator();
 		while (rotationYearIterator.hasNext()){
 			RotationYear rotationYear = rotationYearIterator.next();
-			Iterator<Course> courseIterator = rotationYear.getCourse().iterator();
-			while (courseIterator.hasNext()){
-				Course course = courseIterator.next();
-				if(!course.getSubject().equalsIgnoreCase("CMP SCI") || Integer.valueOf(course.getCourseNumber()) < 4000 ){
-					courseIterator.remove();
+			if(rotationYear.getYear() < currentYear){
+				rotationYearIterator.remove();
+			} else {
+				Iterator<Course> courseIterator = rotationYear.getCourse().iterator();
+				while (courseIterator.hasNext()){
+					Course course = courseIterator.next();
+					if(!course.getSubject().equalsIgnoreCase("CMP SCI") || Integer.valueOf(course.getCourseNumber()) < 4000 ){
+						courseIterator.remove();
+					}
 				}
 			}
 			

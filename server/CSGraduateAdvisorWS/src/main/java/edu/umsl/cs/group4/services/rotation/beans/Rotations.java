@@ -173,7 +173,7 @@ public class Rotations {
     public static class RotationYear {
 
         @XmlElement(required = true)
-        protected BigInteger year;
+        protected Integer year;
         @XmlElement(required = true)
         protected List<Rotations.RotationYear.Course> course;
 
@@ -185,7 +185,7 @@ public class Rotations {
          *     {@link BigInteger }
          *     
          */
-        public BigInteger getYear() {
+        public Integer getYear() {
             return year;
         }
 
@@ -197,7 +197,7 @@ public class Rotations {
          *     {@link BigInteger }
          *     
          */
-        public void setYear(BigInteger value) {
+        public void setYear(Integer value) {
             this.year = value;
         }
 
