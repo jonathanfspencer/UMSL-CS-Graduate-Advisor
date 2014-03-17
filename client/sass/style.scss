@@ -62,7 +62,7 @@ li.nottaken {
 	border: 1px solid darken($nottaken-bg, 13);
 	color: $darkfont;
 }
-li.completed {
+li.completed, li.scheduled {
 	background-color: $completed-bg !important;
     border: 1px solid darken($completed-bg, 13);
 	color: $lightfont;
@@ -73,4 +73,5 @@ li.waived {
     border: 1px solid darken($waived-bg, 10);
 	color: $darkfont;
 }
+
 

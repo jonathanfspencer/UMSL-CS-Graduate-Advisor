@@ -57,7 +57,7 @@ li.nottaken {
 }
 
 /* line 65, ../../sass/style.scss */
-li.completed {
+li.completed, li.scheduled {
   background-color: #981e32 !important;
   border: 1px solid #611320;
   color: white;

@@ -39,6 +39,7 @@
             if(c.subject == sc.subject && c.course_number == sc.course_number) {
               if(sc.status === 'N') {
                 keeper = true;
+                c.status = 'N';
               }
             }
           });

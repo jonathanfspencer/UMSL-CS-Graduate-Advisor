@@ -1,10 +1,11 @@
+<h5 class="row">Choose your classes from those available each semester</h5>
 <div ng-repeat="year in years" class="row schedule">
   <h4 class="twelve columns">{{ year.year }}</h4>
   <div class="row">
     <div class="six columns">
       <h5 class="term">Spring</h5>
       <ul class="classlist two_up tiles twelve columns">
-        <li class="nottaken" ng-repeat="class in year.course | needed | available:'Spring'">
+        <li ng-repeat="class in year.course | needed | available:'Spring'"  ng-class="{ nottaken: class.status == 'N', scheduled: class.status == 'S'}">
           <div>
             <div class="course-number">
               {{class.subject}} <span class="bold">{{ class.course_number }}</span>
@@ -19,7 +20,7 @@
     <div class="six columns">
       <h5 class="term">Fall</h5>
       <ul class="classlist two_up tiles twelve columns">
-        <li class="nottaken" ng-repeat="class in year.course | needed | available:'Fall'">
+        <li class="nottaken" ng-repeat="class in year.course | needed | available:'Fall'"  ng-class="{ nottaken: class.status == 'N', scheduled: class.status == 'S'}">
           <div>
             <div class="course-number">
               {{class.subject}} <span class="bold">{{ class.course_number}}</span>
