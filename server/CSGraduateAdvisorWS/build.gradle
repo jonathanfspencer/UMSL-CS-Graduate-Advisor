@@ -1,12 +1,25 @@
-apply plugin: 'jetty'
+apply plugin: 'java'
+apply plugin: 'application'
 
 repositories {
     mavenCentral()
 }
 
+configurations { providedCompile }
+
+sourceSets.main.compileClasspath += configurations.providedCompile
+sourceSets.test.compileClasspath += configurations.providedCompile
+sourceSets.test.runtimeClasspath += configurations.providedCompile
+
 task copyToLib(type: Copy) {
     into "$rootDir/lib"
     from configurations.runtime
+}
+
+jar {
+    into("webapp") {
+      from "src/main/webapp"
+    }
 }
 
 dependencies {
@@ -14,6 +27,7 @@ dependencies {
     compile group: "org.glassfish.jersey.media", name: "jersey-media-moxy", version: "2.6"
 	compile group: "org.eclipse.jetty", name: "jetty-webapp", version: "9.+"
     compile group: "org.eclipse.jetty", name: "jetty-plus", version: "9.+"    
-    providedCompile "javax.servlet:servlet-api:2.5"
+    providedCompile "javax.servlet:javax.servlet-api:3.+"
 }
 
+mainClassName = "edu/umsl/cs/group4/server/JettyServer"

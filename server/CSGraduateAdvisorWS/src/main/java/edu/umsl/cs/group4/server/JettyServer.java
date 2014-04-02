@@ -6,11 +6,17 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class JettyServer {
-	private static final String WEBAPPDIR = "/src/main/webapp/";
+
+	private static final String WEBAPPDIR = "webapp";
+
 	public static void main(String[] args) throws Exception {
+        (new JettyServer()).run();
+	}
+
+    public void run() throws Exception {
 		Server server = new Server(8081);
 		
-		final URL warUrl = JettyServer.class.getClassLoader().getResource(WEBAPPDIR);
+        final URL warUrl = this.getClass().getClassLoader().getResource(WEBAPPDIR);
 		final String warUrlString = warUrl.toExternalForm();
 		
 		org.eclipse.jetty.webapp.Configuration.ClassList classlist = org.eclipse.jetty.webapp.Configuration.ClassList.setServerDefault(server);
@@ -26,5 +32,6 @@ public class JettyServer {
 
 		server.start();
 		server.join();
-	}
+
+    }
 }
