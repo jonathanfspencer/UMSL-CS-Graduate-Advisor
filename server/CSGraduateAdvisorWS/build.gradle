@@ -12,6 +12,10 @@ task copyToLib(type: Copy) {
 dependencies {
     compile group: "org.glassfish.jersey.containers", name: "jersey-container-servlet", version: "2.6"
     compile group: "org.glassfish.jersey.media", name: "jersey-media-moxy", version: "2.6"
+    
+    
+    testCompile group: "org.eclipse.jetty", name: "jetty-webapp", version: "9.+"
+    testCompile group: "org.eclipse.jetty", name: "jetty-plus", version: "9.+"    
     providedCompile "javax.servlet:servlet-api:2.5"
 }
 
