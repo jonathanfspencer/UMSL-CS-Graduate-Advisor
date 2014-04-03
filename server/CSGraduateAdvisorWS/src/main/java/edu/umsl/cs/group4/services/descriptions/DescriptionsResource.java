@@ -23,7 +23,7 @@ public class DescriptionsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Descriptions getDescriptions() throws JAXBException {
+    public static Descriptions getDescriptions() throws JAXBException {
     	Descriptions descriptions = (Descriptions) ContentFetcher.fetchContent(SOURCE_URL, Descriptions.class);
     	
     	filterCourses(descriptions);
@@ -35,7 +35,7 @@ public class DescriptionsResource {
      * Filters out courses that are below 4000 and not computer science
      * @param descriptions
      */
-	private void filterCourses(Descriptions descriptions) {
+	private static void filterCourses(Descriptions descriptions) {
 		Iterator<Course> courseIterator = descriptions.getCourse().iterator();
     	while(courseIterator.hasNext()) {
     		Course course = courseIterator.next();

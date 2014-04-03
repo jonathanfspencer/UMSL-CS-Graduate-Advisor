@@ -16,7 +16,7 @@ public class ScheduleResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Schedule getSchedule() throws JAXBException {
+	public static Schedule getSchedule() throws JAXBException {
 		Schedule schedule = (Schedule) ContentFetcher.fetchContent(SOURCE_URL, Schedule.class);
         return schedule;
 	}

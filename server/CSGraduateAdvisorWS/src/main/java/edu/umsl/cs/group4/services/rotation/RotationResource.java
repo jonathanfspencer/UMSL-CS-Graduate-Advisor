@@ -22,13 +22,13 @@ public class RotationResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Rotations getRotation() throws JAXBException  {
+	public static Rotations getRotation() throws JAXBException  {
 		Rotations rotations = (Rotations) ContentFetcher.fetchContent(SOURCE_URL, Rotations.class);
 		filterRotations(rotations);
         return rotations;
 	}
 
-	private void filterRotations(Rotations rotations) {
+	private static void filterRotations(Rotations rotations) {
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		Iterator<RotationYear> rotationYearIterator = rotations.getRotationYear().iterator();
 		while (rotationYearIterator.hasNext()){
