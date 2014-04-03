@@ -183,24 +183,6 @@ public class Descriptions {
     })
     public static class Course {
 
-        public static class Offering {
-        	protected String year;
-        	protected String session;
-			public String getYear() {
-				return year;
-			}
-			public void setYear(String year) {
-				this.year = year;
-			}
-			public String getSession() {
-				return session;
-			}
-			public void setSession(String session) {
-				this.session = session;
-			}
-		}
-
-
 		@XmlElement(required = true)
         protected String subject;
         @XmlElement(name = "course_number", required = true)
@@ -214,7 +196,6 @@ public class Descriptions {
         @XmlElement(name = "can_select_multiple")
         protected Boolean canSelectMultiple;
         protected Descriptions.Course.Prerequisite prerequisite;
-        protected List<Descriptions.Course.Offering> offerings;
 
         /**
          * Gets the value of the subject property.
