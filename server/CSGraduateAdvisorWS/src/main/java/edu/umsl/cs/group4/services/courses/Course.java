@@ -31,7 +31,7 @@ public class Course {
 	private Descriptions.Course.Prerequisite prequisite;
 	private List<Offering> offerings;
 	
-	public class Offering {
+	public static class Offering {
 		private String year;
 		private List<String> timeCodes;
 		private String session;
@@ -105,7 +105,7 @@ public class Course {
 						offering.setSession(rotationTerm.getTerm());
 						offering.setTimeCodes(rotationTerm.getTimeCode());
 						if(thisCourse.getOfferings() == null) {
-							thisCourse.setOffering(new ArrayList<Offering>());
+							thisCourse.setOfferings(new ArrayList<Offering>());
 						}
 						thisCourse.getOfferings().add(offering);
 					}
@@ -189,7 +189,7 @@ public class Course {
 		return offerings;
 	}
 
-	public void setOffering(List<Offering> offerings) {
+	public void setOfferings(List<Offering> offerings) {
 		this.offerings = offerings;
 	}
 	
