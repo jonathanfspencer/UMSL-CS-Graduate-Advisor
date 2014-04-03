@@ -1,6 +1,7 @@
 package edu.umsl.cs.group4.services.courses;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -57,13 +58,22 @@ public class Course {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Course> getCourses() throws JAXBException{
+		//build a map of course numbers and courses
 		Map<String,Course> courseMap = new HashMap<String,Course>();		
-		Rotations rotations = RotationResource.getRotation();
-		Schedule schedule = ScheduleResource.getSchedule();
+		
+		//first build a list of all the courses
 		Descriptions descriptions = DescriptionsResource.getDescriptions();
 		addDescriptions(courseMap,descriptions);
+		
+		//second add information about when courses are always offered
+		Rotations rotations = RotationResource.getRotation();
 		addRotations(courseMap,rotations);
-		addSchedule(courseMap,schedule);
+		
+		//finally add information about additional offered courses
+		Schedule schedule = ScheduleResource.getSchedule();
+		addSchedule(courseMap,schedule);		
+		
+		//return the final list of courses
 		return courseMap.values();
 	}
 
@@ -76,7 +86,7 @@ public class Course {
 			newCourse.setName(descriptionCourse.getCourseName());
 			newCourse.setNumber(Integer.toString(descriptionCourse.getCourseNumber()));
 			newCourse.setPrequisite(descriptionCourse.getPrerequisite());
-			courseMap.put(newCourse.getName(),newCourse);
+			courseMap.put(newCourse.getNumber(),newCourse);
 		}
 		
 	}
@@ -85,7 +95,7 @@ public class Course {
 		for(Rotations.RotationYear rotationYear:rotations.getRotationYear()){
 			for(Rotations.RotationYear.Course rotationCourse:rotationYear.getCourse()){
 				for(Rotations.RotationYear.Course.RotationTerm rotationTerm:rotationCourse.getRotationTerm()){
-					Course thisCourse = courseMap.get(rotationCourse.getCourseName());
+					Course thisCourse = courseMap.get(rotationCourse.getCourseNumber());
 					if(thisCourse == null){
 						 //TODO build a new course and insert in map? we won't have all the info
 					} else {
@@ -94,6 +104,9 @@ public class Course {
 						offering.setYear(Integer.toString(rotationYear.getYear()));
 						offering.setSession(rotationTerm.getTerm());
 						offering.setTimeCodes(rotationTerm.getTimeCode());
+						if(thisCourse.getOfferings() == null) {
+							thisCourse.setOffering(new ArrayList<Offering>());
+						}
 						thisCourse.getOfferings().add(offering);
 					}
 				}
@@ -127,11 +140,14 @@ public class Course {
 					}
 				}
 				if(courseMap.containsKey(newCourse.getName())){
-					courseMap.get(newCourse.getName()).getOfferings().add(newOffering);
+					//if there is an existing course, add this offering information
+					//TODO check to see if this offering already exists
+					courseMap.get(newCourse.getNumber()).getOfferings().add(newOffering);
 				} else {
+					//TODO if there is not an existing course, add the new course
 					//TODO make sure this course is populated better
-					newCourse.getOfferings().add(newOffering);
-					courseMap.put(newCourse.getName(), newCourse);
+//					newCourse.getOfferings().add(newOffering);
+//					courseMap.put(newCourse.getNumber(), newCourse);
 				}
 			}
 		}
