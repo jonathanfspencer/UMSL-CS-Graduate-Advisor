@@ -2,5 +2,5 @@
 /build
 /.gradle
 /lib
-/.settings
+.settings
 .DS_Store
