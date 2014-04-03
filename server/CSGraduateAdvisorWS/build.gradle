@@ -5,12 +5,6 @@ repositories {
     mavenCentral()
 }
 
-configurations { providedCompile }
-
-sourceSets.main.compileClasspath += configurations.providedCompile
-sourceSets.test.compileClasspath += configurations.providedCompile
-sourceSets.test.runtimeClasspath += configurations.providedCompile
-
 task copyToLib(type: Copy) {
     into "$rootDir/lib"
     from configurations.runtime
@@ -25,9 +19,8 @@ jar {
 dependencies {
     compile group: "org.glassfish.jersey.containers", name: "jersey-container-servlet", version: "2.6"
     compile group: "org.glassfish.jersey.media", name: "jersey-media-moxy", version: "2.6"
-	compile group: "org.eclipse.jetty", name: "jetty-webapp", version: "9.+"
-    compile group: "org.eclipse.jetty", name: "jetty-plus", version: "9.+"    
-    providedCompile "javax.servlet:javax.servlet-api:3.+"
+	compile group: "org.eclipse.jetty", name: "jetty-webapp", version: "8.1.+"
+    compile group: "org.eclipse.jetty", name: "jetty-ajp", version: "8.1.+" 
 }
 
 mainClassName = "edu/umsl/cs/group4/server/JettyServer"
