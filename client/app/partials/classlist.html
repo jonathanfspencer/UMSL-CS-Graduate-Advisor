@@ -8,10 +8,10 @@
 	  ng-click="toggle(class)">
     <div>
       <div class="course-number">
-        {{class.subject}} <span class="bold">{{ class.course_number}}</span>
+        CMP SCI <span class="bold">{{ class.number}}</span>
       </div>
       <div class="course-title">
-        {{class.course_name | shortenIntro }}
+        {{class.name | shortenIntro }}
       </div>
     </div>
   </li>

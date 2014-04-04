@@ -2,48 +2,36 @@
   'use strict';
 
   angular.module('advisor.controllers', [])
-	.controller('MainCtrl', ['$scope', 'classService', function($scope, classService) {
-      classService.descriptions().success(function(data) {
-        $scope.classes = angular.forEach(data.course, function(c) {
+	.controller('MainCtrl', ['$scope', 'classService', function($scope, classSvc) {
+
+      classSvc.courses().success(function(courses) {
+        $scope.classes = angular.forEach(courses, function(c) {
 		  c.status = 'N';
 	    });
 	  });
 
-      $scope.saveClasses = function() {
-        classService.save($scope.classes.filter(function(c) {
-          return c.status === 'N';
-        }));
-      };
 	}])
+
     .filter('available', function() {
       return function(courses, session) {
-        var out = [];
-        angular.forEach(courses, function(course) {
-          angular.forEach(course.rotation_term, function(term) {
-            if(term.term === session && term.time_code !== '') {
-              out.push(course);
-            }
-          });
+        return courses.filter(function(course) {
+          if(course.offerings) {
+            return course.offerings.some(function(offering) {
+              return offering.session == session.term 
+                && offering.year == session.year
+                && offering.timeCodes.length > 0;
+            });
+          } else {
+            return false;
+          }
         });
-
-        return out;
-      };
+      }
     })
-    .filter('needed', ['classService', function(classService) {
-      // TODO make this more efficient / less messy
+  //TODO this filter can probably be replaced with an ng-show
+    .filter('needed', ['classService', function(classSvc) {
       return function(courses) {
-        var savedClasses = classService.retrieve();
-        return courses.filter(function(c) {
-          var keeper = false;
-          savedClasses.forEach(function(sc) {
-            if(c.subject == sc.subject && c.course_number == sc.course_number) {
-              if(sc.status === 'N') {
-                keeper = true;
-                c.status = 'N';
-              }
-            }
-          });
-          return keeper;
+        return courses.filter(function(course) {
+          return course.status === 'N';
         });
       };
     }])
@@ -52,10 +40,12 @@
         return courseName.replace('Introduction', 'Intro');
       };
     })
-    .controller('ScheduleCtrl', ['$scope', 'classService', function($scope, classService) {
-      classService.rotations().success(function(data) {
-        $scope.years = data.rotation_year;
+    .controller('ScheduleCtrl', ['$scope', 'classService', function($scope, classSvc) {
+      // TODO Don't hardcode these
+      $scope.years = [ '2014', '2015', '2016', '2017' ];
+      $scope.courses = [];
+      classSvc.courses().then(function(courses) {
+        $scope.courses = courses;
       });
-
     }]);
 }());

@@ -7,7 +7,7 @@
 	  'advisor.directives',
       'advisor.services'
 	])
-    .constant('serviceUrl', 'http://gorinsky.net:8080/CSGraduateAdvisorWS')
+    .constant('serviceUrl', 'http://gorinsky.net:8081/')
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/', {
 			templateUrl: 'partials/main.html',
