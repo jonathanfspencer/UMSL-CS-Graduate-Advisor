@@ -12,11 +12,7 @@
           return obj;
         },
         get: function(key) {
-          if(localStorage[key]) {
-            return JSON.parse(localStorage[key]);
-          } else {
-            return undefined;
-          }
+          return localStorage[key] && JSON.parse(localStorage[key]);
         }
       };
     }])
@@ -41,8 +37,8 @@
           } else if(storage.get('courses')) {
             return $q.when(storage.get('courses'));
           } else {
-            return $http.get(url('/courses')).success(function(courses) {
-              courses = angular.forEach(courses, function(c) {
+            return $http.get(url('/courses')).then(function(resp) {
+              var courses = angular.forEach(resp.data, function(c) {
                 c.status = 'N';
               }).reverse();
               return storage.save('courses', courses);
