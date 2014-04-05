@@ -1,6 +1,5 @@
 package edu.umsl.cs.group4.services.courses;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
@@ -19,7 +17,7 @@ import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
 import edu.umsl.cs.group4.services.rotation.RotationResource;
 import edu.umsl.cs.group4.services.rotation.beans.Rotations;
 import edu.umsl.cs.group4.services.schedule.ScheduleResource;
-import edu.umsl.cs.group4.services.schedule.beans.Schedule;
+import edu.umsl.cs.group4.services.schedule.beans.SimpleSchedule;
 
 @Path("courses")
 public class Course {
@@ -70,7 +68,7 @@ public class Course {
 		addRotations(courseMap,rotations);
 		
 		//finally add information about additional offered courses
-		Schedule schedule = ScheduleResource.getSchedule();
+		SimpleSchedule schedule = ScheduleResource.getSchedule();
 		addSchedule(courseMap,schedule);		
 		
 		//return the final list of courses
@@ -115,39 +113,26 @@ public class Course {
 		
 	}
 	
-	private void addSchedule(Map<String, Course> courseMap, Schedule schedule) {
-		for(Object scheduleObject:schedule.getContent()){
-			if(scheduleObject instanceof Schedule.ScheduledCourse){
-				Course newCourse = new Course();
-				Offering newOffering = new Offering(); //TODO figure out where to get this value
-				for(Object scheduledCourseObject:((Schedule.ScheduledCourse)scheduleObject).getContent()){
-					if(scheduledCourseObject instanceof Schedule.ScheduledCourse.Session){
-						if(scheduledCourseObject instanceof Schedule.ScheduledCourse.Session.Course){
-							for(Serializable courseSerializable:((Schedule.ScheduledCourse.Session.Course)scheduledCourseObject).getContent()){
-								if(courseSerializable instanceof JAXBElement){
-									@SuppressWarnings("rawtypes")
-									JAXBElement courseElement = (JAXBElement)courseSerializable;
-									if(courseElement.getName().equals("course_name")) {
-										newCourse.setName((String)courseElement.getValue());
-									} else if (courseElement.getName().equals("course_number")){
-										newCourse.setNumber((String)courseElement.getValue());
-									} 
-									
-								}
-							}
-							
+	private void addSchedule(Map<String, Course> courseMap, SimpleSchedule schedule) {
+		for(SimpleSchedule.ScheduledCourse scheduledCourse:schedule.getScheduledCourse()){
+			//make a new Offering to add to all courses in this list
+			Offering offering = new Offering();
+			offering.setYear(scheduledCourse.getYear());
+			offering.setSession(scheduledCourse.getTerm());
+			
+			for(SimpleSchedule.ScheduledCourse.Session session:scheduledCourse.getSession()){
+				for(SimpleSchedule.ScheduledCourse.Session.Course course:session.getCourse()){
+					if(courseMap.containsKey(course.getCourseNumber())){
+						//add this offering to the course map
+						Course thisCourse = courseMap.get(course.getCourseNumber());
+						if(thisCourse.getOfferings() == null) {
+							thisCourse.setOfferings(new ArrayList<Offering>());
 						}
+						thisCourse.getOfferings().add(offering);
+					} else {
+						//TODO add a new course that might lack information?
 					}
-				}
-				if(courseMap.containsKey(newCourse.getName())){
-					//if there is an existing course, add this offering information
-					//TODO check to see if this offering already exists
-					courseMap.get(newCourse.getNumber()).getOfferings().add(newOffering);
-				} else {
-					//TODO if there is not an existing course, add the new course
-					//TODO make sure this course is populated better
-//					newCourse.getOfferings().add(newOffering);
-//					courseMap.put(newCourse.getNumber(), newCourse);
+			
 				}
 			}
 		}
