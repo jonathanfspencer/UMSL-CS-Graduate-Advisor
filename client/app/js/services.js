@@ -25,8 +25,10 @@
       }
 
       return {
-        save: function(classes) {
-          savedClasses = classes;
+        save: function(courses) {
+          savedClasses = courses;
+          storage.save('courses', courses);
+          return courses;
         },
         retrieve: function() {
           return savedClasses;
@@ -37,11 +39,12 @@
           } else if(storage.get('courses')) {
             return $q.when(storage.get('courses'));
           } else {
+            var that = this;
             return $http.get(url('/courses')).then(function(resp) {
               var courses = angular.forEach(resp.data, function(c) {
                 c.status = 'N';
-              }).reverse();
-              return storage.save('courses', courses);
+              });
+              return that.save(courses);
             });
           }
 
@@ -54,26 +57,6 @@
         },
         schedule: function() {
           return $http.get(url('/schedule'));
-        },
-        rotations: function() {
-
-          return $http.get(url('/rotations')).success(function(data) {
-            //TODO Make this less ugly
-            // angular.forEach(data.rotation_year, function(year) {
-            //   year.spring = [];
-            //   year.fall = [];
-
-            //   angular.forEach(year.course, function(course) {
-            //     angular.forEach(course.rotation_term, function(term) {
-            //       if(term.term === 'Spring' && term.time_code !== '') {
-            //         year.spring.push(course);
-            //       } else if(term.term === 'Fall' && term.time_code !== '') {
-            //         year.fall.push(course);
-            //       }
-            //     });
-            //   });
-            // });
-          });
         }
       };
     }]);

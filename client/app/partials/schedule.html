@@ -5,7 +5,9 @@
     <div class="six columns">
       <h5 class="term">Spring</h5>
       <ul class="classlist two_up tiles twelve columns">
-        <li ng-repeat="course in $parent.courses | needed | available:{ year: year, term: 'Spring' }"  ng-class="{ nottaken: course.status == 'N', scheduled: course.status == 'S'}">
+        <li ng-repeat="course in $parent.courses | available:{ year: year, term: 'Spring' } | orderBy:'number'"  
+            ng-class="{ nottaken: course.status == 'N', scheduled: course.status == 'S'}"
+            ng-show="course.status == 'N' || course.status == 'S'">
           <div>
             <div class="course-number">
               CMP SCI <span class="bold">{{ course.number }}</span>
@@ -20,7 +22,9 @@
     <div class="six columns">
       <h5 class="term">Fall</h5>
       <ul class="classlist two_up tiles twelve columns">
-        <li ng-repeat="course in $parent.courses | needed | available:{ year: year, term: 'Fall' }"  ng-class="{ nottaken: course.status == 'N', scheduled: course.status == 'S'}">
+        <li ng-repeat="course in $parent.courses | available:{ year: year, term: 'Fall' } | orderBy:'number'"  
+            ng-class="{ nottaken: course.status == 'N', scheduled: course.status == 'S'}"
+            ng-show="course.status == 'N' || course.status == 'S'">
           <div>
             <div class="course-number">
               CMP SCI <span class="bold">{{ course.number }}</span>

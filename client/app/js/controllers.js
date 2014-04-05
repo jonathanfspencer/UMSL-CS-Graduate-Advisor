@@ -4,11 +4,15 @@
   angular.module('advisor.controllers', [])
 	.controller('MainCtrl', ['$scope', 'classService', function($scope, classSvc) {
 
-      classSvc.courses().success(function(courses) {
-        $scope.classes = angular.forEach(courses, function(c) {
-		  c.status = 'N';
+      classSvc.courses().then(
+        function(courses) {
+          $scope.courses = courses;
 	    });
-	  });
+      
+      $scope.$on('$routeChangeStart', function() {
+        classSvc.save($scope.courses);
+        console.log('saved');
+      });
 
 	}])
 

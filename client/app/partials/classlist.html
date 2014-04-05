@@ -1,5 +1,5 @@
 <ul class="classlist tiles three_up twelve columns">
-  <li ng-repeat="class in classes" 
+  <li ng-repeat="class in courses | orderBy:'number'" 
 	  ng-class="{ 
 			completed: class.status == 'T', 
 			waived: class.status == 'W',
