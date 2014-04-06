@@ -3,6 +3,7 @@ package edu.umsl.cs.group4.services.courses;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -77,16 +78,21 @@ public class Course {
 
 	private void addDescriptions(Map<String, Course> courseMap,
 			Descriptions descriptions) {
-		for(Descriptions.Course descriptionCourse:descriptions.getCourse()){
-			Course newCourse = new Course();
-			newCourse.setCredits(descriptionCourse.getCredit());
-			newCourse.setDescription(descriptionCourse.getCourseDescription());
-			newCourse.setName(descriptionCourse.getCourseName());
-			newCourse.setNumber(Integer.toString(descriptionCourse.getCourseNumber()));
-			newCourse.setPrequisite(descriptionCourse.getPrerequisite());
-			courseMap.put(newCourse.getNumber(),newCourse);
-		}
-		
+		Iterator<Descriptions.Course> courseIterator = descriptions.getCourse().iterator();
+    	while(courseIterator.hasNext()) {
+    		Descriptions.Course descriptionCourse = courseIterator.next();
+    		if(!descriptionCourse.getSubject().equalsIgnoreCase("CMP SCI") || descriptionCourse.getCourseNumber() < 4000){
+    			courseIterator.remove();
+    		} else {
+    			Course newCourse = new Course();
+    			newCourse.setCredits(descriptionCourse.getCredit());
+    			newCourse.setDescription(descriptionCourse.getCourseDescription());
+    			newCourse.setName(descriptionCourse.getCourseName());
+    			newCourse.setNumber(Integer.toString(descriptionCourse.getCourseNumber()));
+    			newCourse.setPrequisite(descriptionCourse.getPrerequisite());
+    			courseMap.put(newCourse.getNumber(),newCourse);
+    		}
+    	}
 	}
 
 	private void addRotations(Map<String, Course> courseMap, Rotations rotations) {
