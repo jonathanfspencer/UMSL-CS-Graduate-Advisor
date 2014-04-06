@@ -16,12 +16,17 @@
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
   </head>
-  <body>
+  <body ng-controller="MasterCtrl">
 	<div class="navbar">
 	  <div class="row">
 		<h3 class="four columns logo">
 		  <a href="#!/">CS Graduate Advisor</a>
 		</h3>
+        <ul class="eight columns">
+          <li>
+            <a href="#" ng-click="clearData()">Start Over</a>
+          </li>
+        </ul>
 	  </div>
 	</div>
 

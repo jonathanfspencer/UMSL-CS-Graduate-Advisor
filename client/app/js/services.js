@@ -13,6 +13,9 @@
         },
         get: function(key) {
           return localStorage[key] && JSON.parse(localStorage[key]);
+        },
+        clear: function() {
+          localStorage.clear();
         }
       };
     }])
@@ -26,12 +29,17 @@
 
       return {
         save: function(courses) {
+          if(!courses) return;
           savedClasses = courses;
           storage.save('courses', courses);
           return courses;
         },
         retrieve: function() {
           return savedClasses;
+        },
+        clear: function() {
+          savedClasses = undefined;
+          storage.clear();
         },
         courses: function() {
           if(savedClasses) {

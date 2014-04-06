@@ -2,6 +2,12 @@
   'use strict';
 
   angular.module('advisor.controllers', [])
+    .controller('MasterCtrl', ['$scope', '$location', 'classService', function($scope, $location, classSvc) {
+      $scope.clearData = function() {
+        classSvc.clear();
+        $location.path('/');
+      };
+    }])
 	.controller('MainCtrl', ['$scope', 'classService', function($scope, classSvc) {
 
       classSvc.courses().then(
