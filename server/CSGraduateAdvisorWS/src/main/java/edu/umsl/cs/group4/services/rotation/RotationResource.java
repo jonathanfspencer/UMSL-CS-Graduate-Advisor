@@ -24,7 +24,7 @@ public class RotationResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public static Rotations getRotation() throws JAXBException  {
 		Rotations rotations = (Rotations) ContentFetcher.fetchContent(SOURCE_URL, Rotations.class);
-		filterRotations(rotations);
+//		filterRotations(rotations);
         return rotations;
 	}
 

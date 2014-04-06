@@ -1,6 +1,7 @@
 package edu.umsl.cs.group4.services.courses;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +18,7 @@ import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
 import edu.umsl.cs.group4.services.rotation.RotationResource;
 import edu.umsl.cs.group4.services.rotation.beans.Rotations;
+import edu.umsl.cs.group4.services.rotation.beans.Rotations.RotationYear;
 import edu.umsl.cs.group4.services.schedule.ScheduleResource;
 import edu.umsl.cs.group4.services.schedule.beans.SimpleSchedule;
 
@@ -82,7 +84,7 @@ public class Course {
     	while(courseIterator.hasNext()) {
     		Descriptions.Course descriptionCourse = courseIterator.next();
     		if(!descriptionCourse.getSubject().equalsIgnoreCase("CMP SCI") || descriptionCourse.getCourseNumber() < 4000){
-    			courseIterator.remove();
+    			courseIterator.remove(); //TODO Should we bother removing these?
     		} else {
     			Course newCourse = new Course();
     			newCourse.setCredits(descriptionCourse.getCredit());
@@ -96,25 +98,42 @@ public class Course {
 	}
 
 	private void addRotations(Map<String, Course> courseMap, Rotations rotations) {
-		for(Rotations.RotationYear rotationYear:rotations.getRotationYear()){
-			for(Rotations.RotationYear.Course rotationCourse:rotationYear.getCourse()){
-				for(Rotations.RotationYear.Course.RotationTerm rotationTerm:rotationCourse.getRotationTerm()){
-					Course thisCourse = courseMap.get(rotationCourse.getCourseNumber());
-					if(thisCourse == null){
-						 //TODO build a new course and insert in map? we won't have all the info
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		Iterator<RotationYear> rotationYearIterator = rotations.getRotationYear().iterator();
+		while (rotationYearIterator.hasNext()){
+			RotationYear rotationYear = rotationYearIterator.next();
+			if(rotationYear.getYear() < currentYear){
+				rotationYearIterator.remove(); //TODO Should we bother removing these?
+			} else {
+				Iterator<Rotations.RotationYear.Course> courseIterator = rotationYear.getCourse().iterator();
+				while (courseIterator.hasNext()){
+					Rotations.RotationYear.Course rotationCourse = courseIterator.next();
+					if(!rotationCourse.getSubject().equalsIgnoreCase("CMP SCI") || Integer.valueOf(rotationCourse.getCourseNumber()) < 4000 ){
+						courseIterator.remove();
 					} else {
-						//update course offerings
-						Offering offering = new Offering();
-						offering.setYear(Integer.toString(rotationYear.getYear()));
-						offering.setSession(rotationTerm.getTerm());
-						offering.setTimeCodes(rotationTerm.getTimeCode());
-						if(thisCourse.getOfferings() == null) {
-							thisCourse.setOfferings(new ArrayList<Offering>());
+						Course mapCourse = courseMap.get(rotationCourse.getCourseNumber());
+						if(mapCourse != null){
+							//There is a match in the course map, so add Offering information
+							List<Offering> offerings = new ArrayList<Offering>();
+							for(Rotations.RotationYear.Course.RotationTerm rotationTerm:rotationCourse.getRotationTerm()){
+								Offering offering = new Offering();
+								offering.setYear(Integer.toString(rotationYear.getYear()));
+								offering.setSession(rotationTerm.getTerm());
+								offering.setTimeCodes(rotationTerm.getTimeCode());
+								offerings.add(offering);
+							}	
+							if(mapCourse.getOfferings() == null) {
+								mapCourse.setOfferings(offerings);
+							} else {
+								mapCourse.getOfferings().addAll(offerings);
+							}
+						} else {
+							//TODO build a new course and insert in map? we won't have all the info
 						}
-						thisCourse.getOfferings().add(offering);
 					}
 				}
 			}
+			
 		}
 		
 	}
