@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +17,14 @@ import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
 import edu.umsl.cs.group4.services.rotation.RotationResource;
 import edu.umsl.cs.group4.services.rotation.beans.Rotations;
-import edu.umsl.cs.group4.services.rotation.beans.Rotations.RotationYear;
 import edu.umsl.cs.group4.services.schedule.ScheduleResource;
 import edu.umsl.cs.group4.services.schedule.beans.SimpleSchedule;
 
 @Path("courses")
 public class Course {
 	
+	private static final int MINIMUM_COURSE_NUMBER = 4000;
+	private static final String ADVISOR_SUBJECT = "CMP SCI";
 	private String number;
 	private String name;
 	private String description;
@@ -78,14 +78,10 @@ public class Course {
 		return courseMap.values();
 	}
 
-	private void addDescriptions(Map<String, Course> courseMap,
-			Descriptions descriptions) {
-		Iterator<Descriptions.Course> courseIterator = descriptions.getCourse().iterator();
-    	while(courseIterator.hasNext()) {
-    		Descriptions.Course descriptionCourse = courseIterator.next();
-    		if(!descriptionCourse.getSubject().equalsIgnoreCase("CMP SCI") || descriptionCourse.getCourseNumber() < 4000){
-    			courseIterator.remove(); //TODO Should we bother removing these?
-    		} else {
+	private void addDescriptions(Map<String, Course> courseMap, Descriptions descriptions) {
+		for(Descriptions.Course descriptionCourse:descriptions.getCourse()){
+			//make sure course meets advising system requirements
+    		if(descriptionCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && descriptionCourse.getCourseNumber() >= MINIMUM_COURSE_NUMBER){
     			Course newCourse = new Course();
     			newCourse.setCredits(descriptionCourse.getCredit());
     			newCourse.setDescription(descriptionCourse.getCourseDescription());
@@ -99,18 +95,10 @@ public class Course {
 
 	private void addRotations(Map<String, Course> courseMap, Rotations rotations) {
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		Iterator<RotationYear> rotationYearIterator = rotations.getRotationYear().iterator();
-		while (rotationYearIterator.hasNext()){
-			RotationYear rotationYear = rotationYearIterator.next();
-			if(rotationYear.getYear() < currentYear){
-				rotationYearIterator.remove(); //TODO Should we bother removing these?
-			} else {
-				Iterator<Rotations.RotationYear.Course> courseIterator = rotationYear.getCourse().iterator();
-				while (courseIterator.hasNext()){
-					Rotations.RotationYear.Course rotationCourse = courseIterator.next();
-					if(!rotationCourse.getSubject().equalsIgnoreCase("CMP SCI") || Integer.valueOf(rotationCourse.getCourseNumber()) < 4000 ){
-						courseIterator.remove();
-					} else {
+		for(Rotations.RotationYear rotationYear:rotations.getRotationYear()){
+			if(rotationYear.getYear() >= currentYear){
+				for(Rotations.RotationYear.Course rotationCourse:rotationYear.getCourse()){
+					if(rotationCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && Integer.valueOf(rotationCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER ){
 						Course mapCourse = courseMap.get(rotationCourse.getCourseNumber());
 						if(mapCourse != null){
 							//There is a match in the course map, so add Offering information
@@ -140,26 +128,16 @@ public class Course {
 	
 	private void addSchedule(Map<String, Course> courseMap, SimpleSchedule schedule) {
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		Iterator<SimpleSchedule.ScheduledCourse> scheduledCourseIterator = schedule.getScheduledCourse().iterator();
-		while(scheduledCourseIterator.hasNext()) {
-			SimpleSchedule.ScheduledCourse scheduledCourse = scheduledCourseIterator.next();
-			if(Integer.valueOf(scheduledCourse.getYear()) < currentYear){
-				scheduledCourseIterator.remove();  //TODO do we need to bother removing this?
-			} else {
+		for(SimpleSchedule.ScheduledCourse scheduledCourse:schedule.getScheduledCourse()){
+			if(Integer.valueOf(scheduledCourse.getYear()) >= currentYear){
 				//make a new Offering to add to all courses in this list
 				Offering offering = new Offering();
 				offering.setYear(scheduledCourse.getYear());
 				offering.setSession(scheduledCourse.getTerm());
 				
-				Iterator<SimpleSchedule.ScheduledCourse.Session> sessionIterator = scheduledCourse.getSession().iterator();
-				while(sessionIterator.hasNext()){
-					SimpleSchedule.ScheduledCourse.Session session = sessionIterator.next();
-					Iterator<SimpleSchedule.ScheduledCourse.Session.Course> courseIterator = session.getCourse().iterator();
-					while(courseIterator.hasNext()){
-						SimpleSchedule.ScheduledCourse.Session.Course scheduleCourse = courseIterator.next();
-						if(!scheduleCourse.getSubject().equalsIgnoreCase("CMP SCI") || Integer.valueOf(scheduleCourse.getCourseNumber()) < 4000){
-							courseIterator.remove(); //TODO do we need to bother removing this?
-						} else {
+				for(SimpleSchedule.ScheduledCourse.Session session:scheduledCourse.getSession()){
+					for(SimpleSchedule.ScheduledCourse.Session.Course scheduleCourse:session.getCourse()){
+						if(scheduleCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && Integer.valueOf(scheduleCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER){
 							Course mapCourse = courseMap.get(scheduleCourse.getCourseNumber());
 							if(mapCourse != null){
 								//add this offering to the course map								
