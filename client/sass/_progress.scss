@@ -23,7 +23,8 @@
     }
 
     .progress-scheduled {
-        background-color: $waived-bg;
+        background-color: $scheduled-bg;
+        color: $lightfont;
     }
 }
 

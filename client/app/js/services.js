@@ -47,6 +47,7 @@
           listeners.push(cb);
         },
         courses: function() {
+          //TODO Handle multiple calls before original returns.
           if(savedClasses) {
             return $q.when(savedClasses);
           } else if(storage.get('courses')) {

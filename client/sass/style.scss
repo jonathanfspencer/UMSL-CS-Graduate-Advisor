@@ -4,6 +4,7 @@ $nottaken-bg: #e9e9e9;
 $nottaken-hover: #f9f9f9;
 $completed-bg: #981e32;
 $waived-bg: #EAAB00;
+$scheduled-bg: #0E83CD;
 $darkfont: #333;
 $lightfont: #FFF;
 
@@ -71,11 +72,15 @@ li.completed {
     border: 1px solid darken($completed-bg, 13);
 	color: $lightfont;
 }
-li.scheduled {
-	/* background-color: -webkit-linear-gradient(top, #EAAB00, #DEA100); */
-	background-color: $waived-bg !important;
+li.waived {
+    background-color: $waived-bg !important;
     border: 1px solid darken($waived-bg, 10);
-	color: $darkfont;
+    color: $darkfont;
+}
+li.scheduled {
+	background-color: $scheduled-bg !important;
+    border: 1px solid darken($scheduled-bg, 10);
+	color: $lightfont;
 }
 
 

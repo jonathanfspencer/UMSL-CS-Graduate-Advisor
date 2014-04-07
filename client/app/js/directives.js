@@ -12,7 +12,8 @@
 			  $scope.toggle = function(course) {
                 course.status = {
                   N: 'T',
-                  T: 'N',
+                  T: 'W',
+                  W: 'N',
                   S: 'S'
                 }[course.status];
 
@@ -41,7 +42,6 @@
               }
               switch(currVal.status) {
               case 'T':
-              case 'W':
                 counters.completed += credits;
                 break;
               case 'N':
