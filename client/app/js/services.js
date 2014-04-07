@@ -21,7 +21,7 @@
     }])
     .factory('classService', ['$http', '$q', 'serviceUrl', 'storage', function($http, $q, serviceUrl, storage) {
 
-      var savedClasses
+      var coursePromise
       ,   listeners = [];
 
       function url(suffix) {
@@ -31,35 +31,31 @@
       return {
         save: function(courses) {
           if(!courses) return;
-          savedClasses = courses;
+          coursePromise = $q.when(courses);
           storage.save('courses', courses);
           listeners.forEach(function(cb) { cb(courses); });
           return courses;
         },
-        retrieve: function() {
-          return savedClasses;
-        },
         clear: function() {
-          savedClasses = undefined;
+          coursePromise = undefined;
           storage.clear();
         },
         onChange: function(cb) {
           listeners.push(cb);
         },
         courses: function() {
-          //TODO Handle multiple calls before original returns.
-          if(savedClasses) {
-            return $q.when(savedClasses);
-          } else if(storage.get('courses')) {
+           if(storage.get('courses')) {
             return $q.when(storage.get('courses'));
           } else {
             var that = this;
-            return $http.get(url('/courses')).then(function(resp) {
+            coursePromise = coursePromise || $http.get(url('/courses')).then(function(resp) {
               var courses = angular.forEach(resp.data, function(c) {
                 c.status = 'N';
               });
               return that.save(courses);
             });
+            
+            return coursePromise;
           }
 
         },
