@@ -7,6 +7,9 @@
         classSvc.clear();
         $location.path('/');
       };
+      $scope.$on('course_changed', function(e, courses) {
+        classSvc.save(courses);
+      });
     }])
 	.controller('MainCtrl', ['$scope', 'classService', function($scope, classSvc) {
 

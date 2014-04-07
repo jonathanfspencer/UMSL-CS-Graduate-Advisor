@@ -1,0 +1,25 @@
+.progress-bar {
+    width: 100%;
+    left: 0;
+    right: 0;
+    position: relative;
+    height: 1em;
+
+    div {
+        height: 100%;
+        float: left;
+        font-size: 70%;
+        text-align: center;
+        line-height: 1.5em;
+    }
+    .progress-completed {
+        color: $lightfont;
+        background-color: $completed-bg;
+        width: 0%;
+    }
+
+    .progress-required {
+        background-color: $nottaken-bg;
+        width: 0%;
+    }
+}

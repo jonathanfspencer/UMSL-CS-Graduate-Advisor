@@ -1,24 +1,53 @@
 /* Varibales */
-/* line 9, ../../sass/style.scss */
+/* Imports */
+/* line 1, ../../sass/_progress.scss */
+.progress-bar {
+  width: 100%;
+  left: 0;
+  right: 0;
+  position: relative;
+  height: 1em;
+}
+/* line 8, ../../sass/_progress.scss */
+.progress-bar div {
+  height: 100%;
+  float: left;
+  font-size: 70%;
+  text-align: center;
+  line-height: 1.5em;
+}
+/* line 15, ../../sass/_progress.scss */
+.progress-bar .progress-completed {
+  color: white;
+  background-color: #981e32;
+  width: 0%;
+}
+/* line 21, ../../sass/_progress.scss */
+.progress-bar .progress-required {
+  background-color: #e9e9e9;
+  width: 0%;
+}
+
+/* line 13, ../../sass/style.scss */
 .bold {
   font-weight: bold;
 }
 
-/* line 13, ../../sass/style.scss */
+/* line 17, ../../sass/style.scss */
 .tiles.six_up {
   margin-left: -1.5%;
 }
-/* line 15, ../../sass/style.scss */
+/* line 19, ../../sass/style.scss */
 .tiles.six_up > li, .tiles.six_up > .tile {
   margin-left: 1.5%;
   width: 15.1%;
 }
 
-/* line 23, ../../sass/style.scss */
+/* line 27, ../../sass/style.scss */
 .classchooser h5 {
   margin-bottom: 1.25%;
 }
-/* line 27, ../../sass/style.scss */
+/* line 31, ../../sass/style.scss */
 .classchooser li {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -28,42 +57,42 @@
   user-select: none;
 }
 
-/* line 38, ../../sass/style.scss */
+/* line 42, ../../sass/style.scss */
 .classlist li {
   display: block;
   padding: 0.5em;
   margin-bottom: 1.25%;
 }
-/* line 43, ../../sass/style.scss */
+/* line 47, ../../sass/style.scss */
 .classlist li:hover {
   background-color: #f9f9f9;
   cursor: pointer;
 }
-/* line 48, ../../sass/style.scss */
+/* line 52, ../../sass/style.scss */
 .classlist .course-title {
   font-size: 75%;
 }
 
-/* line 54, ../../sass/style.scss */
+/* line 58, ../../sass/style.scss */
 .schedule .term {
   font-weight: bold;
 }
 
-/* line 60, ../../sass/style.scss */
+/* line 64, ../../sass/style.scss */
 li.nottaken {
   background-color: #e9e9e9;
   border: 1px solid #c8c8c8;
   color: #333333;
 }
 
-/* line 65, ../../sass/style.scss */
+/* line 69, ../../sass/style.scss */
 li.completed, li.scheduled {
   background-color: #981e32 !important;
   border: 1px solid #611320;
   color: white;
 }
 
-/* line 70, ../../sass/style.scss */
+/* line 74, ../../sass/style.scss */
 li.waived {
   /* background-color: -webkit-linear-gradient(top, #EAAB00, #DEA100); */
   background-color: #eaab00 !important;

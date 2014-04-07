@@ -21,7 +21,8 @@
     }])
     .factory('classService', ['$http', '$q', 'serviceUrl', 'storage', function($http, $q, serviceUrl, storage) {
 
-      var savedClasses;
+      var savedClasses
+      ,   listeners = [];
 
       function url(suffix) {
         return serviceUrl + suffix;
@@ -32,6 +33,7 @@
           if(!courses) return;
           savedClasses = courses;
           storage.save('courses', courses);
+          listeners.forEach(function(cb) { cb(courses); });
           return courses;
         },
         retrieve: function() {
@@ -40,6 +42,9 @@
         clear: function() {
           savedClasses = undefined;
           storage.clear();
+        },
+        onChange: function(cb) {
+          listeners.push(cb);
         },
         courses: function() {
           if(savedClasses) {
@@ -58,7 +63,10 @@
 
         },
         requirements: function() {
-          return $http.get(url('requirements'));
+          return $http.get(url('requirements')).then(
+            function(resp) {
+              return resp.data;
+            });
         },
         descriptions: function() {
           return $http.get(url('/descriptions'));
