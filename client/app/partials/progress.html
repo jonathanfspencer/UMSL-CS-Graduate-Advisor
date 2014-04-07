@@ -1,8 +1,11 @@
 <div class="progress-bar">
-  <div class="progress-completed" style="width: {{ completedPct }}%;">
+  <div ng-show="completedPct > 0" class="progress-completed" style="width: {{ completedPct }}%;">
     {{ completed }} hours completed
   </div>
-  <div class="progress-required" style="width: {{ requiredPct }}%;">
-    {{ required - completed }} required hours remaining
+  <div ng-show="scheduledPct > 0" class="progress-scheduled" style="width: {{ scheduledPct }}%;">
+    {{ scheduled }} hours scheduled
+  </div>
+  <div ng-show="requiredPct > 0" class="progress-required" style="width: {{ requiredPct }}%;">
+    {{ required - completed - scheduled }} required hours remaining
   </div>
 </div>

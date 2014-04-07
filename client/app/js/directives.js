@@ -9,14 +9,13 @@
 				courses: '=courses'
 			},
 			link: function($scope) {
-			  $scope.toggle = function(clazz) {
-				if(clazz.status === 'N') {
-				  clazz.status = 'T'
-				} else if(clazz.status === 'T') {
-				  clazz.status = 'W'
-				} else if(clazz.status === 'W') {
-				  clazz.status = 'N'
-				}
+			  $scope.toggle = function(course) {
+                course.status = {
+                  N: 'T',
+                  T: 'N',
+                  S: 'S'
+                }[course.status];
+
                 $scope.$emit('course_changed', $scope.courses);
 			  };
 			},
@@ -58,7 +57,9 @@
             { completed: 0, left: 0, scheduled: 0 });
           scope.completedPct = Math.min(100, (completion.completed / scope.required) * 100);
           scope.completed = completion.completed;
-          scope.requiredPct = Math.max(0, 100 - 100 * (completion.completed / scope.required));
+          scope.scheduledPct = Math.min(100 - scope.completedPct, (completion.scheduled / scope.required) * 100);
+          scope.scheduled = completion.scheduled;
+          scope.requiredPct = Math.max(0, 100 - scope.completedPct - scope.scheduledPct);
         };
         var promises = { courses: classSvc.courses(), req: classSvc.requirements() };
         $q.all(promises).then(function(vals) {

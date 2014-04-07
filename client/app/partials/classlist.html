@@ -2,7 +2,7 @@
   <li ng-repeat="class in courses | orderBy:'number'" 
 	  ng-class="{ 
 			completed: class.status == 'T', 
-			waived: class.status == 'W',
+			waived: class.status == 'S',
 			nottaken: class.status == 'N'
 		}"
 	  ng-click="toggle(class)">

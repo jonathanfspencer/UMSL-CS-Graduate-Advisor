@@ -15,17 +15,39 @@
   font-size: 70%;
   text-align: center;
   line-height: 1.5em;
+  width: 0%;
 }
-/* line 15, ../../sass/_progress.scss */
+/* line 16, ../../sass/_progress.scss */
 .progress-bar .progress-completed {
   color: white;
   background-color: #981e32;
-  width: 0%;
 }
 /* line 21, ../../sass/_progress.scss */
 .progress-bar .progress-required {
   background-color: #e9e9e9;
-  width: 0%;
+}
+/* line 25, ../../sass/_progress.scss */
+.progress-bar .progress-scheduled {
+  background-color: #eaab00;
+}
+
+/* line 30, ../../sass/_progress.scss */
+.core-status {
+  width: 100%;
+  left: 0;
+  right: 0;
+  position: relative;
+  height: 1em;
+}
+/* line 37, ../../sass/_progress.scss */
+.core-status div {
+  height: 100%;
+  float: left;
+  font-size: 70%;
+  text-align: center;
+  line-height: 1.5em;
+  border-right: 1px solid #333;
+  color: white;
 }
 
 /* line 13, ../../sass/style.scss */

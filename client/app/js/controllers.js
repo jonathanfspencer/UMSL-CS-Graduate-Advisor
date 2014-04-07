@@ -2,10 +2,14 @@
   'use strict';
 
   angular.module('advisor.controllers', [])
-    .controller('MasterCtrl', ['$scope', '$location', 'classService', function($scope, $location, classSvc) {
+    .controller('MasterCtrl', ['$scope', '$location', '$route', 'classService', function($scope, $location, $route, classSvc) {
       $scope.clearData = function() {
         classSvc.clear();
-        $location.path('/');
+        if($location.path() == '/') {
+          $route.reload();
+        } else {
+          $location.path('/');
+        }
       };
       $scope.$on('course_changed', function(e, courses) {
         classSvc.save(courses);
@@ -18,11 +22,6 @@
           $scope.courses = courses;
 	    });
       
-      $scope.$on('$routeChangeStart', function() {
-        classSvc.save($scope.courses);
-        console.log('saved');
-      });
-
 	}])
 
     .filter('available', function() {
@@ -40,17 +39,11 @@
         });
       }
     })
-  //TODO this filter can probably be replaced with an ng-show
-    .filter('needed', ['classService', function(classSvc) {
-      return function(courses) {
-        return courses.filter(function(course) {
-          return course.status === 'N';
-        });
-      };
-    }])
     .filter('shortenIntro', function() {
       return function(courseName) {
-        return courseName.replace('Introduction', 'Intro');
+        return courseName
+          .replace('Introduction', 'Intro')
+          .replace('Advanced', 'Adv.');
       };
     })
     .controller('ScheduleCtrl', ['$scope', 'classService', function($scope, classSvc) {
@@ -60,5 +53,13 @@
       classSvc.courses().then(function(courses) {
         $scope.courses = courses;
       });
+      $scope.toggle = function(course) {
+        course.status = { 
+          S: 'N',
+          N: 'S'
+        }[course.status];
+        $scope.$emit('course_changed', $scope.courses);
+      };
+
     }]);
 }());
