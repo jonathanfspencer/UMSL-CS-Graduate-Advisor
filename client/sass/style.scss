@@ -66,12 +66,12 @@ li.nottaken {
 	border: 1px solid darken($nottaken-bg, 13);
 	color: $darkfont;
 }
-li.completed, li.scheduled {
+li.completed {
 	background-color: $completed-bg !important;
     border: 1px solid darken($completed-bg, 13);
 	color: $lightfont;
 }
-li.waived {
+li.scheduled {
 	/* background-color: -webkit-linear-gradient(top, #EAAB00, #DEA100); */
 	background-color: $waived-bg !important;
     border: 1px solid darken($waived-bg, 10);

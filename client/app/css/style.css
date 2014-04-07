@@ -108,14 +108,14 @@ li.nottaken {
 }
 
 /* line 69, ../../sass/style.scss */
-li.completed, li.scheduled {
+li.completed {
   background-color: #981e32 !important;
   border: 1px solid #611320;
   color: white;
 }
 
 /* line 74, ../../sass/style.scss */
-li.waived {
+li.scheduled {
   /* background-color: -webkit-linear-gradient(top, #EAAB00, #DEA100); */
   background-color: #eaab00 !important;
   border: 1px solid #b78600;
