@@ -128,3 +128,10 @@ li.scheduled {
   border: 1px solid #0b649d;
   color: white;
 }
+
+/* line 85, ../../sass/style.scss */
+li.scheduledother {
+  background-color: #7ec8f6 !important;
+  border: 1px solid #0e83cd;
+  color: #4d4d4d;
+}

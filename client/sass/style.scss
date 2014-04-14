@@ -82,5 +82,10 @@ li.scheduled {
     border: 1px solid darken($scheduled-bg, 10);
 	color: $lightfont;
 }
+li.scheduledother {
+    background-color: lighten($scheduled-bg, 30) !important;
+    border: 1px solid $scheduled-bg;
+    color: lighten($darkfont, 10);
+}
 
 

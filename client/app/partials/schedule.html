@@ -6,9 +6,16 @@
       <h5 class="term">Spring</h5>
       <ul class="classlist two_up tiles twelve columns">
         <li ng-repeat="course in $parent.courses | available:{ year: year, term: 'Spring' } | orderBy:'number'"  
-            ng-class="{ nottaken: course.status == 'N', scheduled: course.status == 'S'}"
+            ng-class="{
+              scheduled: course.scheduled &&
+                        course.scheduled.year == year && 
+                        course.scheduled.term == 'Spring',
+              scheduledother: course.scheduled && 
+                               (course.scheduled.year != year ||
+                                course.scheduled.term != 'Spring'),
+              nottaken: course.status == 'N'}"
             ng-show="course.status == 'N' || course.status == 'S'"
-            ng-click="toggle(course)">
+            ng-click="schedule(course, year, 'Spring')">
           <div>
             <div class="course-number">
               CMP SCI <span class="bold">{{ course.number }}</span>
@@ -24,9 +31,16 @@
       <h5 class="term">Fall</h5>
       <ul class="classlist two_up tiles twelve columns">
         <li ng-repeat="course in $parent.courses | available:{ year: year, term: 'Fall' } | orderBy:'number'"  
-            ng-class="{ nottaken: course.status == 'N', scheduled: course.status == 'S'}"
+            ng-class="{
+              scheduled: course.scheduled &&
+                        course.scheduled.year == year && 
+                        course.scheduled.term == 'Fall',
+              scheduledother: course.scheduled && 
+                               (course.scheduled.year != year ||
+                               course.scheduled.term != 'Fall'),
+              nottaken: course.status == 'N'}"
             ng-show="course.status == 'N' || course.status == 'S'"
-            ng-click="toggle(course)">
+            ng-click="schedule(course, year, 'Fall')">
           <div>
             <div class="course-number">
               CMP SCI <span class="bold">{{ course.number }}</span>

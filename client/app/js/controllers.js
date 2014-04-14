@@ -53,11 +53,22 @@
       classSvc.courses().then(function(courses) {
         $scope.courses = courses;
       });
-      $scope.toggle = function(course) {
-        course.status = { 
-          S: 'N',
-          N: 'S'
-        }[course.status];
+      $scope.schedule = function(course, year, term) {
+        if(course.status == 'N') {
+          course.status = 'S';
+          course.scheduled = {
+            year: year,
+            term: term
+          };
+        } else if(course.scheduled.year != year || course.scheduled.term != term) {
+          course.scheduled = {
+            year: year,
+            term: term
+          };
+        } else {
+          course.status = 'N';
+          delete course.scheduled;
+        }
         $scope.$emit('course_changed', $scope.courses);
       };
 
