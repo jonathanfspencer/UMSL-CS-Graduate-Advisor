@@ -134,9 +134,9 @@ li.scheduled {
 
 /* line 85, ../../sass/style.scss */
 li.scheduledother {
-  background-color: #7ec8f6 !important;
-  border: 1px solid #0e83cd;
-  color: #4d4d4d;
+  background-color: white !important;
+  border: 1px solid #e9e9e9;
+  color: #999999;
 }
 
 /* line 91, ../../sass/style.scss */
