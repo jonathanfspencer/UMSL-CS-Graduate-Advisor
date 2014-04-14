@@ -6,6 +6,6 @@
     {{ scheduled }} hours scheduled
   </div>
   <div ng-show="requiredPct > 0" class="progress-required" style="width: {{ requiredPct }}%;">
-    {{ required - completed - scheduled }} required hours remaining
+    {{ required.minTotalHours - completed - scheduled }} required hours remaining
   </div>
 </div>

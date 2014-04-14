@@ -35,35 +35,55 @@
           var completion = courses.reduce(
             function(counters, currVal, index, arr) {
               var credits = 0;
+              
+              // Some classes have a variable number of credit hours
+              // TODO Default to the minimum number for now. Prompt user
+              // for this later.
               if(currVal.credits.length > 1) {
                 credits = parseInt(currVal.credits[0]);
               } else {
                 credits = parseInt(currVal.credits);
               }
+
               switch(currVal.status) {
               case 'T':
-                counters.completed += credits;
+                if(parseInt(currVal.number) < 5000) {
+                  if(counters.credits4000Level < parseInt(scope.required.max4000Hours)) {
+                    counters.completed += credits;
+                  }
+                  counters.credits4000Level += credits;
+                } else {
+                    counters.completed += credits;
+                }
                 break;
               case 'N':
                 counters.left += credits;
                 break;
               case 'S':
-                counters.scheduled += credits;
+                if(parseInt(currVal.number) < 5000) {
+                  if(counters.credits4000Level < parseInt(scope.required.max4000Hours)) {
+                    counters.scheduled  += credits;
+                  }
+                  counters.credits4000Level += credits;
+                } else {
+                    counters.scheduled  += credits;
+                }
                 break;
               }
 
               return counters;
             },
-            { completed: 0, left: 0, scheduled: 0 });
-          scope.completedPct = Math.min(100, (completion.completed / scope.required) * 100);
+            { completed: 0, left: 0, scheduled: 0, credits4000Level: 0 });
+
+          scope.completedPct = Math.min(100, (completion.completed / scope.required.minTotalHours) * 100);
           scope.completed = completion.completed;
-          scope.scheduledPct = Math.min(100 - scope.completedPct, (completion.scheduled / scope.required) * 100);
+          scope.scheduledPct = Math.min(100 - scope.completedPct, (completion.scheduled / scope.required.minTotalHours) * 100);
           scope.scheduled = completion.scheduled;
           scope.requiredPct = Math.max(0, 100 - scope.completedPct - scope.scheduledPct);
         };
         var promises = { courses: classSvc.courses(), req: classSvc.requirements() };
         $q.all(promises).then(function(vals) {
-          scope.required = vals.req.minTotalHours;
+          scope.required = vals.req;
           refresh(vals.courses);
         });
         classSvc.onChange(refresh);
