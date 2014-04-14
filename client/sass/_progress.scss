@@ -16,14 +16,17 @@
     .progress-completed {
         color: $lightfont;
         background-color: $completed-bg;
+        border-bottom: 1px solid darken($completed-bg, 10);
     }
 
     .progress-required {
         background-color: $nottaken-bg;
+        border-bottom: 1px solid darken($nottaken-bg, 10);
     }
 
     .progress-scheduled {
         background-color: $scheduled-bg;
+        border-bottom: 1px solid darken($scheduled-bg, 10);
         color: $lightfont;
     }
 }

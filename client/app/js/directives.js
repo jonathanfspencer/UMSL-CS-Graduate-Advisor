@@ -2,6 +2,20 @@
 	'use strict';
 
 	angular.module('advisor.directives', [])
+    .directive('advSticky', ['$window', function($window) {
+      return {
+        restrict: 'A',
+        link: function(scope, element) {
+          $window.addEventListener('scroll', function(event) {
+            if($window.pageYOffset >= 61) {
+              element.addClass('sticky');
+            } else {
+              element.removeClass('sticky');
+            }
+          });
+        }
+      };
+    }])
 	.directive('advClasslist', ['classService', function(classSvc) {
 		return {
 			restrict: 'E',
