@@ -24,6 +24,7 @@ public class Preferences {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Preferences applyPreferences(Preferences preferences){
+		//TODO the big nasty algorithm
 		return preferences;
 	}
 

@@ -27,7 +27,7 @@ public class Course {
 	private static final String ADVISOR_SUBJECT = "CMP SCI";
 	@SuppressWarnings("unused")
 	private static final String COURSE_STATUS_SCHEDULED = "S";
-	private static final String COURSE_STATUS_NOT_SCHEDULED = "N";
+	private static final String COURSE_STATUS_NULL = "N";
 	@SuppressWarnings("unused")
 	private static final String COURSE_STATUS_TAKEN = "T";
 	@SuppressWarnings("unused")
@@ -38,15 +38,14 @@ public class Course {
 	private String credits;
 	private Descriptions.Course.Prerequisite prequisite;
 	private List<Offering> offerings;
-	private String status = COURSE_STATUS_NOT_SCHEDULED;
+	private String status = COURSE_STATUS_NULL;
+	private Offering scheduledOffering;
 	
 	public static class Offering {
-		private static final String OFFERING_SCHEDULED = "S";
-		private static final String OFFERING_NOT_SCHEDULED = "N";
 		private String year;
 		private List<String> timeCodes;
 		private String session;
-		private String scheduled = OFFERING_SCHEDULED;
+		
 		public String getYear() {
 			return year;
 		}
@@ -64,12 +63,6 @@ public class Course {
 		}
 		public void setSession(String session) {
 			this.session = session;
-		}
-		public String getScheduled() {
-			return scheduled;
-		}
-		public void setScheduled(String scheduled) {
-			this.scheduled = scheduled;
 		}
 	}
 	
@@ -217,6 +210,14 @@ public class Course {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Offering getScheduledOffering() {
+		return scheduledOffering;
+	}
+
+	public void setScheduledOffering(Offering scheduledOffering) {
+		this.scheduledOffering = scheduledOffering;
 	}
 	
 }
