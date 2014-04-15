@@ -17,6 +17,12 @@ public class Preferences {
 	private Integer minClassesPerSemester;
 	private Boolean canTakeDayClasses;
 	private Integer maxSemestersToComplete;
+	private Integer numberOfHoursCompleted;
+	private Integer numberOfHoursScheduled;
+	private Integer numberOfHoursRemaining;
+	private Integer numberOf6000HoursScheduled;
+	private Integer numberOf5000HoursScheduled;
+	private Integer numberOf4000HoursScheduled;
 	private List<Course> courses;
 	
 	@Path("/apply")
@@ -24,7 +30,22 @@ public class Preferences {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Preferences applyPreferences(Preferences preferences){
+		
+		//If requirements have been met, exit
+		//Else,
 		//TODO the big nasty algorithm
+//		Requirements requirements = new Requirements();
+		//Loop through courses to 
+			//Separate courses by year and session
+		//For each year
+			//For each Spring
+				//Determine how many units are scheduled
+				//If room and needed, schedule core courses
+				//If room and needed, schedule a 6000 course
+				//If room and needed, schedule 5000 courses
+				//If room and needed, schedule 4000 courses
+			//For each Summer
+			//For each Fall
 		return preferences;
 	}
 
@@ -66,5 +87,53 @@ public class Preferences {
 
 	public void setCourses(List<Course> courses) {
 		this.courses = courses;
+	}
+
+	public Integer getNumberOfHoursCompleted() {
+		return numberOfHoursCompleted;
+	}
+
+	public void setNumberOfHoursCompleted(Integer numberOfHoursCompleted) {
+		this.numberOfHoursCompleted = numberOfHoursCompleted;
+	}
+
+	public Integer getNumberOfHoursScheduled() {
+		return numberOfHoursScheduled;
+	}
+
+	public void setNumberOfHoursScheduled(Integer numberOfHoursScheduled) {
+		this.numberOfHoursScheduled = numberOfHoursScheduled;
+	}
+
+	public Integer getNumberOfHoursRemaining() {
+		return numberOfHoursRemaining;
+	}
+
+	public void setNumberOfHoursRemaining(Integer numberOfHoursRemaining) {
+		this.numberOfHoursRemaining = numberOfHoursRemaining;
+	}
+
+	public Integer getNumberOf6000HoursScheduled() {
+		return numberOf6000HoursScheduled;
+	}
+
+	public void setNumberOf6000HoursScheduled(Integer numberOf6000HoursScheduled) {
+		this.numberOf6000HoursScheduled = numberOf6000HoursScheduled;
+	}
+
+	public Integer getNumberOf5000HoursScheduled() {
+		return numberOf5000HoursScheduled;
+	}
+
+	public void setNumberOf5000HoursScheduled(Integer numberOf5000HoursScheduled) {
+		this.numberOf5000HoursScheduled = numberOf5000HoursScheduled;
+	}
+
+	public Integer getNumberOf4000HoursScheduled() {
+		return numberOf4000HoursScheduled;
+	}
+
+	public void setNumberOf4000HoursScheduled(Integer numberOf4000HoursScheduled) {
+		this.numberOf4000HoursScheduled = numberOf4000HoursScheduled;
 	}
 }
