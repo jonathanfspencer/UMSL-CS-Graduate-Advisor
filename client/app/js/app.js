@@ -8,8 +8,7 @@
       'advisor.services'
 	])
     .constant('serviceUrl', 'http://' + location.hostname + ':8081/')
-	.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-      $locationProvider.html5Mode(true);
+	.config(['$routeProvider', function($routeProvider) {
 	  $routeProvider.when('/', {
 		templateUrl: 'partials/main.html',
 		controller: 'MainCtrl'

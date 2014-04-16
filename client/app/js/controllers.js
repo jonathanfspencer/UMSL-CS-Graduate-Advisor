@@ -53,12 +53,12 @@
       classSvc.courses().then(function(courses) {
         $scope.courses = courses;
       });
-      $scope.auto = function() {
+      $scope.auto = function(prefs) {
         classSvc.autoSchedule({
-          maxClassesPerSemester: 3,
-          minClassesPerSemester: 1,
+          maxClassesPerSemester: prefs.maxClasses,
+          minClassesPerSemester: prefs.minClasses,
           canTakeDayClasses: false,
-          maxSemestersToComplete: 6,
+          maxSemestersToComplete: prefs.maxSemesters,
           numberOfHoursCompleted: 0,
           numberOfHourseScheduled: 0,
           numberOfHoursRemaining: 0,
@@ -69,6 +69,7 @@
         }).then(
           function(courses) {
             $scope.courses = courses;
+            $scope.startAuto = false;
             //TODO Save the newly scheduled courses somewhere.
           });
         return false;

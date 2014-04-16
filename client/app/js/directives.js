@@ -103,5 +103,19 @@
         classSvc.onChange(refresh);
       }
     };
+  }])
+  .directive('advModal', [function() {
+    return {
+      restrict: 'E',
+      scope: {
+        show: '='
+      },
+      replace: true,
+      transclude: true,
+      link: function(scope, element, attrs) {
+
+      },
+      templateUrl: 'partials/modal.html'
+    };
   }]);
 }());
