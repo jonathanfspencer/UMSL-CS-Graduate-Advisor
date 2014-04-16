@@ -136,6 +136,22 @@ public class Course {
 		
 	}
 	
+	/*
+	 * Standardizes term representation to either Spring, Summer, or Fall
+	 */
+	private String translateScheduleTerm(String term) {
+		switch(term) {
+		case "SP":
+			return "Spring";
+		case "SS":
+			return "Summer";
+		case "FS":
+			return "Fall";
+		}
+		
+		// Should only happen if the term abbreviations change.
+		return "";
+	}
 	private void addSchedule(Map<String, Course> courseMap, SimpleSchedule schedule) {
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		for(SimpleSchedule.ScheduledCourse scheduledCourse:schedule.getScheduledCourse()){
@@ -143,7 +159,7 @@ public class Course {
 				//make a new Offering to add to all courses in this list
 				Offering offering = new Offering();
 				offering.setYear(scheduledCourse.getYear());
-				offering.setSession(scheduledCourse.getTerm());
+				offering.setSession(translateScheduleTerm(scheduledCourse.getTerm()));
 				
 				for(SimpleSchedule.ScheduledCourse.Session session:scheduledCourse.getSession()){
 					for(SimpleSchedule.ScheduledCourse.Session.Course scheduleCourse:session.getCourse()){
