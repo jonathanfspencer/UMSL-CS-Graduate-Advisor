@@ -15,6 +15,7 @@ public class AllowOriginFilter implements ContainerResponseFilter {
 	public void filter(ContainerRequestContext requestContext,
 			ContainerResponseContext responseContext) throws IOException {
 		responseContext.getHeaders().add("Access-Control-Allow-Origin","*");
+		responseContext.getHeaders().add("Access-Control-Allow-Headers", "accept, content-type");
 	}
 
 }
