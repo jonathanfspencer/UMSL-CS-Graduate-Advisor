@@ -1,56 +1,77 @@
-<h5 class="row">Choose your classes from those available each semester</h5>
+  <h5 class="row">Choose your classes from those available
+    each semester or  <div class="medium primary btn"
+    ng-click="auto();"><a href="#">auto-schedule</a></div> 
+  </h5>
+</div>
 <div ng-repeat="year in years" class="row schedule">
   <h4 class="twelve columns">{{ year }}</h4>
-  <div class="row">
-    <div class="six columns">
-      <h5 class="term">Spring</h5>
-      <ul class="classlist two_up tiles twelve columns">
-        <li ng-repeat="course in $parent.courses | available:{ year: year, term: 'Spring' } | orderBy:'number'"  
-            ng-class="{
-              scheduled: course.scheduled &&
-                        course.scheduled.year == year && 
-                        course.scheduled.term == 'Spring',
-              scheduledother: course.scheduled && 
-                               (course.scheduled.year != year ||
-                                course.scheduled.term != 'Spring'),
+  <h5 class="term">Spring</h5>
+  <ul class="classlist three_up tiles twelve columns">
+    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Spring' } | orderBy:'number'"  
+        ng-class="{
+              scheduled: course.scheduledOffering &&
+                        course.scheduledOffering.year == year && 
+                        course.scheduledOffering.session == 'Spring',
+              scheduledother: course.scheduledOffering && 
+                               (course.scheduledOffering.year != year ||
+                                course.scheduledOffering.session != 'Spring'),
               nottaken: course.status == 'N'}"
             ng-show="course.status == 'N' || course.status == 'S'"
             ng-click="schedule(course, year, 'Spring')">
-          <div>
-            <div class="course-number">
-              CMP SCI <span class="bold">{{ course.number }}</span>
-            </div>
-            <div class="course-title">
-              {{course.name | shortenIntro}}
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="six columns">
-      <h5 class="term">Fall</h5>
-      <ul class="classlist two_up tiles twelve columns">
-        <li ng-repeat="course in $parent.courses | available:{ year: year, term: 'Fall' } | orderBy:'number'"  
-            ng-class="{
-              scheduled: course.scheduled &&
-                        course.scheduled.year == year && 
-                        course.scheduled.term == 'Fall',
-              scheduledother: course.scheduled && 
-                               (course.scheduled.year != year ||
-                               course.scheduled.term != 'Fall'),
+      <div>
+        <div class="course-number">
+          CMP SCI <span class="bold">{{ course.number }}</span>
+        </div>
+        <div class="course-title">
+          {{course.name | shortenIntro}}
+        </div>
+      </div>
+    </li>
+  </ul>
+  <h5 class="term">Fall</h5>
+  <ul class="classlist three_up tiles twelve columns">
+    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Fall' } | orderBy:'number'"  
+        ng-class="{
+              scheduled: course.scheduledOffering &&
+                        course.scheduledOffering.year == year && 
+                        course.scheduledOffering.session == 'Fall',
+              scheduledother: course.scheduledOffering && 
+                               (course.scheduledOffering.year != year ||
+                               course.scheduledOffering.session != 'Fall'),
               nottaken: course.status == 'N'}"
             ng-show="course.status == 'N' || course.status == 'S'"
             ng-click="schedule(course, year, 'Fall')">
-          <div>
-            <div class="course-number">
-              CMP SCI <span class="bold">{{ course.number }}</span>
-            </div>
-            <div class="course-title">
-              {{course.name | shortenIntro}}
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
+      <div>
+        <div class="course-number">
+          CMP SCI <span class="bold">{{ course.number }}</span>
+        </div>
+        <div class="course-title">
+          {{course.name | shortenIntro}}
+        </div>
+      </div>
+    </li>
+  </ul>
+  <h5 class="term">Summer</h5>
+  <ul class="classlist three_up tiles twelve columns">
+    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Summer' } | orderBy:'number'"  
+        ng-class="{
+              scheduled: course.scheduledOffering &&
+                        course.scheduledOffering.year == year && 
+                        course.scheduledOffering.session == 'Summer',
+              scheduledother: course.scheduledOffering && 
+                               (course.scheduledOffering.year != year ||
+                               course.scheduledOffering.session != 'Summer'),
+              nottaken: course.status == 'N'}"
+            ng-show="course.status == 'N' || course.status == 'S'"
+            ng-click="schedule(course, year, 'Summer')">
+      <div>
+        <div class="course-number">
+          CMP SCI <span class="bold">{{ course.number }}</span>
+        </div>
+        <div class="course-title">
+          {{course.name | shortenIntro}}
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>

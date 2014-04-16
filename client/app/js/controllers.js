@@ -25,13 +25,13 @@
 	}])
 
     .filter('available', function() {
-      return function(courses, session) {
+      return function(courses, obj) {
         return courses.filter(function(course) {
           if(course.offerings) {
             return course.offerings.some(function(offering) {
-              return offering.session == session.term 
-                && offering.year == session.year
-                && offering.timeCodes.length > 0;
+              return offering.session == obj.session
+                && offering.year == obj.year
+                && (offering.timeCodes == undefined || offering.timeCodes.length > 0);
             });
           } else {
             return false;
@@ -53,21 +53,42 @@
       classSvc.courses().then(function(courses) {
         $scope.courses = courses;
       });
-      $scope.schedule = function(course, year, term) {
+      $scope.auto = function() {
+        classSvc.autoSchedule({
+          maxClassesPerSemester: 3,
+          minClassesPerSemester: 1,
+          canTakeDayClasses: false,
+          maxSemestersToComplete: 6,
+          numberOfHoursCompleted: 0,
+          numberOfHourseScheduled: 0,
+          numberOfHoursRemaining: 0,
+          numberOf6000HoursScheduled: 0,
+          numberOf5000HoursScheduled: 0,
+          numberOf4000HoursScheduled: 0,
+          courses: $scope.courses
+        }).then(
+          function(courses) {
+            $scope.courses = courses;
+            //TODO Save the newly scheduled courses somewhere.
+          });
+        return false;
+      };
+      $scope.schedule = function(course, year, session) {
         if(course.status == 'N') {
           course.status = 'S';
-          course.scheduled = {
+          course.scheduledOffering = {
             year: year,
-            term: term
+            session: session
           };
-        } else if(course.scheduled.year != year || course.scheduled.term != term) {
-          course.scheduled = {
+        } else if(course.scheduledOffering.year != year 
+                  || course.scheduledOffering.session != session) {
+          course.scheduledOffering = {
             year: year,
-            term: term
+            session: session
           };
         } else {
           course.status = 'N';
-          delete course.scheduled;
+          delete course.scheduledOffering;
         }
         $scope.$emit('course_changed', $scope.courses);
       };

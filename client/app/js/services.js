@@ -65,11 +65,10 @@
               return resp.data;
             });
         },
-        descriptions: function() {
-          return $http.get(url('/descriptions'));
-        },
-        schedule: function() {
-          return $http.get(url('/schedule'));
+        autoSchedule: function(preferences) {
+          return $http.post(url('preferences/apply'), preferences).then(function(resp) {
+           return resp.data.courses;
+         });
         }
       };
     }]);

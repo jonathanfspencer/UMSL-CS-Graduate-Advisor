@@ -8,15 +8,15 @@
       'advisor.services'
 	])
     .constant('serviceUrl', 'http://' + location.hostname + ':8081/')
-	.config(['$routeProvider', function($routeProvider) {
-		$routeProvider.when('/', {
-			templateUrl: 'partials/main.html',
-			controller: 'MainCtrl'
-		})
-        .when('/schedule', {
-          templateUrl: 'partials/schedule.html',
-          controller: 'ScheduleCtrl'
-        })
-        .otherwise({ redirectTo: '/' });
+	.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+      $locationProvider.html5Mode(true);
+	  $routeProvider.when('/', {
+		templateUrl: 'partials/main.html',
+		controller: 'MainCtrl'
+	  })
+      .when('/schedule', {
+        templateUrl: 'partials/schedule.html',
+        controller: 'ScheduleCtrl'
+      });
 	}]);
 })();
