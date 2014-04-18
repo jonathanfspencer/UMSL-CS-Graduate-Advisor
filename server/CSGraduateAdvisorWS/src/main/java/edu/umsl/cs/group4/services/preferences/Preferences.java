@@ -92,8 +92,9 @@ public class Preferences {
 		int sessionHours = 0; //TODO use this in the conditionals below
 		for(Course course : sessionCourses.getCourses()){
 			if (course.getScheduledOffering() != null){
-				if(course.getScheduledOffering().getYear() == year && course.getScheduledOffering().getSession().equalsIgnoreCase(sessionName)){
-					sessionHours += Integer.valueOf(course.getCredits());
+				if(course.getScheduledOffering().getYear().equals(year) && course.getScheduledOffering().getSession().equalsIgnoreCase(sessionName)){
+					String courseCredits = course.getCredits().split("-")[0];	//A course might have a credits value of "1-3," so take the low value
+					sessionHours += Integer.valueOf(courseCredits);
 				}
 			}
 		}
