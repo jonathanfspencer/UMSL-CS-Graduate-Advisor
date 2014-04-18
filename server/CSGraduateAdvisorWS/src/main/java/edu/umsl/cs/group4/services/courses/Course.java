@@ -213,6 +213,9 @@ public class Course {
 	}
 
 	public List<Offering> getOfferings() {
+		if(this.offerings == null){
+			this.offerings = new ArrayList<Offering>();
+		}
 		return offerings;
 	}
 

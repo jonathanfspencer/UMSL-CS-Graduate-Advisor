@@ -21,19 +21,27 @@ public class Preferences {
 	private static final String FALL_SESSION_NAME = "Fall";
 	private static final String SUMMER_SESSION_NAME = "Summer";
 	private static final String SPRING_SESSION_NAME = "Spring";
-	private Integer maxClassesPerSemester;
-	private Integer minClassesPerSemester;
-	private Boolean canTakeDayClasses;
-	private Integer maxSemestersToComplete;
-	private Integer numberOfHoursCompleted;
-	private Integer numberOfHoursScheduled;
-	private Integer numberOfHoursRemaining;
-	private Integer numberOf6000HoursScheduled;
-	private Integer numberOf5000HoursScheduled;
-	private Integer numberOf4000HoursScheduled;
+	private int maxClassesPerSemester = 6;
+	private int minClassesPerSemester = 1;
+	private boolean canTakeDayClasses = true;
+	private int maxSemestersToComplete = 12;
+	private int numberOfHoursCompleted = 0;
+	private int numberOfHoursScheduled = 0;
+	private int numberOfHoursRemaining = 30;
+	private int numberOf6000HoursScheduled = 0;
+	private int numberOf5000HoursScheduled = 0;
+	private int numberOf4000HoursScheduled = 0;
 	private List<String> coreCoursesRemaining;
 	private List<Course> courses;
 	
+	
+	
+	public Preferences() {
+		super();
+		this.coreCoursesRemaining = new ArrayList<String>();
+		this.courses = new ArrayList<Course>();
+	}
+
 	@Path("/apply")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -59,15 +67,21 @@ public class Preferences {
 			
 			//For each Spring
 			CoursesBySession springSessionCourses = coursesByYear.getCoursesBySession().get(SPRING_SESSION_NAME);
-			sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME);
+			if(springSessionCourses != null) {
+				sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME);
+			}
 			
 			//For each Summer
 			CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
-			sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME);
+			if(summerSessionCourses != null) {
+				sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME);
+			}
 			
 			//For each Fall
 			CoursesBySession fallSessionCourses = coursesByYear.getCoursesBySession().get(FALL_SESSION_NAME);
-			sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME);
+			if(fallSessionCourses != null) {
+				sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME);
+			}
 			
 		}
 		return preferences;

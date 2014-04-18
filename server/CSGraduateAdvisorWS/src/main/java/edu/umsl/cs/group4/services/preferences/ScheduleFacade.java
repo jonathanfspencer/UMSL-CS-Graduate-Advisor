@@ -1,5 +1,6 @@
 package edu.umsl.cs.group4.services.preferences;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,9 @@ public class ScheduleFacade {
 		
 
 		public Map<String,CoursesBySession> getCoursesBySession() {
+			if(this.coursesBySession == null){
+				this.coursesBySession = new HashMap<String,CoursesBySession>();
+			}
 			return coursesBySession;
 		}
 
@@ -36,6 +40,9 @@ public class ScheduleFacade {
 		private List<Course> courses;
 
 		public List<Course> getCourses() {
+			if(this.courses == null){
+				this.courses = new ArrayList<Course>();
+			}
 			return courses;
 		}
 
@@ -70,6 +77,9 @@ public class ScheduleFacade {
 	}
 
 	public Map<String,CoursesByYear> getCoursesByYear() {
+		if(this.coursesByYear == null){
+			this.coursesByYear = new HashMap<String,CoursesByYear>();
+		}
 		return coursesByYear;
 	}
 
