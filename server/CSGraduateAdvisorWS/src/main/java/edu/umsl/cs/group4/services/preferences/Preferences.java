@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import edu.umsl.cs.group4.services.courses.Course;
 import edu.umsl.cs.group4.services.preferences.ScheduleFacade.CoursesBySession;
 import edu.umsl.cs.group4.services.preferences.ScheduleFacade.CoursesByYear;
+import edu.umsl.cs.group4.services.requirements.Requirements;
 
 @Path("preferences")
 public class Preferences {
@@ -33,6 +34,7 @@ public class Preferences {
 	private int numberOf4000HoursScheduled = 0;
 	private List<String> coreCoursesRemaining;
 	private List<Course> courses;
+	private boolean complete = false;
 	
 	
 	
@@ -84,6 +86,12 @@ public class Preferences {
 			}
 			
 		}
+		
+		//check to see if requirements have been met
+		Requirements requirements = new Requirements();
+		if(preferences.getCoreCoursesRemaining().size() == 0 && preferences.getNumberOf6000HoursScheduled() > Integer.valueOf(requirements.getMin6000Hours()) && (preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= (Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()))) {
+			preferences.setComplete(true);
+		}
 		return preferences;
 	}
 
@@ -99,22 +107,22 @@ public class Preferences {
 			}
 		}
 		//If room and needed, schedule core courses
-		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && !coreCoursesRemaining.isEmpty()) {
+		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && !preferences.getCoreCoursesRemaining().isEmpty()) {
 			//TODO try to schedule some core courses
 			//if successful, decrement numberOfHoursRemaining and increment corresponding hour counters for 4000 or 5000 level classes
 		}
 		//If room and needed, schedule a 6000 course
-		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && numberOf6000HoursScheduled < 3) {
+		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf6000HoursScheduled() < 3) {
 			//TODO try to schedule a 6000 level course
 			//if successful, decrement numberOfHoursRemaining and increment numberOf6000HoursScheduled 
 		}
 		//If room and needed, schedule 5000 courses
-		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && numberOf5000HoursScheduled < 15) {
+		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf5000HoursScheduled() < 15) {
 			//TODO try to schedule some 5000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf5000HoursScheduled
 		}
 		//If room and needed, schedule 4000 courses
-		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && numberOf4000HoursScheduled < 12) {
+		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf4000HoursScheduled() < 12) {
 			//TODO try to schedule some 4000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf4000HoursScheduled
 		}
@@ -214,5 +222,21 @@ public class Preferences {
 
 	public void setCoreCoursesRemaining(List<String> coreCoursesRemaining) {
 		this.coreCoursesRemaining = coreCoursesRemaining;
+	}
+
+	/**
+	 * Answers the question of whether a complete schedule has been generated
+	 * @return <b>true</b> if a complete schedule was generated, <b>false</b> if not
+	 */
+	public boolean isComplete() {
+		return complete;
+	}
+
+	/**
+	 * State whether the generated schedule is complete according to the requirements
+	 * @param complete = <b>true</b> if the schedule is complete, <b>false</b> otherwise
+	 */
+	public void setComplete(boolean complete) {
+		this.complete = complete;
 	}
 }
