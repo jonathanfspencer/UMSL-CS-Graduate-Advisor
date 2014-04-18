@@ -21,8 +21,8 @@ public class Preferences {
 	private static final String FALL_SESSION_NAME = "Fall";
 	private static final String SUMMER_SESSION_NAME = "Summer";
 	private static final String SPRING_SESSION_NAME = "Spring";
-	private int maxClassesPerSemester = 6;
-	private int minClassesPerSemester = 1;
+	private int maxClassesPerSemester = 18;  //TODO change Classes to Hours
+	private int minClassesPerSemester = 1;   //TODO change Classes to Hours
 	private boolean canTakeDayClasses = true;
 	private int maxSemestersToComplete = 12;
 	private int numberOfHoursCompleted = 0;
@@ -68,26 +68,26 @@ public class Preferences {
 			//For each Spring
 			CoursesBySession springSessionCourses = coursesByYear.getCoursesBySession().get(SPRING_SESSION_NAME);
 			if(springSessionCourses != null) {
-				sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME);
+				sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME, preferences);
 			}
 			
 			//For each Summer
 			CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
 			if(summerSessionCourses != null) {
-				sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME);
+				sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME, preferences);
 			}
 			
 			//For each Fall
 			CoursesBySession fallSessionCourses = coursesByYear.getCoursesBySession().get(FALL_SESSION_NAME);
 			if(fallSessionCourses != null) {
-				sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME);
+				sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME, preferences);
 			}
 			
 		}
 		return preferences;
 	}
 
-	private void sessionScheduler(String year, CoursesBySession sessionCourses, String sessionName) {
+	private void sessionScheduler(String year, CoursesBySession sessionCourses, String sessionName, Preferences preferences) {
 		//Determine how many units are scheduled this semester
 		int sessionHours = 0; //TODO use this in the conditionals below
 		for(Course course : sessionCourses.getCourses()){
@@ -99,22 +99,22 @@ public class Preferences {
 			}
 		}
 		//If room and needed, schedule core courses
-		if(numberOfHoursRemaining > 0 && !coreCoursesRemaining.isEmpty()) {
+		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && !coreCoursesRemaining.isEmpty()) {
 			//TODO try to schedule some core courses
 			//if successful, decrement numberOfHoursRemaining and increment corresponding hour counters for 4000 or 5000 level classes
 		}
 		//If room and needed, schedule a 6000 course
-		if(numberOfHoursRemaining > 0 && numberOf6000HoursScheduled < 3) {
+		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && numberOf6000HoursScheduled < 3) {
 			//TODO try to schedule a 6000 level course
 			//if successful, decrement numberOfHoursRemaining and increment numberOf6000HoursScheduled 
 		}
 		//If room and needed, schedule 5000 courses
-		if(numberOfHoursRemaining > 0 && numberOf5000HoursScheduled < 15) {
+		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && numberOf5000HoursScheduled < 15) {
 			//TODO try to schedule some 5000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf5000HoursScheduled
 		}
 		//If room and needed, schedule 4000 courses
-		if(numberOfHoursRemaining > 0 && numberOf4000HoursScheduled < 12) {
+		if(numberOfHoursRemaining > 0 && sessionHours < preferences.getMaxClassesPerSemester() && numberOf4000HoursScheduled < 12) {
 			//TODO try to schedule some 4000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf4000HoursScheduled
 		}
