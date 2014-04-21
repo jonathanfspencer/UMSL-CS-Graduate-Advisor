@@ -54,6 +54,8 @@ public class Preferences {
 		//Else,
 		//TODO the big nasty algorithm
 		
+		Requirements requirements = new Requirements();
+		
 		//create a ScheduleFacade to represent the schedule
 		ScheduleFacade schedule = new ScheduleFacade(preferences.getCourses());
 		//Get an ordered list of the years
@@ -70,32 +72,31 @@ public class Preferences {
 			//For each Spring
 			CoursesBySession springSessionCourses = coursesByYear.getCoursesBySession().get(SPRING_SESSION_NAME);
 			if(springSessionCourses != null) {
-				sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME, preferences);
+				sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME, preferences, requirements);
 			}
 			
 			//For each Summer
 			CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
 			if(summerSessionCourses != null) {
-				sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME, preferences);
+				sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME, preferences, requirements);
 			}
 			
 			//For each Fall
 			CoursesBySession fallSessionCourses = coursesByYear.getCoursesBySession().get(FALL_SESSION_NAME);
 			if(fallSessionCourses != null) {
-				sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME, preferences);
+				sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME, preferences, requirements);
 			}
 			
 		}
 		
 		//check to see if requirements have been met
-		Requirements requirements = new Requirements();
 		if(preferences.getCoreCoursesRemaining().size() == 0 && preferences.getNumberOf6000HoursScheduled() > Integer.valueOf(requirements.getMin6000Hours()) && (preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= (Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()))) {
 			preferences.setComplete(true);
 		}
 		return preferences;
 	}
 
-	private void sessionScheduler(String year, CoursesBySession sessionCourses, String sessionName, Preferences preferences) {
+	private void sessionScheduler(String year, CoursesBySession sessionCourses, String sessionName, Preferences preferences, Requirements requirements) {
 		//Determine how many units are scheduled this semester
 		int sessionHours = 0; //TODO use this in the conditionals below
 		for(Course course : sessionCourses.getCourses()){
@@ -110,21 +111,140 @@ public class Preferences {
 		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && !preferences.getCoreCoursesRemaining().isEmpty()) {
 			//TODO try to schedule some core courses
 			//if successful, decrement numberOfHoursRemaining and increment corresponding hour counters for 4000 or 5000 level classes
+			for(Course course : sessionCourses.getCourses()) {
+				
+				if(	course.getStatus().equals("N") &&
+					preferences.getCoreCoursesRemaining().contains(course.getNumber()) && 
+					preferences.getNumberOfHoursRemaining() > 0 && 
+					sessionHours < preferences.getMaxClassesPerSemester()) {
+					
+					course.setStatus("S");
+					preferences.getCoreCoursesRemaining().remove(course.getNumber());
+					
+					// Set the scheduled offering of this course to this session and year
+					Course.Offering scheduledOffering = new Course.Offering();
+					scheduledOffering.setSession(sessionName);
+					scheduledOffering.setYear(year);					
+					course.setScheduledOffering(scheduledOffering);
+					
+					// Modify credit counters
+					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
+					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
+					sessionHours += courseCredits;
+					
+					// Increment Course level counters
+					Integer courseNum = Integer.parseInt(course.getNumber());
+					if(courseNum >= 4000 && courseNum < 5000) {
+						preferences.setNumberOf4000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + 1);
+					} else if(courseNum >= 5000 && courseNum< 6000) {
+						preferences.setNumberOf5000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + 1);
+					} else if(courseNum >= 6000) {
+						preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf6000HoursScheduled() + 1);
+					}
+					
+				}
+				
+			}
 		}
 		//If room and needed, schedule a 6000 course
 		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf6000HoursScheduled() < 3) {
 			//TODO try to schedule a 6000 level course
-			//if successful, decrement numberOfHoursRemaining and increment numberOf6000HoursScheduled 
+			//if successful, decrement numberOfHoursRemaining and increment numberOf6000HoursScheduled
+			
+			int required6000Hours = Integer.parseInt(requirements.getMin6000Hours());
+			
+			for(Course course : sessionCourses.getCourses()) {
+				
+				if(	course.getStatus().equals("N") &&
+					course.getNumber().startsWith("6")  && 
+					preferences.getNumberOf6000HoursScheduled() < required6000Hours &&
+					preferences.getNumberOfHoursRemaining() > 0 && 
+					sessionHours < preferences.getMaxClassesPerSemester()) {
+					
+					course.setStatus("S");
+					
+					// Set the scheduled offering of this course to this session and year
+					Course.Offering scheduledOffering = new Course.Offering();
+					scheduledOffering.setSession(sessionName);
+					scheduledOffering.setYear(year);					
+					course.setScheduledOffering(scheduledOffering);
+					
+					// Modify credit counters
+					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
+					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
+					sessionHours += courseCredits;
+					
+					// Increment Course level counters
+					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf6000HoursScheduled() + 1);
+				}
+			}
 		}
 		//If room and needed, schedule 5000 courses
 		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf5000HoursScheduled() < 15) {
 			//TODO try to schedule some 5000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf5000HoursScheduled
+			
+			for(Course course : sessionCourses.getCourses()) {
+				
+				if(	course.getStatus().equals("N") &&
+					course.getNumber().startsWith("5")  && 
+					preferences.getNumberOfHoursRemaining() > 0 && 
+					sessionHours < preferences.getMaxClassesPerSemester()) {
+					
+					course.setStatus("S");
+					
+					// Set the scheduled offering of this course to this session and year
+					Course.Offering scheduledOffering = new Course.Offering();
+					scheduledOffering.setSession(sessionName);
+					scheduledOffering.setYear(year);					
+					course.setScheduledOffering(scheduledOffering);
+					
+					// Modify credit counters
+					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
+					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
+					sessionHours += courseCredits;
+					
+					// Increment Course level counters
+					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + 1);
+				}
+			}
+			
 		}
 		//If room and needed, schedule 4000 courses
 		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf4000HoursScheduled() < 12) {
 			//TODO try to schedule some 4000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf4000HoursScheduled
+			
+			for(Course course : sessionCourses.getCourses()) {
+				
+				if(	course.getStatus().equals("N") &&
+					course.getNumber().startsWith("4")  && 
+					preferences.getNumberOfHoursRemaining() > 0 && 
+					sessionHours < preferences.getMaxClassesPerSemester() && 
+					preferences.getNumberOf4000HoursScheduled() < 12) {
+					
+					course.setStatus("S");
+					
+					// Set the scheduled offering of this course to this session and year
+					Course.Offering scheduledOffering = new Course.Offering();
+					scheduledOffering.setSession(sessionName);
+					scheduledOffering.setYear(year);					
+					course.setScheduledOffering(scheduledOffering);
+					
+					// Modify credit counters
+					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
+					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
+					sessionHours += courseCredits;
+					
+					// Increment Course level counters
+					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + 1);
+				}
+			}
+			
 		}
 	}
 

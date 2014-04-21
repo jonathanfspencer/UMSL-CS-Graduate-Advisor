@@ -54,24 +54,28 @@
         $scope.courses = courses;
       });
       $scope.auto = function(prefs) {
-        classSvc.autoSchedule({
-          maxClassesPerSemester: prefs.maxClasses,
-          minClassesPerSemester: prefs.minClasses,
-          canTakeDayClasses: false,
-          maxSemestersToComplete: prefs.maxSemesters,
-          numberOfHoursCompleted: 0,
-          numberOfHourseScheduled: 0,
-          numberOfHoursRemaining: 0,
-          numberOf6000HoursScheduled: 0,
-          numberOf5000HoursScheduled: 0,
-          numberOf4000HoursScheduled: 0,
-          courses: $scope.courses
-        }).then(
-          function(courses) {
-            $scope.courses = courses;
-            $scope.startAuto = false;
-            //TODO Save the newly scheduled courses somewhere.
-          });
+        classSvc.requirements().then(
+          function(reqs) {
+            return classSvc.autoSchedule({
+              maxClassesPerSemester: prefs.maxClasses,
+              minClassesPerSemester: prefs.minClasses,
+              canTakeDayClasses: false,
+              maxSemestersToComplete: prefs.maxSemesters,
+              numberOfHoursCompleted: 0,
+              numberOfHourseScheduled: 0,
+              numberOfHoursRemaining: 30,
+              numberOf6000HoursScheduled: 0,
+              numberOf5000HoursScheduled: 0,
+              numberOf4000HoursScheduled: 0,
+              courses: $scope.courses,
+              coreCoursesRemaining: reqs.coreCourses
+            });
+          }).then(
+            function(courses) {
+              $scope.courses = courses;
+              $scope.startAuto = false;
+              //TODO Save the newly scheduled courses somewhere.
+            });
         return false;
       };
       $scope.schedule = function(course, year, session) {

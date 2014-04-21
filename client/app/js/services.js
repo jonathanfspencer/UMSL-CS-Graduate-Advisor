@@ -66,8 +66,9 @@
             });
         },
         autoSchedule: function(preferences) {
+          var that = this;
           return $http.post(url('preferences/apply'), preferences).then(function(resp) {
-           return resp.data.courses;
+           return that.save(resp.data.courses);
          });
         }
       };

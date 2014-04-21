@@ -60,18 +60,23 @@ public class ScheduleFacade {
 		this.coursesByYear = new HashMap<String,CoursesByYear>();
 		for(Course course: courses){
 			for(Offering offering : course.getOfferings()){
-				//see if we need to add a year
-				if(!this.coursesByYear.containsKey(offering.getYear())){
-					//add the new year
-					this.coursesByYear.put(offering.getYear(), new CoursesByYear());
-				} 
-				//see if we need to add a session
-				if((!this.coursesByYear.get(offering.getYear()).getCoursesBySession().containsKey(offering.getSession()))){
-					//add the new session
-					this.coursesByYear.get(offering.getYear()).getCoursesBySession().put(offering.getSession(), new CoursesBySession());
+				
+				// An offering is only available if there is a time code listed or if the 
+				// timecode field is missing. I think.
+				if(offering.getTimeCodes() == null || !offering.getTimeCodes().isEmpty()) {
+					//see if we need to add a year
+					if(!this.coursesByYear.containsKey(offering.getYear())){
+						//add the new year
+						this.coursesByYear.put(offering.getYear(), new CoursesByYear());
+					} 
+					//see if we need to add a session
+					if((!this.coursesByYear.get(offering.getYear()).getCoursesBySession().containsKey(offering.getSession()))){
+						//add the new session
+						this.coursesByYear.get(offering.getYear()).getCoursesBySession().put(offering.getSession(), new CoursesBySession());
+					}
+					//add the course to the session
+					this.coursesByYear.get(offering.getYear()).getCoursesBySession().get(offering.getSession()).getCourses().add(course);
 				}
-				//add the course to the session
-				this.coursesByYear.get(offering.getYear()).getCoursesBySession().get(offering.getSession()).getCourses().add(course);
 			}
 		}
 	}
