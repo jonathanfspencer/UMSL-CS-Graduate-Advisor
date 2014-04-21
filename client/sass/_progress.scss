@@ -31,20 +31,20 @@
     }
 }
 
-.core-status {
+.progress-bar .core-progress {
     width: 100%;
     left: 0;
     right: 0;
     position: relative;
-    height: 1em;
+    height: 1.5em;
 
     div {
         height: 100%;
         float: left;
-        font-size: 70%;
-        text-align: center;
+        font-size: 100%;
         line-height: 1.5em;
-        border-right: 1px solid #333;
-        color: $lightfont;
+        text-align: center;
+        border-right: 1px solid darken($nottaken-bg, 10);;
+        color: $darkfont;
     }
 }

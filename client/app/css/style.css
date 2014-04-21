@@ -36,44 +36,49 @@
 }
 
 /* line 34, ../../sass/_progress.scss */
-.core-status {
+.progress-bar .core-progress {
   width: 100%;
   left: 0;
   right: 0;
   position: relative;
-  height: 1em;
+  height: 1.5em;
 }
 /* line 41, ../../sass/_progress.scss */
-.core-status div {
+.progress-bar .core-progress div {
   height: 100%;
   float: left;
-  font-size: 70%;
-  text-align: center;
+  font-size: 100%;
   line-height: 1.5em;
-  border-right: 1px solid #333;
-  color: white;
+  text-align: center;
+  border-right: 1px solid #d0d0d0;
+  color: #333333;
 }
 
 /* line 14, ../../sass/style.scss */
+.navbar {
+  margin-bottom: 30px;
+}
+
+/* line 18, ../../sass/style.scss */
 .bold {
   font-weight: bold;
 }
 
-/* line 18, ../../sass/style.scss */
+/* line 22, ../../sass/style.scss */
 .tiles.six_up {
   margin-left: -1.5%;
 }
-/* line 20, ../../sass/style.scss */
+/* line 24, ../../sass/style.scss */
 .tiles.six_up > li, .tiles.six_up > .tile {
   margin-left: 1.5%;
   width: 15.1%;
 }
 
-/* line 28, ../../sass/style.scss */
+/* line 32, ../../sass/style.scss */
 .classchooser h5 {
   margin-bottom: 1.25%;
 }
-/* line 32, ../../sass/style.scss */
+/* line 36, ../../sass/style.scss */
 .classchooser li {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -83,63 +88,63 @@
   user-select: none;
 }
 
-/* line 43, ../../sass/style.scss */
+/* line 47, ../../sass/style.scss */
 .classlist li {
   display: block;
   padding: 0.5em;
   margin-bottom: 1.25%;
 }
-/* line 48, ../../sass/style.scss */
+/* line 52, ../../sass/style.scss */
 .classlist li:hover {
   background-color: #f9f9f9;
   cursor: pointer;
 }
-/* line 53, ../../sass/style.scss */
+/* line 57, ../../sass/style.scss */
 .classlist .course-title {
   font-size: 75%;
 }
 
-/* line 59, ../../sass/style.scss */
+/* line 63, ../../sass/style.scss */
 .schedule .term {
   font-weight: bold;
 }
 
-/* line 65, ../../sass/style.scss */
+/* line 69, ../../sass/style.scss */
 li.nottaken {
   background-color: #e9e9e9;
   border: 1px solid #c8c8c8;
   color: #333333;
 }
 
-/* line 70, ../../sass/style.scss */
+/* line 74, ../../sass/style.scss */
 li.completed {
   background-color: #981e32 !important;
   border: 1px solid #611320;
   color: white;
 }
 
-/* line 75, ../../sass/style.scss */
+/* line 79, ../../sass/style.scss */
 li.waived {
   background-color: #eaab00 !important;
   border: 1px solid #b78600;
   color: #333333;
 }
 
-/* line 80, ../../sass/style.scss */
+/* line 84, ../../sass/style.scss */
 li.scheduled {
   background-color: #0e83cd !important;
   border: 1px solid #0b649d;
   color: white;
 }
 
-/* line 85, ../../sass/style.scss */
+/* line 89, ../../sass/style.scss */
 li.scheduledother {
   background-color: white !important;
   border: 1px solid #e9e9e9;
   color: #999999;
 }
 
-/* line 91, ../../sass/style.scss */
+/* line 95, ../../sass/style.scss */
 .sticky {
   position: fixed;
   top: 0;
