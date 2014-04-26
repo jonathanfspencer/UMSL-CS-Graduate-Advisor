@@ -37,6 +37,38 @@
 			templateUrl: 'partials/classlist.html'
 		};
 	}])
+  .directive('advNotify', ['classService', 'completion', function(classSvc, completionSvc) {
+    return {
+      restrict: 'E',
+      templateUrl: 'partials/notify.html',
+      replace: true,
+      link: function(scope, element, attrs) {
+        classSvc.onChange(function(courses) {
+
+          classSvc.requirements().then(function(reqs) {
+            var completion = completionSvc(courses, reqs);
+            return { completion: completion, reqs: reqs };
+          }).then(function(result) {
+            var completion = result.completion;
+            var reqs = result.reqs;
+            return classSvc.validate({
+              numberOfHoursCompleted: completion.completed,
+              numberOfHoursScheduled: completion.scheduled,
+              numberOfHoursRemaining: reqs.minTotalHours - (completion.completed + completion.scheduled),
+              numberOf6000HoursScheduled: completion.credits6000Level || 0,
+              numberOf5000HoursScheduled: completion.credits5000Level || 0,
+              numberOf4000HoursScheduled: completion.credits4000Level || 0,
+              courses: courses
+
+            });
+          }).then(function(result) {
+            scope.notifications = result.notifications;
+            element.addClass('active');
+          });
+        });
+      }
+    };
+  }])
   .directive('advProgress', ['classService', '$q', 'completion', function(classSvc, $q, completionSvc) {
     
     return {
@@ -54,6 +86,7 @@
           scope.scheduledPct = Math.min(100 - scope.completedPct, (completion.scheduled / scope.required.minTotalHours) * 100);
           scope.scheduled = completion.scheduled;
           scope.requiredPct = Math.max(0, 100 - scope.completedPct - scope.scheduledPct);
+          scope.coreRemaining = completion.coreRemaining;
         };
         var promises = { courses: classSvc.courses(), req: classSvc.requirements() };
         $q.all(promises).then(function(vals) {

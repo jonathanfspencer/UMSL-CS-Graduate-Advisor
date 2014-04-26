@@ -44,7 +44,16 @@
         font-size: 100%;
         line-height: 1.5em;
         text-align: center;
-        border-right: 1px solid darken($nottaken-bg, 10);;
+        border-right: 1px solid darken($nottaken-bg, 10);
         color: $darkfont;
+        
+        &.completed {
+          text-decoration: line-through;
+        }
     }
+
+    .label {
+      border-right: 1px solid darken($nottaken-bg, 50);
+    }
+
 }

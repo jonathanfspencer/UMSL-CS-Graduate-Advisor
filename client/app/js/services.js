@@ -50,7 +50,9 @@
                 }
                 break;
               case 'N':
-                // Not really useful
+                if(required.coreCourses.indexOf(currVal.number) >= 0) {
+                  counters.coreRemaining.push(currVal.number);
+                }
                 break;
               case 'S':
                 if(parseInt(currVal.number) < 5000) {
@@ -70,7 +72,13 @@
 
               return counters;
             },
-            { completed: 0, scheduled: 0, credits4000Level: 0, credits5000Level: 0, credits6000Level: 0});
+            { completed: 0, 
+              scheduled: 0, 
+              credits4000Level: 0, 
+              credits5000Level: 0, 
+              credits6000Level: 0, 
+              coreRemaining: []
+            });
         }
     }])
     .factory('classService', ['$http', '$q', 'serviceUrl', 'storage', function($http, $q, serviceUrl, storage) {
@@ -118,6 +126,11 @@
             function(resp) {
               return resp.data;
             });
+        },
+        validate: function(prefs) {
+          return $http.post(url('preferences/validate'), prefs).then(function(resp) {
+            return resp.data;
+          });
         },
         autoSchedule: function(preferences) {
           var that = this;

@@ -10,9 +10,12 @@
       hours remaining ( 3 6xxx hours remaining )
     </div>
   <div class="core-progress">
+    <div style="width: 15%; font-weight: bold;"
+    class="progress-required label">Core Courses Remaining:</div>
     <div ng-repeat="core in required.coreCourses"
-         style="width: {{ 100. / required.coreCourses.length }}%"
-         class="progress-required">
+         style="width: {{ 85. / required.coreCourses.length }}%"
+         class="progress-required"
+         ng-class="{ completed: coreRemaining.indexOf(core) < 0 }">
       {{ core }} 
     </div>
   </div>

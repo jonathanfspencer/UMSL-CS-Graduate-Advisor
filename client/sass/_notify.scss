@@ -1,0 +1,13 @@
+.notifications {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+ 
+  &.drawer {
+    background-color: $nottaken-bg;
+    border-top: 1px solid darken($nottaken-bg, 10);
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+}
