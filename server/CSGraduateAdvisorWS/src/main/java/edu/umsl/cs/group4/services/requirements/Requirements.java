@@ -1,5 +1,8 @@
 package edu.umsl.cs.group4.services.requirements;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,7 +17,7 @@ public class Requirements {
 	private String minTotalHours = "30";
 	private String maxYears = "6";
 	private String maxExternalCredits = "6";
-	private String[] coreCourses = {"4760","4250","5700","5500","5130"};
+	private List<String> coreCourses = Arrays.asList("4760","4250","5700","5500","5130");
 	private String internationalRequiredSemesterHours = "3";
 
 	@GET
@@ -81,10 +84,10 @@ public class Requirements {
 	@GET
 	@Path("/coreCourses")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String[] getCoreCourses() {
+	public List<String> getCoreCourses() {
 		return coreCourses;
 	}
-	public void setCoreCourses(String[] coreCourses) {
+	public void setCoreCourses(List<String> coreCourses) {
 		this.coreCourses = coreCourses;
 	}
 

@@ -3,8 +3,10 @@ package edu.umsl.cs.group4.services.preferences;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -34,6 +36,7 @@ public class Preferences {
 	private int numberOf6000HoursScheduled = 0;
 	private int numberOf5000HoursScheduled = 0;
 	private int numberOf4000HoursScheduled = 0;
+	private boolean isInternationalStudent = false;
 	private List<Course> courses;
 	private boolean complete = false;
 	
@@ -106,14 +109,14 @@ public class Preferences {
 		
 		//check number of 6000 hours 
 		if(preferences.getNumberOf6000HoursScheduled() < Integer.valueOf(requirements.getMin6000Hours())) {
-			messages.add("You need to take " + (Integer.valueOf(requirements.getMin6000Hours()) - preferences.getNumberOf6000HoursScheduled()) + " more 6000 level credits to graduate.");
+			messages.add("You must take " + (Integer.valueOf(requirements.getMin6000Hours()) - preferences.getNumberOf6000HoursScheduled()) + " more 6000 level credits to graduate.");
 		}
 		
 		//check total number of 5000 and 6000 hours
 		int numberOf5000PlusHoursScheduled = preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled();
 		int numberOf5000PlusHoursRequired = Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours());
 		if(numberOf5000PlusHoursScheduled < numberOf5000PlusHoursRequired) {
-			messages.add("You need to take " + (numberOf5000PlusHoursRequired - numberOf5000PlusHoursScheduled) +" more 5000 or higher level credits to graduate.");
+			messages.add("You must take " + (numberOf5000PlusHoursRequired - numberOf5000PlusHoursScheduled) +" more 5000 or higher level credits to graduate.");
 		}
 		
 		//check total number of hours
@@ -122,10 +125,25 @@ public class Preferences {
 				Integer.valueOf(preferences.getNumberOf6000HoursScheduled());
 		int totalHoursRequired = Integer.valueOf(requirements.getMinTotalHours());
 		if(totalHoursScheduled < totalHoursRequired) {
-			messages.add("You need to take "+ (totalHoursRequired - totalHoursScheduled) + " more credits to graduate.");
+			messages.add("You must take "+ (totalHoursRequired - totalHoursScheduled) + " more credits to graduate.");
 		}
 		
 		//check that all core courses have been taken
+		Map<String,String> coreCoursesRemaining = new HashMap<String,String>();
+		for(String courseNumber : requirements.getCoreCourses()) {
+			coreCoursesRemaining.put(courseNumber, courseNumber);
+		}
+		for(Course course : preferences.getCourses()) {
+			if(course.getScheduledOffering() != null) {
+				//remove this course from the remaining core courses if it is a core
+				coreCoursesRemaining.remove(course.getNumber());
+			}
+		}
+		if(!coreCoursesRemaining.isEmpty()) {
+			for(String coreNumber : coreCoursesRemaining.values()){
+				messages.add("You must take " + coreNumber + " to graduate.");
+			}
+		}
 		
 		//check if international student has taken enough per semester
 		
@@ -394,5 +412,13 @@ public class Preferences {
 	 */
 	public void setComplete(boolean complete) {
 		this.complete = complete;
+	}
+
+	public boolean isInternationalStudent() {
+		return isInternationalStudent;
+	}
+
+	public void setInternationalStudent(boolean isInternationalStudent) {
+		this.isInternationalStudent = isInternationalStudent;
 	}
 }
