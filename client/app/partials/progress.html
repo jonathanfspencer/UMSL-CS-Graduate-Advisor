@@ -9,7 +9,7 @@
       {{ required.minTotalHours - completed - scheduled }} required
       hours remaining ( 3 6xxx hours remaining )
     </div>
-  <div class="core-progress">
+  <div class="core-progress" ng-show="required">
     <div style="width: 15%; font-weight: bold;"
     class="progress-required label">Core Courses Remaining:</div>
     <div ng-repeat="core in required.coreCourses"
