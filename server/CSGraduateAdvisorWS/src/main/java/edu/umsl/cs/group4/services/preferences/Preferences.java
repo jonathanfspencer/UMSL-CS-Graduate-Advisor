@@ -180,7 +180,7 @@ public class Preferences {
 			}
 		}
 		//If room and needed, schedule 5000 courses
-		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf5000HoursScheduled() < 15) {
+		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && (preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= (Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()))) {
 			//TODO try to schedule some 5000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf5000HoursScheduled
 			
