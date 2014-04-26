@@ -38,7 +38,6 @@ public class Preferences {
 	private int numberOf4000HoursScheduled = 0;
 	private boolean isInternationalStudent = false;
 	private List<Course> courses;
-	private boolean complete = false;
 	
 	
 	
@@ -53,50 +52,47 @@ public class Preferences {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Preferences applyPreferences(Preferences preferences){
 		
-		//If requirements have been met, exit
-		//Else,
-		//TODO the big nasty algorithm
+		//If requirements have not been met, run the auto-scheduler algorithm
+		if(!validatePreferences(preferences).isEmpty()) {
 		
-		Requirements requirements = new Requirements();
-		
-		//create a ScheduleFacade to represent the schedule
-		ScheduleFacade schedule = new ScheduleFacade(preferences.getCourses());
-		//Get an ordered list of the years
-		List<String> years = new ArrayList<String>();
-		Iterator<String> yearIterator = schedule.getCoursesByYear().keySet().iterator();
-		while(yearIterator.hasNext()){
-			years.add(yearIterator.next());
-		}
-		Collections.sort(years);
-		//For each year
-		for(String year : years){
-			CoursesByYear coursesByYear = schedule.getCoursesByYear().get(year);
+			Requirements requirements = new Requirements();
 			
-			//For each Spring
-			CoursesBySession springSessionCourses = coursesByYear.getCoursesBySession().get(SPRING_SESSION_NAME);
-			if(springSessionCourses != null) {
-				sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME, preferences, requirements);
+			//create a ScheduleFacade to represent the schedule
+			ScheduleFacade schedule = new ScheduleFacade(preferences.getCourses());
+			//Get an ordered list of the years
+			List<String> years = new ArrayList<String>();
+			Iterator<String> yearIterator = schedule.getCoursesByYear().keySet().iterator();
+			while(yearIterator.hasNext()){
+				years.add(yearIterator.next());
+			}
+			Collections.sort(years);
+			//For each year
+			for(String year : years){
+				CoursesByYear coursesByYear = schedule.getCoursesByYear().get(year);
+				
+				//For each Spring
+				CoursesBySession springSessionCourses = coursesByYear.getCoursesBySession().get(SPRING_SESSION_NAME);
+				if(springSessionCourses != null) {
+					sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME, preferences, requirements);
+				}
+				
+				//For each Summer
+				CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
+				if(summerSessionCourses != null) {
+					sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME, preferences, requirements);
+				}
+				
+				//For each Fall
+				CoursesBySession fallSessionCourses = coursesByYear.getCoursesBySession().get(FALL_SESSION_NAME);
+				if(fallSessionCourses != null) {
+					sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME, preferences, requirements);
+				}
+				
 			}
 			
-			//For each Summer
-			CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
-			if(summerSessionCourses != null) {
-				sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME, preferences, requirements);
-			}
-			
-			//For each Fall
-			CoursesBySession fallSessionCourses = coursesByYear.getCoursesBySession().get(FALL_SESSION_NAME);
-			if(fallSessionCourses != null) {
-				sessionScheduler(year, fallSessionCourses, FALL_SESSION_NAME, preferences, requirements);
-			}
-			
 		}
-		
-		//check to see if requirements have been met
-		if(preferences.getNumberOf6000HoursScheduled() > Integer.valueOf(requirements.getMin6000Hours()) && (preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= (Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()))) {
-			preferences.setComplete(true);
-		}
-		return preferences;
+
+		return preferences; 
 	}
 
 	@Path("/validate")
@@ -145,9 +141,12 @@ public class Preferences {
 			}
 		}
 		
-		//check if international student has taken enough per semester
+		//TODO check if international student has taken enough per semester
+		if(preferences.isInternationalStudent()) {
+			messages.add("International students must take at least " + requirements.getInternationalRequiredSemesterHours() + " hours per semester.");
+		}
 		
-		//warn if a lot of classes are scheduled in a semester
+		//TODO warn if a lot of classes are scheduled in a semester
 		
 		return messages;
 	}
@@ -396,22 +395,6 @@ public class Preferences {
 
 	public void setNumberOf4000HoursScheduled(Integer numberOf4000HoursScheduled) {
 		this.numberOf4000HoursScheduled = numberOf4000HoursScheduled;
-	}
-
-	/**
-	 * Answers the question of whether a complete schedule has been generated
-	 * @return <b>true</b> if a complete schedule was generated, <b>false</b> if not
-	 */
-	public boolean isComplete() {
-		return complete;
-	}
-
-	/**
-	 * State whether the generated schedule is complete according to the requirements
-	 * @param complete = <b>true</b> if the schedule is complete, <b>false</b> otherwise
-	 */
-	public void setComplete(boolean complete) {
-		this.complete = complete;
 	}
 
 	public boolean isInternationalStudent() {
