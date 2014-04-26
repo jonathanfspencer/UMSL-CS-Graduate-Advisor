@@ -21,7 +21,7 @@
         function(courses) {
           $scope.courses = courses;
 	    });
-      
+
 	}])
 
     .filter('available', function() {

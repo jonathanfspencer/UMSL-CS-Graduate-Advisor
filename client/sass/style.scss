@@ -46,6 +46,7 @@ $lightfont: #FFF;
 
 .classlist {
     li {
+        position: relative;
 	    display: block;
 	    padding: 0.5em;
 	    margin-bottom: 1.25%;
@@ -63,6 +64,26 @@ $lightfont: #FFF;
 .schedule {
     .term {
         font-weight: bold;
+    }
+}
+
+li {
+
+   &.nottaken .info:hover {
+     color: $completed-bg;
+   }
+   &.waived .info:hover {
+     color: $lightfont;
+   }
+   &.completed .info:hover, &.scheduled .info:hover {
+     color: darken($lightfont, 30);
+   }
+
+   .info { 
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 1000;
     }
 }
 

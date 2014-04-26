@@ -7,6 +7,7 @@
 			nottaken: class.status == 'N'
 		}"
 	  ng-click="toggle(class)">
+
     <div>
       <div class="course-number">
         CMP SCI <span class="bold">{{ class.number}}</span>
@@ -15,6 +16,24 @@
         {{class.name | shortenIntro }}
       </div>
     </div>
+    <div class="info" ng-click="$parent.infoCourse = class; $event.stopPropagation();">
+      <i class="icon-info-circled"></i>
+    </div>
   </li>
 
 </ul>
+
+<adv-modal show="infoCourse">
+  <h4>CMP SCI <span class="bold">{{infoCourse.number}}</span></h4>
+  <hr/>
+  <p>{{infoCourse.description}}</p>
+  <h5>Course Offerings</h5>
+  <ul class="row">
+    <li class="label info" ng-show="infoCourse.offerings.length == 0">None
+      currently scheduled</li>
+    <li ng-repeat="o in infoCourse.offerings" class="label success"
+      style="margin-right: 1em;">
+      {{ o.session }} {{ o.year }}
+    </li>
+  </ul>
+</adv-modal>
