@@ -19,6 +19,7 @@ import edu.umsl.cs.group4.services.requirements.Requirements;
 @Path("preferences")
 public class Preferences {
 
+	private static final String DEFAULT_CREDIT_RANGE_HOURS = "3";
 	private static final String FALL_SESSION_NAME = "Fall";
 	private static final String SUMMER_SESSION_NAME = "Summer";
 	private static final String SPRING_SESSION_NAME = "Spring";
@@ -102,8 +103,7 @@ public class Preferences {
 		for(Course course : sessionCourses.getCourses()){
 			if (course.getScheduledOffering() != null){
 				if(course.getScheduledOffering().getYear().equals(year) && course.getScheduledOffering().getSession().equalsIgnoreCase(sessionName)){
-					String courseCredits = course.getCredits().split("-")[0];	//A course might have a credits value of "1-3," so take the low value
-					sessionHours += Integer.valueOf(courseCredits);
+					sessionHours += determineCourseHours(course.getCredits());
 				}
 			}
 		}
@@ -128,7 +128,7 @@ public class Preferences {
 					course.setScheduledOffering(scheduledOffering);
 					
 					// Modify credit counters
-					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					Integer courseCredits = determineCourseHours(course.getCredits());
 					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
 					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
 					sessionHours += courseCredits;
@@ -171,7 +171,7 @@ public class Preferences {
 					course.setScheduledOffering(scheduledOffering);
 					
 					// Modify credit counters
-					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					Integer courseCredits = determineCourseHours(course.getCredits());
 					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
 					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
 					sessionHours += courseCredits;
@@ -202,7 +202,7 @@ public class Preferences {
 					course.setScheduledOffering(scheduledOffering);
 					
 					// Modify credit counters
-					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					Integer courseCredits = determineCourseHours(course.getCredits());
 					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
 					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
 					sessionHours += courseCredits;
@@ -235,7 +235,7 @@ public class Preferences {
 					course.setScheduledOffering(scheduledOffering);
 					
 					// Modify credit counters
-					Integer courseCredits = Integer.valueOf(course.getCredits().split("-")[0]);
+					Integer courseCredits = determineCourseHours(course.getCredits());
 					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
 					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
 					sessionHours += courseCredits;
@@ -246,6 +246,13 @@ public class Preferences {
 			}
 			
 		}
+	}
+
+	private int determineCourseHours(String courseCredits) {
+		if(courseCredits.contains("-")) {
+			courseCredits = DEFAULT_CREDIT_RANGE_HOURS;	//A course might have a credits value of "1-3," so make it the default
+		}
+		return Integer.valueOf(courseCredits);
 	}
 
 	public Integer getMaxClassesPerSemester() {
