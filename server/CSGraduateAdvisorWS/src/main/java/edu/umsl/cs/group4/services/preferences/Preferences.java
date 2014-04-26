@@ -1,6 +1,7 @@
 package edu.umsl.cs.group4.services.preferences;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +34,6 @@ public class Preferences {
 	private int numberOf6000HoursScheduled = 0;
 	private int numberOf5000HoursScheduled = 0;
 	private int numberOf4000HoursScheduled = 0;
-	private List<String> coreCoursesRemaining;
 	private List<Course> courses;
 	private boolean complete = false;
 	
@@ -41,7 +41,6 @@ public class Preferences {
 	
 	public Preferences() {
 		super();
-		this.coreCoursesRemaining = new ArrayList<String>();
 		this.courses = new ArrayList<Course>();
 	}
 
@@ -91,7 +90,7 @@ public class Preferences {
 		}
 		
 		//check to see if requirements have been met
-		if(preferences.getCoreCoursesRemaining().size() == 0 && preferences.getNumberOf6000HoursScheduled() > Integer.valueOf(requirements.getMin6000Hours()) && (preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= (Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()))) {
+		if(preferences.getNumberOf6000HoursScheduled() > Integer.valueOf(requirements.getMin6000Hours()) && (preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= (Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()))) {
 			preferences.setComplete(true);
 		}
 		return preferences;
@@ -108,18 +107,17 @@ public class Preferences {
 			}
 		}
 		//If room and needed, schedule core courses
-		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && !preferences.getCoreCoursesRemaining().isEmpty()) {
+		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester()) {
 			//TODO try to schedule some core courses
 			//if successful, decrement numberOfHoursRemaining and increment corresponding hour counters for 4000 or 5000 level classes
 			for(Course course : sessionCourses.getCourses()) {
 				
 				if(	course.getStatus().equals("N") &&
-					preferences.getCoreCoursesRemaining().contains(course.getNumber()) && 
+					Arrays.asList(requirements.getCoreCourses()).contains(course.getNumber()) && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
 					sessionHours < preferences.getMaxClassesPerSemester()) {
 					
 					course.setStatus("S");
-					preferences.getCoreCoursesRemaining().remove(course.getNumber());
 					
 					// Set the scheduled offering of this course to this session and year
 					Course.Offering scheduledOffering = new Course.Offering();
@@ -341,14 +339,6 @@ public class Preferences {
 
 	public void setNumberOf4000HoursScheduled(Integer numberOf4000HoursScheduled) {
 		this.numberOf4000HoursScheduled = numberOf4000HoursScheduled;
-	}
-
-	public List<String> getCoreCoursesRemaining() {
-		return coreCoursesRemaining;
-	}
-
-	public void setCoreCoursesRemaining(List<String> coreCoursesRemaining) {
-		this.coreCoursesRemaining = coreCoursesRemaining;
 	}
 
 	/**
