@@ -29,7 +29,7 @@
               // TODO Default to the minimum number for now. Prompt user
               // for this later.
               if(currVal.credits.length > 1) {
-                credits = parseInt(currVal.credits[0]);
+                credits = 3
               } else {
                 credits = parseInt(currVal.credits);
               }
