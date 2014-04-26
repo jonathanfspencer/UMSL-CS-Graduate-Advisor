@@ -15,6 +15,7 @@ public class Requirements {
 	private String maxYears = "6";
 	private String maxExternalCredits = "6";
 	private String[] coreCourses = {"4760","4250","5700","5500","5130"};
+	private String internationalRequiredSemesterHours = "3";
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -85,6 +86,18 @@ public class Requirements {
 	}
 	public void setCoreCourses(String[] coreCourses) {
 		this.coreCourses = coreCourses;
+	}
+
+	@GET
+	@Path("/internationalRequiredSemesterHours")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getInternationalRequiredSemesterHours() {
+		return internationalRequiredSemesterHours;
+	}
+
+	public void setInternationalRequiredSemesterHours(
+			String internationalRequiredSemesterHours) {
+		this.internationalRequiredSemesterHours = internationalRequiredSemesterHours;
 	}
 	
 	

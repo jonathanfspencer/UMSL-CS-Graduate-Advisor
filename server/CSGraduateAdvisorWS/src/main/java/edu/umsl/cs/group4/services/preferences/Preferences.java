@@ -102,7 +102,21 @@ public class Preferences {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String validatePreferences(Preferences preferences){
 		StringBuilder messages = new StringBuilder();
-		messages.append("Validation not implemented\n");
+		Requirements requirements = new Requirements();
+		//check number of 6000 hours 
+		if(preferences.getNumberOf6000HoursScheduled() < Integer.valueOf(requirements.getMin6000Hours())) {
+			messages.append("Students must take at least " + requirements.getMin6000Hours() + " hours of 6000 level classes.\n");
+		}
+		//check total number of 5000 and 6000 hours
+		int numberOf5000PlusHoursScheduled = preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled();
+		int numberOf5000PlusHoursRequired = Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours());
+		if(numberOf5000PlusHoursScheduled < numberOf5000PlusHoursRequired) {
+			messages.append("You need " + (numberOf5000PlusHoursRequired - numberOf5000PlusHoursScheduled) +" more hours of 5000 or higher level courses");
+		}
+		//check total number of hours
+		//check that all core courses have been taken
+		//check if international student has taken enough per semester
+		//warn if a lot of classes are scheduled in a semester
 		return messages.toString();
 	}
 	
