@@ -41,8 +41,12 @@
                     counters.completed += credits;
                   }
                   counters.credits4000Level += credits;
+                } else if(parseInt(currVal.number) < 6000) {
+                  counters.completed += credits;
+                  counters.credits5000Level += credits;
                 } else {
-                    counters.completed += credits;
+                  counters.completed += credits;
+                  counters.credits6000Level += credits;
                 }
                 break;
               case 'N':
@@ -54,15 +58,19 @@
                     counters.scheduled  += credits;
                   }
                   counters.credits4000Level += credits;
+                } else if(parseInt(currVal.number) < 6000) {
+                  counters.scheduled  += credits;
+                  counters.credits5000Level += credits;
                 } else {
-                    counters.scheduled  += credits;
+                  counters.scheduled  += credits;
+                  counters.credits6000Level += credits;
                 }
                 break;
               }
 
               return counters;
             },
-            { completed: 0, scheduled: 0, credits4000Level: 0 });
+            { completed: 0, scheduled: 0, credits4000Level: 0, credits5000Level: 0, credits6000Level: 0});
         }
     }])
     .factory('classService', ['$http', '$q', 'serviceUrl', 'storage', function($http, $q, serviceUrl, storage) {
