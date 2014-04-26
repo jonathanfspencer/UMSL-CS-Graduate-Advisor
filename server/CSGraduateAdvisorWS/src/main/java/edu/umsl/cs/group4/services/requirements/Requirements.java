@@ -18,7 +18,7 @@ public class Requirements {
 	private String maxYears = "6";
 	private String maxExternalCredits = "6";
 	private List<String> coreCourses = Arrays.asList("4760","4250","5700","5500","5130");
-	private String internationalRequiredSemesterHours = "3";
+	private String internationalRequiredSemesterHours = "9";
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
