@@ -53,9 +53,18 @@ public class Preferences {
 	public Preferences applyPreferences(Preferences preferences){
 		
 		//If requirements have not been met, run the auto-scheduler algorithm
-		if(!validatePreferences(preferences).isEmpty()) {
+		if(!validatePreferences(preferences).getNotifications().isEmpty()) {
 		
+			//International students must take a minimum course load
 			Requirements requirements = new Requirements();
+			if(preferences.getMinClassesPerSemester() == null) {
+				preferences.setMinClassesPerSemester(0);
+			}
+			if(preferences.isInternationalStudent()) {
+				if(preferences.getMinClassesPerSemester() < Integer.valueOf(requirements.getInternationalRequiredSemesterHours())) {
+					preferences.setMinClassesPerSemester(Integer.valueOf(requirements.getInternationalRequiredSemesterHours()));
+				}
+			}
 			
 			//create a ScheduleFacade to represent the schedule
 			ScheduleFacade schedule = new ScheduleFacade(preferences.getCourses());
@@ -99,7 +108,7 @@ public class Preferences {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<String> validatePreferences(Preferences preferences){
+	public ValidationResult validatePreferences(Preferences preferences){
 		List<String> messages = new ArrayList<String>();
 		Requirements requirements = new Requirements();
 		
@@ -148,7 +157,8 @@ public class Preferences {
 		
 		//TODO warn if a lot of classes are scheduled in a semester
 		
-		return messages;
+		ValidationResult result = new ValidationResult(messages);
+		return result;
 	}
 	
 
@@ -163,7 +173,7 @@ public class Preferences {
 			}
 		}
 		//If room and needed, schedule core courses
-		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester()) {
+		if(scheduleMoreCoreCourses(preferences, sessionHours)) {
 			//TODO try to schedule some core courses
 			//if successful, decrement numberOfHoursRemaining and increment corresponding hour counters for 4000 or 5000 level classes
 			for(Course course : sessionCourses.getCourses()) {
@@ -198,11 +208,14 @@ public class Preferences {
 					}
 					
 				}
-				
+				//if we have scheduled enough courses for this session, do not schedule more
+				if(!scheduleMoreCoreCourses(preferences, sessionHours)) {
+					break;
+				}
 			}
 		}
 		//If room and needed, schedule a 6000 course
-		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf6000HoursScheduled() < 3) {
+		if(scheduleMore6000Courses(preferences, sessionHours)) {
 			//TODO try to schedule a 6000 level course
 			//if successful, decrement numberOfHoursRemaining and increment numberOf6000HoursScheduled
 			
@@ -233,10 +246,14 @@ public class Preferences {
 					// Increment Course level counters
 					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf6000HoursScheduled() + 1);
 				}
+				//if we have scheduled enough courses for this session, do not schedule any more
+				if(!scheduleMore6000Courses(preferences, sessionHours)) {
+					break;
+				}
 			}
 		}
 		//If room and needed, schedule 5000 courses
-		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && (preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= (Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()))) {
+		if(scheduleMore5000Courses(preferences, requirements, sessionHours)) {
 			//TODO try to schedule some 5000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf5000HoursScheduled
 			
@@ -262,13 +279,17 @@ public class Preferences {
 					sessionHours += courseCredits;
 					
 					// Increment Course level counters
-					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + 1);
+					preferences.setNumberOf5000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + 1);
+				}
+				//if we have scheduled enough courses for this session, do not schedule any more
+				if(!scheduleMore5000Courses(preferences, requirements, sessionHours)) {
+					break;
 				}
 			}
 			
 		}
 		//If room and needed, schedule 4000 courses
-		if(preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf4000HoursScheduled() < 12) {
+		if(scheduleMore4000Classes(preferences, requirements, sessionHours)) {
 			//TODO try to schedule some 4000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf4000HoursScheduled
 			
@@ -295,11 +316,40 @@ public class Preferences {
 					sessionHours += courseCredits;
 					
 					// Increment Course level counters
-					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + 1);
+					preferences.setNumberOf4000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + 1);
+				}
+				//if we have scheduled enough classes for this session, do not schedule any more
+				if(!scheduleMore4000Classes(preferences, requirements, sessionHours)) {
+					break;
 				}
 			}
-			
 		}
+	}
+
+	private boolean scheduleMore4000Classes(Preferences preferences,
+			Requirements requirements, int sessionHours) {
+		return preferences.getNumberOfHoursRemaining() > 0 && 
+				sessionHours < preferences.getMaxClassesPerSemester() && 
+				sessionHours < preferences.getMinClassesPerSemester() &&
+				preferences.getNumberOf4000HoursScheduled() < Integer.valueOf(requirements.getMax4000Hours());
+	}
+
+	private boolean scheduleMore5000Courses(Preferences preferences,
+			Requirements requirements, int sessionHours) {
+		return preferences.getNumberOfHoursRemaining() > 0 && 
+				sessionHours < preferences.getMaxClassesPerSemester() && 
+				sessionHours < preferences.getMinClassesPerSemester() && 
+				(preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= 
+					(Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()));
+	}
+
+	private boolean scheduleMore6000Courses(Preferences preferences,
+			int sessionHours) {
+		return preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && preferences.getNumberOf6000HoursScheduled() < 3 && sessionHours < preferences.getMinClassesPerSemester();
+	}
+
+	private boolean scheduleMoreCoreCourses(Preferences preferences, int sessionHours) {
+		return preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && sessionHours < preferences.getMinClassesPerSemester();
 	}
 
 	private int determineCourseHours(String courseCredits) {
@@ -403,5 +453,22 @@ public class Preferences {
 
 	public void setInternationalStudent(boolean isInternationalStudent) {
 		this.isInternationalStudent = isInternationalStudent;
+	}
+	
+	class ValidationResult {
+		private List<String> notifications = new ArrayList<String>();
+
+		public ValidationResult(List<String> notifications) {
+			this.notifications = notifications;
+		}
+
+		public List<String> getNotifications() {
+		return notifications;
+		}
+
+		public void setNotifications(List<String> notifications) {
+		this.notifications = notifications;
+		}
+
 	}
 }
