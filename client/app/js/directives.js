@@ -37,7 +37,7 @@
 			templateUrl: 'partials/classlist.html'
 		};
 	}])
-  .directive('advProgress', ['classService', '$q', function(classSvc, $q) {
+  .directive('advProgress', ['classService', '$q', 'completion', function(classSvc, $q, completionSvc) {
     
     return {
       restrict: 'E',
@@ -46,48 +46,8 @@
       link: function(scope, element, attrs) {
 
         var refresh = function(courses) {
-          var completion = courses.reduce(
-            function(counters, currVal, index, arr) {
-              var credits = 0;
-              
-              // Some classes have a variable number of credit hours
-              // TODO Default to the minimum number for now. Prompt user
-              // for this later.
-              if(currVal.credits.length > 1) {
-                credits = parseInt(currVal.credits[0]);
-              } else {
-                credits = parseInt(currVal.credits);
-              }
-
-              switch(currVal.status) {
-              case 'T':
-                if(parseInt(currVal.number) < 5000) {
-                  if(counters.credits4000Level < parseInt(scope.required.max4000Hours)) {
-                    counters.completed += credits;
-                  }
-                  counters.credits4000Level += credits;
-                } else {
-                    counters.completed += credits;
-                }
-                break;
-              case 'N':
-                counters.left += credits;
-                break;
-              case 'S':
-                if(parseInt(currVal.number) < 5000) {
-                  if(counters.credits4000Level < parseInt(scope.required.max4000Hours)) {
-                    counters.scheduled  += credits;
-                  }
-                  counters.credits4000Level += credits;
-                } else {
-                    counters.scheduled  += credits;
-                }
-                break;
-              }
-
-              return counters;
-            },
-            { completed: 0, left: 0, scheduled: 0, credits4000Level: 0 });
+          
+          var completion = completionSvc(courses, scope.required);
 
           scope.completedPct = Math.min(100, (completion.completed / scope.required.minTotalHours) * 100);
           scope.completed = completion.completed;

@@ -46,7 +46,7 @@
           .replace('Advanced', 'Adv.');
       };
     })
-    .controller('ScheduleCtrl', ['$scope', 'classService', function($scope, classSvc) {
+    .controller('ScheduleCtrl', ['$scope', 'classService', 'completion', function($scope, classSvc, completionSvc) {
       // TODO Don't hardcode these
       $scope.years = [ '2014', '2015', '2016', '2017' ];
       $scope.courses = [];
@@ -56,19 +56,20 @@
       $scope.auto = function(prefs) {
         classSvc.requirements().then(
           function(reqs) {
+
+            var completion = completionSvc($scope.courses, reqs);
             return classSvc.autoSchedule({
               maxClassesPerSemester: prefs.maxClasses,
               minClassesPerSemester: prefs.minClasses,
               canTakeDayClasses: false,
               maxSemestersToComplete: prefs.maxSemesters,
-              numberOfHoursCompleted: 0,
-              numberOfHourseScheduled: 0,
-              numberOfHoursRemaining: 30,
-              numberOf6000HoursScheduled: 0,
-              numberOf5000HoursScheduled: 0,
-              numberOf4000HoursScheduled: 0,
-              courses: $scope.courses,
-              coreCoursesRemaining: reqs.coreCourses
+              numberOfHoursCompleted: completion.completed,
+              numberOfHoursScheduled: completion.scheduled,
+              numberOfHoursRemaining: reqs.minTotalHours - (completion.completed + completion.scheduled),
+              numberOf6000HoursScheduled: completion.credits6000Level || 0,
+              numberOf5000HoursScheduled: completion.credits5000Level || 0,
+              numberOf4000HoursScheduled: completion.credits4000Level || 0,
+              courses: $scope.courses
             });
           }).then(
             function(courses) {
