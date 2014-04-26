@@ -150,15 +150,51 @@ public class Preferences {
 			}
 		}
 		
-		//TODO check if international student has taken enough per semester
+		//check if international student has taken enough per semester
 		if(preferences.isInternationalStudent()) {
-			messages.add("International students must take at least " + requirements.getInternationalRequiredSemesterHours() + " hours per semester.");
+			//create a ScheduleFacade to represent the schedule
+			ScheduleFacade schedule = new ScheduleFacade(preferences.getCourses());
+			//Get an ordered list of the years
+			List<String> years = new ArrayList<String>();
+			Iterator<String> yearIterator = schedule.getCoursesByYear().keySet().iterator();
+			while(yearIterator.hasNext()){
+				years.add(yearIterator.next());
+			}
+			Collections.sort(years);
+			//For each year
+			for(String year : years){
+				CoursesByYear coursesByYear = schedule.getCoursesByYear().get(year);
+				
+				//For each Spring
+				checkInternationalStudentSessionHours(messages, requirements,
+						year, coursesByYear, SPRING_SESSION_NAME);
+				
+				//For each Fall
+				checkInternationalStudentSessionHours(messages, requirements,
+						year, coursesByYear, FALL_SESSION_NAME);
+				
+			}
 		}
 		
 		//TODO warn if a lot of classes are scheduled in a semester
 		
 		ValidationResult result = new ValidationResult(messages);
 		return result;
+	}
+
+	private void checkInternationalStudentSessionHours(List<String> messages,
+			Requirements requirements, String year, CoursesByYear coursesByYear, String sessionName) {
+		CoursesBySession sessionCourses = coursesByYear.getCoursesBySession().get(sessionName);
+		//are enough courses scheduled?
+		int sessionHours = 0;
+		if(sessionCourses != null) {
+			for (Course course : sessionCourses.getCourses()) {
+				sessionHours += determineCourseHours(course.getCredits());
+			}
+		}
+		if(sessionHours < Integer.valueOf(requirements.getInternationalRequiredSemesterHours())) {
+			messages.add("You must take " + (Integer.valueOf(requirements.getInternationalRequiredSemesterHours()) - sessionHours) + " more hours during " + sessionName + " " + year + " to meet the international student minimum hours requirement.");
+		}
 	}
 	
 
@@ -455,20 +491,4 @@ public class Preferences {
 		this.isInternationalStudent = isInternationalStudent;
 	}
 	
-	class ValidationResult {
-		private List<String> notifications = new ArrayList<String>();
-
-		public ValidationResult(List<String> notifications) {
-			this.notifications = notifications;
-		}
-
-		public List<String> getNotifications() {
-		return notifications;
-		}
-
-		public void setNotifications(List<String> notifications) {
-		this.notifications = notifications;
-		}
-
-	}
 }
