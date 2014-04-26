@@ -96,6 +96,17 @@ public class Preferences {
 		return preferences;
 	}
 
+	@Path("/validate")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String validatePreferences(Preferences preferences){
+		StringBuilder messages = new StringBuilder();
+		messages.append("Validation not implemented\n");
+		return messages.toString();
+	}
+	
+
 	private void sessionScheduler(String year, CoursesBySession sessionCourses, String sessionName, Preferences preferences, Requirements requirements) {
 		//Determine how many units are scheduled this semester
 		int sessionHours = 0; //TODO use this in the conditionals below
