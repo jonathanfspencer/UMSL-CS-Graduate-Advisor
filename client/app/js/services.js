@@ -26,8 +26,7 @@
               var credits = 0;
               
               // Some classes have a variable number of credit hours
-              // TODO Default to the minimum number for now. Prompt user
-              // for this later.
+              // Default to 3 if that is the case, per Dr. Janikow.
               if(currVal.credits.length > 1) {
                 credits = 3
               } else {

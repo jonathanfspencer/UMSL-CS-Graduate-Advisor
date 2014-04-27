@@ -22,18 +22,4 @@
   </li>
 
 </ul>
-
-<adv-modal show="infoCourse">
-  <h4>CMP SCI <span class="bold">{{infoCourse.number}}</span></h4>
-  <hr/>
-  <p>{{infoCourse.description}}</p>
-  <h5>Course Offerings</h5>
-  <ul class="row">
-    <li class="label info" ng-show="infoCourse.offerings.length == 0">None
-      currently scheduled</li>
-    <li ng-repeat="o in infoCourse.offerings" class="label success"
-      style="margin-right: 1em;">
-      {{ o.session }} {{ o.year }}
-    </li>
-  </ul>
-</adv-modal>
+<adv-course-info course="infoCourse"></adv-course-info>

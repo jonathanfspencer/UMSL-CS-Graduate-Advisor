@@ -69,6 +69,16 @@
       }
     };
   }])
+  .directive('advCourseInfo', [function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'partials/classinfo.html',
+      replace: true,
+      scope: {
+        infoCourse: '=course'
+      }
+    };
+  }])
   .directive('advProgress', ['classService', '$q', 'completion', function(classSvc, $q, completionSvc) {
     
     return {
