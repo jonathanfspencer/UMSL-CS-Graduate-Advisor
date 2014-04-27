@@ -53,7 +53,7 @@ public class Preferences {
 	public Preferences applyPreferences(Preferences preferences){
 		
 		//If requirements have not been met, run the auto-scheduler algorithm
-		if(!validatePreferences(preferences).getNotifications().isEmpty()) {
+		if(validatePreferences(preferences).getNotifications().length > 0) {
 		
 			//International students must take a minimum course load
 			Requirements requirements = new Requirements();
@@ -178,7 +178,8 @@ public class Preferences {
 		
 		//TODO warn if a lot of classes are scheduled in a semester
 		
-		ValidationResult result = new ValidationResult(messages);
+		ValidationResult result = new ValidationResult();
+		result.setNotifications(messages.toArray(new String[0]));
 		return result;
 	}
 

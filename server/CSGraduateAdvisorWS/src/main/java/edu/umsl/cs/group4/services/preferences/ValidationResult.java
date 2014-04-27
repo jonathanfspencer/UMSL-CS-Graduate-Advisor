@@ -1,21 +1,14 @@
 package edu.umsl.cs.group4.services.preferences;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ValidationResult {
+	private String[] notifications = {};
 
-class ValidationResult {
-	private List<String> notifications = new ArrayList<String>();
+	public String[] getNotifications() {
+		return notifications;
+	}
 
-	public ValidationResult(List<String> notifications) {
+	public void setNotifications(String[] notifications) {
 		this.notifications = notifications;
-	}
-
-	public List<String> getNotifications() {
-	return notifications;
-	}
-
-	public void setNotifications(List<String> notifications) {
-	this.notifications = notifications;
 	}
 
 }
