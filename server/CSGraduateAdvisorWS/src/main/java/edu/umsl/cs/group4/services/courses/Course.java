@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlTransient;
 
 import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
@@ -37,13 +38,13 @@ public class Course {
 	private String description;
 	private String credits;
 	private Descriptions.Course.Prerequisite prequisite;
-	private List<Offering> offerings;
+	private Map<String,Offering> offerings;
 	private String status = COURSE_STATUS_NULL;
 	private Offering scheduledOffering;
 	
 	public static class Offering {
 		private String year;
-		private List<String> timeCodes;
+		private Map<String,String> timeCodes;
 		private String session;
 		
 		public String getYear() {
@@ -52,11 +53,28 @@ public class Course {
 		public void setYear(String year) {
 			this.year = year;
 		}
-		public List<String> getTimeCodes() {
-			return timeCodes;
+		public Collection<String> getTimeCodes() {
+			return timeCodes.values();
 		}
-		public void setTimeCodes(List<String> timeCodes) {
-			this.timeCodes = timeCodes;
+		public void setTimeCodes(Collection<String> timeCodes) {
+			this.timeCodes = new HashMap<String,String>();
+			for(String code : timeCodes) {
+				this.timeCodes.put(code, code);
+			}
+		}
+		@XmlTransient
+		public Map<String,String> getTimeCodesMap(){
+			if(this.timeCodes == null) {
+				this.timeCodes = new HashMap<String,String>();
+			}
+			return this.timeCodes;
+		}
+		@XmlTransient
+		public void addTimeCode(String timeCode){
+			if(this.timeCodes == null) {
+				this.timeCodes = new HashMap<String,String>();
+			}
+			this.timeCodes.put(timeCode, timeCode);
 		}
 		public String getSession() {
 			return session;
@@ -120,11 +138,7 @@ public class Course {
 								offering.setTimeCodes(rotationTerm.getTimeCode());
 								offerings.add(offering);
 							}	
-							if(mapCourse.getOfferings() == null) {
-								mapCourse.setOfferings(offerings);
-							} else {
-								mapCourse.getOfferings().addAll(offerings);
-							}
+							mapCourse.addOfferings(offerings);
 						} else {
 							//TODO build a new course and insert in map? we won't have all the info
 						}
@@ -167,10 +181,7 @@ public class Course {
 							Course mapCourse = courseMap.get(scheduleCourse.getCourseNumber());
 							if(mapCourse != null){
 								//add this offering to the course map								
-								if(mapCourse.getOfferings() == null) {
-									mapCourse.setOfferings(new ArrayList<Offering>());
-								}
-								mapCourse.getOfferings().add(offering);
+								mapCourse.addOffering(offering);
 							} else {
 								//TODO add a new course that might lack information?
 							}
@@ -212,15 +223,43 @@ public class Course {
 		this.prequisite = prequisite;
 	}
 
-	public List<Offering> getOfferings() {
+	public Collection<Offering> getOfferings() {
 		if(this.offerings == null){
-			this.offerings = new ArrayList<Offering>();
+			this.offerings = new HashMap<String,Offering>();
 		}
-		return offerings;
+		return offerings.values();
 	}
 
-	public void setOfferings(List<Offering> offerings) {
-		this.offerings = offerings;
+	public void setOfferings(Collection<Offering> offerings) {
+		this.offerings = new HashMap<String,Offering>();
+		for(Offering offering : offerings) {
+			this.offerings.put(offering.getYear() + offering.getSession() + offering.getTimeCodes(), offering);
+		}
+	}
+	
+	@XmlTransient
+	public void addOfferings(Collection<Offering> offerings) {
+		if(this.offerings == null){
+			this.offerings = new HashMap<String,Offering>();
+		}
+		for(Offering offering : offerings) {
+			addSingleOffering(this.offerings, offering);
+		}
+	}
+	
+	@XmlTransient
+	public void addOffering(Offering offering) {
+		if(this.offerings == null) {
+			this.offerings = new HashMap<String,Offering>();
+		}
+		addSingleOffering(this.offerings, offering);
+	}
+	
+	private void addSingleOffering(Map<String,Offering> offeringsMap, Offering offering) {
+		Offering oldOffering = offeringsMap.put(offering.getYear() + offering.getSession(), offering);
+		if(oldOffering != null){
+			offering.getTimeCodesMap().putAll(oldOffering.getTimeCodesMap());
+		}
 	}
 
 	public String getStatus() {
