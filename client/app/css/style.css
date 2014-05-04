@@ -8,8 +8,9 @@
   right: 0;
   position: relative;
   height: 1em;
+  color: #333333;
 }
-/* line 9, ../../sass/_progress.scss */
+/* line 10, ../../sass/_progress.scss */
 .progress-bar div {
   height: 100%;
   float: left;
@@ -19,25 +20,25 @@
   width: 0%;
   overflow: hidden;
 }
-/* line 18, ../../sass/_progress.scss */
+/* line 19, ../../sass/_progress.scss */
 .progress-bar .progress-completed {
   color: white;
   background-color: #981e32;
   border-bottom: 1px solid #6d1624;
 }
-/* line 24, ../../sass/_progress.scss */
+/* line 25, ../../sass/_progress.scss */
 .progress-bar .progress-required {
   background-color: #e9e9e9;
   border-bottom: 1px solid #d0d0d0;
 }
-/* line 29, ../../sass/_progress.scss */
+/* line 30, ../../sass/_progress.scss */
 .progress-bar .progress-scheduled {
   background-color: #0e83cd;
   border-bottom: 1px solid #0b649d;
   color: white;
 }
 
-/* line 36, ../../sass/_progress.scss */
+/* line 37, ../../sass/_progress.scss */
 .progress-bar .core-progress {
   width: 100%;
   left: 0;
@@ -45,7 +46,7 @@
   position: relative;
   height: 1.5em;
 }
-/* line 43, ../../sass/_progress.scss */
+/* line 44, ../../sass/_progress.scss */
 .progress-bar .core-progress div {
   height: 100%;
   float: left;
@@ -55,11 +56,11 @@
   border-right: 1px solid #d0d0d0;
   color: #333333;
 }
-/* line 52, ../../sass/_progress.scss */
+/* line 53, ../../sass/_progress.scss */
 .progress-bar .core-progress div.completed {
   text-decoration: line-through;
 }
-/* line 57, ../../sass/_progress.scss */
+/* line 58, ../../sass/_progress.scss */
 .progress-bar .core-progress .label {
   border-right: 1px solid #6a6a6a;
 }
