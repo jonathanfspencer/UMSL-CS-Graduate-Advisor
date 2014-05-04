@@ -7,7 +7,7 @@
   <ul class="row">
     <li class="label info" ng-show="infoCourse.offerings.length == 0">None
       currently scheduled</li>
-    <li ng-repeat="o in infoCourse.offerings" class="label success"
+    <li ng-repeat="o in infoCourse.offerings | orderBy : [ '+year', '-session' ]" class="label success"
       style="margin-right: 1em;">
       {{ o.session }} {{ o.year }}
     </li>
