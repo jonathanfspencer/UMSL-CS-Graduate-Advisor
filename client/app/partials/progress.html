@@ -7,7 +7,8 @@
     </div>
     <div ng-show="requiredPct > 0" class="completion progress-required" style="width: {{ requiredPct }}%;">
       {{ required.minTotalHours - completed - scheduled }} required
-      hours remaining ( 3 6xxx hours remaining )
+      hours remaining <span ng-show="remaining6000">( {{ remaining6000
+      }} @ 6000 level )</span>
     </div>
   <div class="core-progress" ng-show="required">
     <div style="width: 15%; font-weight: bold;"
