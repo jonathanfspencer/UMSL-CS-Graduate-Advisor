@@ -52,13 +52,25 @@
           .replace('Advanced', 'Adv.');
       };
     })
-    .controller('ScheduleCtrl', ['$scope', 'classService', 'completion', function($scope, classSvc, completionSvc) {
+    .controller('ScheduleCtrl', ['$scope', 'classService', 'completion', 'userService',function($scope, classSvc, completionSvc, userSvc) {
       // TODO Don't hardcode these
       $scope.years = [ '2014', '2015', '2016', '2017' ];
       $scope.courses = [];
+      $scope.prefs = {};
       classSvc.courses().then(function(courses) {
         $scope.courses = courses;
       });
+
+      // Prepopulates minimum hours to 9 if the student is
+      // international.
+      $scope.$watch('startAuto', function(startAuto) {
+        if(startAuto) {
+          if(userSvc.getUser().intl) {
+            $scope.prefs.minClasses = 9;
+          }
+        }
+      });
+
       $scope.auto = function(prefs) {
         classSvc.requirements().then(
           function(reqs) {
