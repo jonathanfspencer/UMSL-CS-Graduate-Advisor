@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlTransient;
 
 import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
@@ -62,6 +63,25 @@ public class Course {
 			this.timeCodes = timeCodes;
 		}
 		
+		@XmlTransient
+		public void addTimeCode(String timeCode){
+			if(this.timeCodes == null){
+				this.timeCodes = new ArrayList<String>();
+				this.timeCodes.add(timeCode);
+			} else {
+				boolean found = false;
+				for(String oldCode : this.timeCodes) {
+					if(oldCode.equalsIgnoreCase(timeCode)) {
+						found = true;
+					}
+				}
+				if(!found){
+					this.timeCodes.add(timeCode);
+				}
+			}
+			
+			
+		}
 		public String getSession() {
 			return session;
 		}
@@ -220,6 +240,36 @@ public class Course {
 		this.offerings = offerings;
 	}
 
+	@XmlTransient
+	public void addOffering(Offering newOffering) {
+		
+	}
+	
+	@XmlTransient
+	/**
+	 * Add new offerings and reconcile them with the current offerings
+	 * @param offerings
+	 */
+	public void addOfferings(Collection<Offering> offerings) {
+		if(this.offerings == null) {
+			this.offerings = offerings;
+		} else {
+			Map<String,Offering> reconciledOfferings = new HashMap<String,Offering>();
+			for(Offering oldOffering : this.offerings){
+				reconciledOfferings.put(oldOffering.getYear() + oldOffering.getSession(), oldOffering);
+			}
+			for(Offering newOffering : offerings) {
+				Offering tempOffering = reconciledOfferings.put(newOffering.getYear()+newOffering.getSession(), newOffering);
+				if(tempOffering != null) {
+					for(String code : tempOffering.getTimeCodes()){
+						newOffering.addTimeCode(code);
+					}
+				}
+			}
+			this.offerings = reconciledOfferings.values();
+		}
+	}
+	
 	public String getStatus() {
 		return status;
 	}
