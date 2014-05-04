@@ -107,7 +107,7 @@
       }
     };
   }])
-  .directive('advModal', [function() {
+  .directive('advModal', ['$document', function($document) {
     return {
       restrict: 'E',
       scope: {
@@ -115,8 +115,23 @@
       },
       replace: true,
       transclude: true,
-      link: function(scope, element, attrs) {
-
+      link: function(scope, element) {
+        
+        // When the modal is showing, bind a keyup event listener
+        // to close the modal if ESC or q is pressed.
+        scope.$watch('show', function(newVal, oldVal, scope) {
+          if(newVal) {
+            $document.on('keyup', function(event) {
+              // event.keyCode == ESC || q
+              if(event.keyCode == 27 || event.keyCode == 81) {
+                scope.show = false;
+                scope.$apply();
+              }
+            });
+          } else {
+            $document.off('keydown');
+          }
+        });
       },
       templateUrl: 'partials/modal.html'
     };
