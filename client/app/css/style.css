@@ -2,7 +2,7 @@
 /* Imports */
 /* line 1, ../../sass/_progress.scss */
 .progress-bar {
-  z-index: 1000;
+  z-index: 1001;
   width: 100%;
   left: 0;
   right: 0;
