@@ -22,9 +22,14 @@
 		<h3 class="four columns logo">
 		  <a href="#/">CS Graduate Advisor</a>
 		</h3>
-        <ul class="eight columns">
-
-        </ul>
+        <nav class="eight columns pull_right">
+          <ul id="main-nav">
+            <li>
+              <input id="international-user" type="checkbox" ng-model="user.intl">
+              <label for="international-user">International Student Mode</label>
+            </li>
+          </ul>
+        </nav>
 	  </div>
     <adv-progress></adv-progress>
     <adv-notify></adv-notify>

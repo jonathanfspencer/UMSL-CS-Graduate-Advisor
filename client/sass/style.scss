@@ -14,11 +14,21 @@ $lightfont: #FFF;
 
 .navbar {
   margin-bottom: 30px;
+  color: #FFF;
+
+  .logo {
+    margin: 0;
+  }
+
+  #main-nav {
+    float: right;
+  }
 
   h3 a {
-    color: #FFF;
     font-weight: bolder;
+    color: #FFF;
   }
+
 }
 
 .bold {

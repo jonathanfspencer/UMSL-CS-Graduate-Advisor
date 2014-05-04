@@ -37,7 +37,7 @@
 			templateUrl: 'partials/classlist.html'
 		};
 	}])
-  .directive('advNotify', ['classService', 'completion', function(classSvc, completionSvc) {
+  .directive('advNotify', ['classService', 'completion', 'userService', function(classSvc, completionSvc, userSvc) {
     return {
       restrict: 'E',
       templateUrl: 'partials/notify.html',
@@ -58,8 +58,8 @@
               numberOf6000HoursScheduled: completion.credits6000Level || 0,
               numberOf5000HoursScheduled: completion.credits5000Level || 0,
               numberOf4000HoursScheduled: completion.credits4000Level || 0,
-              courses: courses
-
+              courses: courses,
+              internationalStudent: userSvc.getUser().intl
             });
           }).then(function(result) {
             scope.notifications = result.notifications;

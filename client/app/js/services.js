@@ -80,6 +80,18 @@
             });
         }
     }])
+    .factory('userService', [function() {
+
+      var user = {};
+      return  {
+        setUser: function(newUser) {
+          user = newUser;
+        },
+        getUser: function() {
+          return user;
+        }
+      };
+    }])
     .factory('classService', ['$http', '$q', 'serviceUrl', 'storage', function($http, $q, serviceUrl, storage) {
 
       var coursePromise

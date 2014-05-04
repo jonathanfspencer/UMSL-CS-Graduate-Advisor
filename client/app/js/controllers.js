@@ -2,10 +2,22 @@
   'use strict';
 
   angular.module('advisor.controllers', [])
-    .controller('MasterCtrl', ['$scope', 'classService', function($scope, classSvc) {
+    .controller('MasterCtrl', ['$scope', 'classService', 'userService', function($scope, classSvc, userSvc) {
 
       $scope.$on('course_changed', function(e, courses) {
         classSvc.save(courses);
+      });
+
+      $scope.$watch('user', function(newValue, oldValue) {
+        if(newValue) {
+          userSvc.setUser(newValue);
+          
+          // Trigger validation refresh, as though a course has
+          // changed. There's probably a better way to do this.
+          classSvc.courses().then(function(courses) {
+            classSvc.save(courses);
+          });
+        }
       });
 
     }])
