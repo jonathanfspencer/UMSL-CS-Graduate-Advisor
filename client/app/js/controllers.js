@@ -2,18 +2,12 @@
   'use strict';
 
   angular.module('advisor.controllers', [])
-    .controller('MasterCtrl', ['$scope', '$location', '$route', 'classService', function($scope, $location, $route, classSvc) {
-      $scope.clearData = function() {
-        classSvc.clear();
-        if($location.path() == '/') {
-          $route.reload();
-        } else {
-          $location.path('/');
-        }
-      };
+    .controller('MasterCtrl', ['$scope', 'classService', function($scope, classSvc) {
+
       $scope.$on('course_changed', function(e, courses) {
         classSvc.save(courses);
       });
+
     }])
 	.controller('MainCtrl', ['$scope', 'classService', function($scope, classSvc) {
 

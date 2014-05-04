@@ -3,19 +3,19 @@
 
   angular.module('advisor.services', [])
     .factory('storage', [function() {
+
+      var storage = {};
+
       return {
         save: function(key, obj) {
-          if(typeof key !== 'string') throw new TypeError('key must be a string');
-          if(!(obj instanceof Object)) throw new TypeError('obj [' + typeof obj + '] must be an instance of Object');
-
-          localStorage[key] = JSON.stringify(obj);
+          storage[key] = obj;
           return obj;
         },
         get: function(key) {
-          return localStorage[key] && JSON.parse(localStorage[key]);
+          return storage[key];
         },
         clear: function() {
-          localStorage.clear();
+          storage = {};
         }
       };
     }])

@@ -98,12 +98,13 @@
           scope.requiredPct = Math.max(0, 100 - scope.completedPct - scope.scheduledPct);
           scope.coreRemaining = completion.coreRemaining;
         };
-        var promises = { courses: classSvc.courses(), req: classSvc.requirements() };
-        $q.all(promises).then(function(vals) {
-          scope.required = vals.req;
-          refresh(vals.courses);
+
+        classSvc.onChange(function(courses) {
+          classSvc.requirements().then(function(required) {
+            scope.required = required;
+            refresh(courses);
+          });
         });
-        classSvc.onChange(refresh);
       }
     };
   }])
