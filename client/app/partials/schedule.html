@@ -21,8 +21,7 @@
   </h5>
 </div>
 <div ng-repeat="year in years" class="row schedule">
-  <h4 class="twelve columns">{{ year }}</h4>
-  <h5 class="term">Spring</h5>
+  <h4 class="term">Spring <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">
     <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Spring' } | orderBy:'number'"  
         ng-class="{
@@ -48,7 +47,7 @@
       </div>
     </li>
   </ul>
-  <h5 class="term">Fall</h5>
+  <h4 class="term">Fall <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">
     <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Fall' } | orderBy:'number'"  
         ng-class="{
@@ -74,7 +73,7 @@
       </div>
     </li>
   </ul>
-  <h5 class="term">Summer</h5>
+  <h4 class="term">Summer <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">
     <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Summer' } | orderBy:'number'"  
         ng-class="{
