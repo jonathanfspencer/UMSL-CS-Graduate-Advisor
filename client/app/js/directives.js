@@ -113,7 +113,7 @@
           scope.scheduled = completion.scheduled;
           scope.requiredPct = Math.max(0, 100 - scope.completedPct - scope.scheduledPct);
           scope.coreRemaining = completion.coreRemaining;
-          scope.remaining6000 = scope.required.min6000Hours - completion.credits6000Level;
+          scope.remaining6000 = Math.max(0,scope.required.min6000Hours - completion.credits6000Level);
         };
 
         classSvc.onChange(function(courses) {
