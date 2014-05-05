@@ -60,12 +60,9 @@
 
         classSvc.onChange(function(courses) {
 
+          var completion;
           classSvc.requirements().then(function(reqs) {
-            var completion = completionSvc(courses, reqs);
-            return { completion: completion, reqs: reqs };
-          }).then(function(result) {
-            var completion = result.completion;
-            var reqs = result.reqs;
+            completion = completionSvc(courses, reqs);
             return classSvc.validate({
               numberOfHoursCompleted: completion.completed,
               numberOfHoursScheduled: completion.scheduled,
@@ -78,6 +75,10 @@
             });
           }).then(function(result) {
             scope.notifications = result.notifications;
+            
+            if(completion.completed >= 21) {
+              scope.notifications.push("After completing 21 hours, you must file paperwork for graduation");
+            }
             scope.active = true;
             notifyElement.parent().next().css('margin-bottom', scope.notifications.length * 26 + 'px');
           });
