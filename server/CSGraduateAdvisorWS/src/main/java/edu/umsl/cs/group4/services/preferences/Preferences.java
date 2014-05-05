@@ -139,7 +139,7 @@ public class Preferences {
 			coreCoursesRemaining.put(courseNumber, courseNumber);
 		}
 		for(Course course : preferences.getCourses()) {
-			if(course.getScheduledOffering() != null) {
+			if(course.getStatus().equals("T") || course.getStatus().equals("W") || course.getScheduledOffering() != null) {
 				//remove this course from the remaining core courses if it is a core
 				coreCoursesRemaining.remove(course.getNumber());
 			}
