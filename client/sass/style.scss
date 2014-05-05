@@ -29,6 +29,16 @@ $lightfont: #FFF;
     color: #FFF;
   }
 
+  .help {
+    font-size: 1.3em;
+    margin-left: 1em;
+    
+    &:hover {
+      color: $completed-bg;
+      cursor: pointer;
+    }
+  }
+
 }
 
 .bold {

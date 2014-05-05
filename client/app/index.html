@@ -28,11 +28,21 @@
               <input id="international-user" type="checkbox" ng-model="user.intl">
               <label for="international-user">International Student Mode</label>
             </li>
+            <li>
+              <i class="icon-help-circled help" ng-click="help = true"></i>
+            </li>
           </ul>
         </nav>
 	  </div>
       <adv-progress></adv-progress>
     </div>
+
+    <adv-modal show="help">
+      <h4>Need help?</h4>
+      <p>Explain some stuff here</p>
+    </adv-modal>
+      
+    </adv-modal>
     <adv-notify></adv-notify>
 	<div ng-view></div>
 	<script src="lib/angular/angular.js"></script>
