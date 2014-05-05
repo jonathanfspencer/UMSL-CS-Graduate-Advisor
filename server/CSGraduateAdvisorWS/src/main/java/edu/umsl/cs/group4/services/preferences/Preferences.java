@@ -13,8 +13,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBElement;
 
 import edu.umsl.cs.group4.services.courses.Course;
+import edu.umsl.cs.group4.services.descriptions.beans.Descriptions.Course.Prerequisite;
 import edu.umsl.cs.group4.services.preferences.ScheduleFacade.CoursesBySession;
 import edu.umsl.cs.group4.services.preferences.ScheduleFacade.CoursesByYear;
 import edu.umsl.cs.group4.services.requirements.Requirements;
@@ -176,11 +178,58 @@ public class Preferences {
 			}
 		}
 		
+		// Check prerequisites
+		for(Course course : preferences.getCourses()) {
+			if(course.getScheduledOffering() != null && course.getPrequisite() != null) {
+				
+				boolean satisfied = false;
+				for(JAXBElement<List<String>> prereqs : course.getPrequisite().getOrChoice().getAndRequired()) {
+					satisfied = satisfied || hasTaken(prereqs.getValue(), preferences.getCourses());
+				}
+				
+				if(!satisfied) {
+					messages.add("Before taking CMP SCI " + course.getNumber() + " you must take one of " + prereqString(course.getPrequisite()));
+				}
+			}
+		}
+		
 		//TODO warn if a lot of classes are scheduled in a semester
 		
 		ValidationResult result = new ValidationResult();
 		result.setNotifications(messages.toArray(new String[0]));
 		return result;
+	}
+	
+	private boolean hasTaken(List<String> prereqs, List<Course> courses) {
+		for(String prereq : prereqs) {
+			for(Course course : courses) {
+				if((course.getStatus().equals("T") || 
+						course.getStatus().equals("W") || 
+						course.getScheduledOffering() != null) 
+						&& prereq.contains(course.getNumber())) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private String prereqString(Prerequisite prereqs) {
+		String output = "";
+		for(JAXBElement<List<String>> prereq : prereqs.getOrChoice().getAndRequired()) {
+			if(output.length() > 0) {
+				output += " or ";
+			}
+			output += "[";
+			
+			String optionString = ""; 
+			for(String option : prereq.getValue()) {
+				optionString += " " + option;
+			}
+			output += optionString + "]";
+		}
+		return output;
 	}
 
 	private void checkInternationalStudentSessionHours(List<String> messages,
