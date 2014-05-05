@@ -1,7 +1,6 @@
 package edu.umsl.cs.group4.services.preferences;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -267,7 +266,7 @@ public class Preferences {
 				if(	course.getStatus().equals("N") &&
 					requirements.getCoreCourses().contains(course.getNumber()) && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
-					sessionHours < preferences.getMaxClassesPerSemester()) {
+					(sessionHours + Integer.valueOf(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
 					course.setStatus("S");
 					
@@ -313,7 +312,7 @@ public class Preferences {
 					course.getNumber().startsWith("6")  && 
 					preferences.getNumberOf6000HoursScheduled() < required6000Hours &&
 					preferences.getNumberOfHoursRemaining() > 0 && 
-					sessionHours < preferences.getMaxClassesPerSemester()) {
+					(sessionHours + Integer.valueOf(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
 					course.setStatus("S");
 					
@@ -348,7 +347,7 @@ public class Preferences {
 				if(	course.getStatus().equals("N") &&
 					course.getNumber().startsWith("5")  && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
-					sessionHours < preferences.getMaxClassesPerSemester()) {
+					(sessionHours + Integer.valueOf(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
 					course.setStatus("S");
 					
@@ -385,7 +384,7 @@ public class Preferences {
 					course.getNumber().startsWith("4")  && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
 					sessionHours < preferences.getMaxClassesPerSemester() && 
-					preferences.getNumberOf4000HoursScheduled() < 12) {
+					(Integer.valueOf(course.getCredits()) + preferences.getNumberOf4000HoursScheduled()) < 12) {
 					
 					course.setStatus("S");
 					
@@ -435,7 +434,7 @@ public class Preferences {
 	}
 
 	private boolean scheduleMoreCoreCourses(Preferences preferences, int sessionHours) {
-		return preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester() && sessionHours < preferences.getMinClassesPerSemester();
+		return preferences.getNumberOfHoursRemaining() > 0 && sessionHours < preferences.getMaxClassesPerSemester();
 	}
 
 	private int determineCourseHours(String courseCredits) {
