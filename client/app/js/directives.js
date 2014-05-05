@@ -44,12 +44,18 @@
       replace: true,
       link: function(scope, element, attrs) {
 
+        var notifyElement = angular.element(element.children()[1]);
+
         // Adds margin to the bottom of ng-view if notifications are
         // present so notifications don't cover any content.
         scope.$on('$routeChangeSuccess', function() {
           if(scope.notifications) {
-            element.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
+            notifyElement.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
           }
+        });
+
+        scope.$watch('active', function(active) {
+          notifyElement.toggleClass('active', active);
         });
 
         classSvc.onChange(function(courses) {
@@ -72,8 +78,8 @@
             });
           }).then(function(result) {
             scope.notifications = result.notifications;
-            element.addClass('active');
-            element.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
+            scope.active = true;
+            notifyElement.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
           });
         });
       }

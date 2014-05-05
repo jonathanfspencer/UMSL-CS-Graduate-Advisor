@@ -1,5 +1,17 @@
-<div class="notifications drawer">
-  <div class="row" ng-repeat="notification in notifications">
-    <i class="icon-attention"></i>{{ notification }}
+<div>
+  <div class="notifications-toggle drawer" ng-show="!active &&
+                                             notifications">
+    <div class="open-btn" ng-click="active = true">
+      <i class="icon-up-open-big"></i>
+      Show notifications
+    </div>
+  </div>
+  <div class="notifications drawer">
+    <div class="close-btn" ng-click="active = false">
+      <i class="icon-cancel-circled"></i>
+    </div>
+    <div class="row" ng-repeat="notification in notifications">
+      <i class="icon-attention"></i>{{ notification }}
+    </div>
   </div>
 </div>
