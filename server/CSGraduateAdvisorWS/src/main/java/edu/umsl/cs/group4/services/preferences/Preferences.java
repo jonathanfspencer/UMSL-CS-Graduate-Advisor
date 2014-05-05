@@ -216,7 +216,7 @@ public class Preferences {
 			for(Course course : sessionCourses.getCourses()) {
 				
 				if(	course.getStatus().equals("N") &&
-					Arrays.asList(requirements.getCoreCourses()).contains(course.getNumber()) && 
+					requirements.getCoreCourses().contains(course.getNumber()) && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
 					sessionHours < preferences.getMaxClassesPerSemester()) {
 					
