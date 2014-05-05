@@ -43,6 +43,15 @@
       templateUrl: 'partials/notify.html',
       replace: true,
       link: function(scope, element, attrs) {
+
+        // Adds margin to the bottom of ng-view if notifications are
+        // present so notifications don't cover any content.
+        scope.$on('$routeChangeSuccess', function() {
+          if(scope.notifications) {
+            element.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
+          }
+        });
+
         classSvc.onChange(function(courses) {
 
           classSvc.requirements().then(function(reqs) {
@@ -64,6 +73,7 @@
           }).then(function(result) {
             scope.notifications = result.notifications;
             element.addClass('active');
+            element.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
           });
         });
       }

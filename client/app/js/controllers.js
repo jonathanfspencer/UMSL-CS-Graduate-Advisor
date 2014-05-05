@@ -18,7 +18,7 @@
             classSvc.save(courses);
           });
         }
-      });
+      }, true);
 
     }])
 	.controller('MainCtrl', ['$scope', 'classService', function($scope, classSvc) {
