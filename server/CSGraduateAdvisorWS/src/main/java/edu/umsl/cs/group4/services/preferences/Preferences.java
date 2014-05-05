@@ -182,13 +182,19 @@ public class Preferences {
 			if(course.getScheduledOffering() != null && course.getPrequisite() != null) {
 				
 				boolean satisfied = false;
-				for(JAXBElement<List<String>> prereqs : course.getPrequisite().getOrChoice().getAndRequired()) {
-					satisfied = satisfied || hasTaken(prereqs.getValue(), preferences.getCourses());
+				
+				if(course.getPrequisite().getOrChoice() != null) {
+					for(JAXBElement<List<String>> prereqs : course.getPrequisite().getOrChoice().getAndRequired()) {
+						satisfied = satisfied || hasTaken(prereqs.getValue(), preferences.getCourses());
+					}
+					if(!satisfied) {
+						messages.add("Before taking CMP SCI " + course.getNumber() + " you must take one of " + prereqString(course.getPrequisite()));
+					}
+				} else if(course.getPrequisite().getAdditionalPreq() != null) {
+					messages.add("CMP SCI " + course.getNumber() + " prerequisite: " + course.getPrequisite().getAdditionalPreq());
 				}
 				
-				if(!satisfied) {
-					messages.add("Before taking CMP SCI " + course.getNumber() + " you must take one of " + prereqString(course.getPrequisite()));
-				}
+				
 			}
 		}
 		
