@@ -12,5 +12,12 @@
       {{ o.session }} {{ o.year }}
     </li>
   </ul>
+  <h5 ng-show="infoCourse.prequisite">Prerequisites (at least one class from each box)</h5>
+  <ul class="row">
+    <li class="label info" ng-show="infoCourse.prequisite.additional_preq">{{ infoCourse.prequisite.additional_preq }}</li>
+    <li class="label warning" ng-repeat="p in infoCourse.prequisite.or_choice.and_required">
+      {{ p }}
+    </li>
+  </ul>
 </adv-modal>
 </div>
