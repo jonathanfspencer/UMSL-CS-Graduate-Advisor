@@ -1,6 +1,7 @@
 package edu.umsl.cs.group4.services.courses;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -144,7 +145,7 @@ public class Course {
 								offering.setTimeCodes(rotationTerm.getTimeCode());
 								offerings.add(offering);
 							}	
-							mapCourse.getOfferings().addAll(offerings);
+							mapCourse.addOfferings(offerings);
 						} else {
 							//TODO build a new course and insert in map? we won't have all the info
 						}
@@ -187,7 +188,7 @@ public class Course {
 							Course mapCourse = courseMap.get(scheduleCourse.getCourseNumber());
 							if(mapCourse != null){
 								//add this offering to the course map								
-								mapCourse.getOfferings().add(offering);
+								mapCourse.addOffering(offering);
 							} else {
 								//TODO add a new course that might lack information?
 							}
@@ -242,7 +243,7 @@ public class Course {
 
 	@XmlTransient
 	public void addOffering(Offering newOffering) {
-		
+		addOfferings(Arrays.asList(new Offering[]{newOffering}));
 	}
 	
 	@XmlTransient
