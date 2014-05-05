@@ -285,11 +285,11 @@ public class Preferences {
 					// Increment Course level counters
 					Integer courseNum = Integer.parseInt(course.getNumber());
 					if(courseNum >= 4000 && courseNum < 5000) {
-						preferences.setNumberOf4000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + 1);
+						preferences.setNumberOf4000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + courseCredits);
 					} else if(courseNum >= 5000 && courseNum< 6000) {
-						preferences.setNumberOf5000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + 1);
+						preferences.setNumberOf5000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + courseCredits);
 					} else if(courseNum >= 6000) {
-						preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf6000HoursScheduled() + 1);
+						preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf6000HoursScheduled() + courseCredits);
 					}
 					
 				}
@@ -329,7 +329,7 @@ public class Preferences {
 					sessionHours += courseCredits;
 					
 					// Increment Course level counters
-					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf6000HoursScheduled() + 1);
+					preferences.setNumberOf6000HoursScheduled(preferences.getNumberOf6000HoursScheduled() + courseCredits);
 				}
 				//if we have scheduled enough courses for this session, do not schedule any more
 				if(!scheduleMore6000Courses(preferences, sessionHours)) {
@@ -364,7 +364,7 @@ public class Preferences {
 					sessionHours += courseCredits;
 					
 					// Increment Course level counters
-					preferences.setNumberOf5000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + 1);
+					preferences.setNumberOf5000HoursScheduled(preferences.getNumberOf5000HoursScheduled() + courseCredits);
 				}
 				//if we have scheduled enough courses for this session, do not schedule any more
 				if(!scheduleMore5000Courses(preferences, requirements, sessionHours)) {
@@ -401,7 +401,7 @@ public class Preferences {
 					sessionHours += courseCredits;
 					
 					// Increment Course level counters
-					preferences.setNumberOf4000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + 1);
+					preferences.setNumberOf4000HoursScheduled(preferences.getNumberOf4000HoursScheduled() + courseCredits);
 				}
 				//if we have scheduled enough classes for this session, do not schedule any more
 				if(!scheduleMore4000Classes(preferences, requirements, sessionHours)) {
