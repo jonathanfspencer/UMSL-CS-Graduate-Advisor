@@ -18,7 +18,7 @@
     top: 2px;
     left: 2px;
 
-    &:hover {
+    &:hover {     
       color: $completed-bg;
       cursor: pointer;
     }
@@ -28,4 +28,10 @@
 .notifications-toggle {
   min-height: 30px;
   vertical-align: center;
+  text-align: center;
+
+  &:hover {     
+    color: $completed-bg;
+    cursor: pointer;
+  }
 }

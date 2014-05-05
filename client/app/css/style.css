@@ -97,6 +97,12 @@
 .notifications-toggle {
   min-height: 30px;
   vertical-align: center;
+  text-align: center;
+}
+/* line 33, ../../sass/_notify.scss */
+.notifications-toggle:hover {
+  color: #981e32;
+  cursor: pointer;
 }
 
 /* line 15, ../../sass/style.scss */

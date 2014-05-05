@@ -50,7 +50,7 @@
         // present so notifications don't cover any content.
         scope.$on('$routeChangeSuccess', function() {
           if(scope.notifications) {
-            notifyElement.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
+            notifyElement.parent().next().css('margin-bottom', scope.notifications.length * 26 + 'px');
           }
         });
 
@@ -79,7 +79,7 @@
           }).then(function(result) {
             scope.notifications = result.notifications;
             scope.active = true;
-            notifyElement.next().css('margin-bottom', scope.notifications.length * 26 + 'px');
+            notifyElement.parent().next().css('margin-bottom', scope.notifications.length * 26 + 'px');
           });
         });
       }
