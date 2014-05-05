@@ -135,25 +135,30 @@
 }
 
 /* line 44, ../../sass/style.scss */
+.disclaimer {
+  color: #981e32;
+}
+
+/* line 48, ../../sass/style.scss */
 .bold {
   font-weight: bold;
 }
 
-/* line 48, ../../sass/style.scss */
+/* line 52, ../../sass/style.scss */
 .tiles.six_up {
   margin-left: -1.5%;
 }
-/* line 50, ../../sass/style.scss */
+/* line 54, ../../sass/style.scss */
 .tiles.six_up > li, .tiles.six_up > .tile {
   margin-left: 1.5%;
   width: 15.1%;
 }
 
-/* line 58, ../../sass/style.scss */
+/* line 62, ../../sass/style.scss */
 .classchooser h5 {
   margin-bottom: 1.25%;
 }
-/* line 62, ../../sass/style.scss */
+/* line 66, ../../sass/style.scss */
 .classchooser li {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -163,41 +168,41 @@
   user-select: none;
 }
 
-/* line 73, ../../sass/style.scss */
+/* line 77, ../../sass/style.scss */
 .classlist li {
   position: relative;
   display: block;
   padding: 0.5em;
   margin-bottom: 1.25%;
 }
-/* line 79, ../../sass/style.scss */
+/* line 83, ../../sass/style.scss */
 .classlist li:hover {
   background-color: #f9f9f9;
   cursor: pointer;
 }
-/* line 84, ../../sass/style.scss */
+/* line 88, ../../sass/style.scss */
 .classlist .course-title {
   font-size: 75%;
 }
 
-/* line 90, ../../sass/style.scss */
+/* line 94, ../../sass/style.scss */
 .schedule .year {
   font-weight: normal;
 }
 
-/* line 97, ../../sass/style.scss */
+/* line 101, ../../sass/style.scss */
 li.nottaken .info:hover {
   color: #981e32;
 }
-/* line 100, ../../sass/style.scss */
+/* line 104, ../../sass/style.scss */
 li.waived .info:hover {
   color: white;
 }
-/* line 103, ../../sass/style.scss */
+/* line 107, ../../sass/style.scss */
 li.completed .info:hover, li.scheduled .info:hover {
   color: #b3b3b3;
 }
-/* line 107, ../../sass/style.scss */
+/* line 111, ../../sass/style.scss */
 li .info {
   position: absolute;
   top: 0px;
@@ -205,42 +210,42 @@ li .info {
   z-index: 1000;
 }
 
-/* line 116, ../../sass/style.scss */
+/* line 120, ../../sass/style.scss */
 li.nottaken {
   background-color: #e9e9e9;
   border: 1px solid #c8c8c8;
   color: #333333;
 }
 
-/* line 121, ../../sass/style.scss */
+/* line 125, ../../sass/style.scss */
 li.completed {
   background-color: #981e32 !important;
   border: 1px solid #611320;
   color: white;
 }
 
-/* line 126, ../../sass/style.scss */
+/* line 130, ../../sass/style.scss */
 li.waived {
   background-color: #eaab00 !important;
   border: 1px solid #b78600;
   color: #333333;
 }
 
-/* line 131, ../../sass/style.scss */
+/* line 135, ../../sass/style.scss */
 li.scheduled {
   background-color: #0e83cd !important;
   border: 1px solid #0b649d;
   color: white;
 }
 
-/* line 136, ../../sass/style.scss */
+/* line 140, ../../sass/style.scss */
 li.scheduledother {
   background-color: white !important;
   border: 1px solid #e9e9e9;
   color: #999999;
 }
 
-/* line 142, ../../sass/style.scss */
+/* line 146, ../../sass/style.scss */
 .sticky {
   position: fixed;
   top: 0;
