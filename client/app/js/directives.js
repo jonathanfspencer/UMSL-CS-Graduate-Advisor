@@ -37,7 +37,7 @@
 			templateUrl: 'partials/classlist.html'
 		};
 	}])
-  .directive('advNotify', ['classService', 'completion', 'userService', function(classSvc, completionSvc, userSvc) {
+  .directive('advNotify', ['classService', 'completion', 'userService', '$location', function(classSvc, completionSvc, userSvc, $location) {
     return {
       restrict: 'E',
       templateUrl: 'partials/notify.html',
@@ -55,7 +55,12 @@
         });
 
         scope.$watch('active', function(active) {
-          notifyElement.toggleClass('active', active);
+          if(active) {
+            notifyElement.addClass('active')
+          } else {
+            notifyElement.removeClass('active');
+          }
+
         });
 
         classSvc.onChange(function(courses) {
@@ -79,7 +84,11 @@
             if(completion.completed >= 21) {
               scope.notifications.push("After completing 21 hours, you must file paperwork for graduation");
             }
-            scope.active = true;
+
+            if($location.path().indexOf('schedule') >= 0) {
+              scope.active = true;
+            }
+            
             notifyElement.parent().next().css('margin-bottom', scope.notifications.length * 26 + 'px');
           });
         });
