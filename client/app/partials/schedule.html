@@ -52,32 +52,7 @@ plan of study.
       </div>
     </li>
   </ul>
-  <h4 class="term">Fall <span class="year">{{ year }}</span></h4>
-  <ul class="classlist three_up tiles twelve columns">
-    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Fall' } | orderBy:'number'"  
-        ng-class="{
-              scheduled: course.scheduledOffering &&
-                        course.scheduledOffering.year == year && 
-                        course.scheduledOffering.session == 'Fall',
-              scheduledother: course.scheduledOffering && 
-                               (course.scheduledOffering.year != year ||
-                               course.scheduledOffering.session != 'Fall'),
-              nottaken: course.status == 'N'}"
-            ng-show="course.status == 'N' || course.status == 'S'"
-            ng-click="schedule(course, year, 'Fall')">
-      <div>
-        <div class="course-number">
-          CMP SCI <span class="bold">{{ course.number }}</span>
-        </div>
-        <div class="course-title">
-          {{course.name | shortenIntro}}
-        </div>
-      </div>
-      <div class="info" ng-click="$parent.$parent.infoCourse = course; $event.stopPropagation();">
-        <i class="icon-info-circled"></i>
-      </div>
-    </li>
-  </ul>
+
   <h4 class="term">Summer <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">
     <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Summer' } | orderBy:'number'"  
@@ -91,6 +66,33 @@ plan of study.
               nottaken: course.status == 'N'}"
             ng-show="course.status == 'N' || course.status == 'S'"
             ng-click="schedule(course, year, 'Summer')">
+      <div>
+        <div class="course-number">
+          CMP SCI <span class="bold">{{ course.number }}</span>
+        </div>
+        <div class="course-title">
+          {{course.name | shortenIntro}}
+        </div>
+      </div>
+      <div class="info" ng-click="$parent.$parent.infoCourse = course; $event.stopPropagation();">
+        <i class="icon-info-circled"></i>
+      </div>
+    </li>
+  </ul>
+
+  <h4 class="term">Fall <span class="year">{{ year }}</span></h4>
+  <ul class="classlist three_up tiles twelve columns">
+    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Fall' } | orderBy:'number'"  
+        ng-class="{
+              scheduled: course.scheduledOffering &&
+                        course.scheduledOffering.year == year && 
+                        course.scheduledOffering.session == 'Fall',
+              scheduledother: course.scheduledOffering && 
+                               (course.scheduledOffering.year != year ||
+                               course.scheduledOffering.session != 'Fall'),
+              nottaken: course.status == 'N'}"
+            ng-show="course.status == 'N' || course.status == 'S'"
+            ng-click="schedule(course, year, 'Fall')">
       <div>
         <div class="course-number">
           CMP SCI <span class="bold">{{ course.number }}</span>
