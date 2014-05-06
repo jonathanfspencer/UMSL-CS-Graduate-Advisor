@@ -181,6 +181,7 @@ public class Course {
 				Offering offering = new Offering();
 				offering.setYear(scheduledCourse.getYear());
 				offering.setSession(translateScheduleTerm(scheduledCourse.getTerm()));
+				offering.getTimeCodes().add("S"); // Add a time-code, so it looks like there is an offering of this class. Even though it doesn't mean anything.
 				
 				for(SimpleSchedule.ScheduledCourse.Session session:scheduledCourse.getSession()){
 					for(SimpleSchedule.ScheduledCourse.Session.Course scheduleCourse:session.getCourse()){

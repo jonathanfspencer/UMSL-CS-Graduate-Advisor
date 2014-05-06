@@ -36,7 +36,8 @@
           if(course.offerings) {
             return course.offerings.some(function(offering) {
               return offering.session == obj.session
-                && offering.year == obj.year;
+                && offering.year == obj.year
+                && (offering.timeCodes == undefined || offering.timeCodes.length > 0);
             });
           } else {
             return false;
