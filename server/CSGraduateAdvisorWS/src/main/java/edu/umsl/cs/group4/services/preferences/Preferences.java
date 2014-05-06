@@ -272,7 +272,7 @@ public class Preferences {
 				if(	course.getStatus().equals("N") &&
 					requirements.getCoreCourses().contains(course.getNumber()) && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
-					(sessionHours + Integer.valueOf(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
+					(sessionHours + determineCourseHours(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
 					course.setStatus("S");
 					
@@ -318,7 +318,7 @@ public class Preferences {
 					course.getNumber().startsWith("6")  && 
 					preferences.getNumberOf6000HoursScheduled() < required6000Hours &&
 					preferences.getNumberOfHoursRemaining() > 0 && 
-					(sessionHours + Integer.valueOf(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
+					(sessionHours + determineCourseHours(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
 					course.setStatus("S");
 					
@@ -353,7 +353,7 @@ public class Preferences {
 				if(	course.getStatus().equals("N") &&
 					course.getNumber().startsWith("5")  && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
-					(sessionHours + Integer.valueOf(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
+					(sessionHours + determineCourseHours(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
 					course.setStatus("S");
 					
@@ -390,7 +390,7 @@ public class Preferences {
 					course.getNumber().startsWith("4")  && 
 					preferences.getNumberOfHoursRemaining() > 0 && 
 					sessionHours < preferences.getMaxClassesPerSemester() && 
-					(Integer.valueOf(course.getCredits()) + preferences.getNumberOf4000HoursScheduled()) < 12) {
+					(determineCourseHours(course.getCredits()) + preferences.getNumberOf4000HoursScheduled()) <= 12) {
 					
 					course.setStatus("S");
 					
@@ -421,7 +421,7 @@ public class Preferences {
 			Requirements requirements, int sessionHours) {
 		return preferences.getNumberOfHoursRemaining() > 0 && 
 				sessionHours < preferences.getMaxClassesPerSemester() && 
-				sessionHours < preferences.getMinClassesPerSemester() &&
+				//sessionHours < preferences.getMinClassesPerSemester() &&
 				preferences.getNumberOf4000HoursScheduled() < Integer.valueOf(requirements.getMax4000Hours());
 	}
 
@@ -429,8 +429,8 @@ public class Preferences {
 			Requirements requirements, int sessionHours) {
 		return preferences.getNumberOfHoursRemaining() > 0 && 
 				sessionHours < preferences.getMaxClassesPerSemester() && 
-				sessionHours < preferences.getMinClassesPerSemester() && 
-				(preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) >= 
+				//sessionHours < preferences.getMinClassesPerSemester() && 
+				(preferences.getNumberOf5000HoursScheduled() + preferences.getNumberOf6000HoursScheduled()) < 
 					(Integer.valueOf(requirements.getMinTotalHours()) - Integer.valueOf(requirements.getMax4000Hours()));
 	}
 
