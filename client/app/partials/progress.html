@@ -15,9 +15,10 @@
     class="progress-required label">Core Courses Remaining:</div>
     <div ng-repeat="core in required.coreCourses"
          style="width: {{ 85. / required.coreCourses.length }}%"
-         class="progress-required"
-         ng-class="{ completed: coreRemaining.indexOf(core) < 0 }">
-      {{ core }} 
+         class="progress-required">
+         
+      {{ core }} <i class="icon-check"
+         ng-show="coreRemaining.indexOf(core) < 0"></i>
     </div>
   </div>
 </div>

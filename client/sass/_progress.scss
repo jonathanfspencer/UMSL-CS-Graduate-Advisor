@@ -50,8 +50,10 @@
         border-right: 1px solid darken($nottaken-bg, 10);
         color: $darkfont;
         
-        &.completed {
-          text-decoration: line-through;
+        i {
+          color: green;
+          min-width: 0;
+          margin-left: 0;
         }
     }
 

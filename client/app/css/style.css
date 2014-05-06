@@ -57,10 +57,12 @@
   color: #333333;
 }
 /* line 53, ../../sass/_progress.scss */
-.progress-bar .core-progress div.completed {
-  text-decoration: line-through;
+.progress-bar .core-progress div i {
+  color: green;
+  min-width: 0;
+  margin-left: 0;
 }
-/* line 58, ../../sass/_progress.scss */
+/* line 60, ../../sass/_progress.scss */
 .progress-bar .core-progress .label {
   border-right: 1px solid #6a6a6a;
 }
