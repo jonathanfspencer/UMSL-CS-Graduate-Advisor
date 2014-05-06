@@ -13,7 +13,7 @@
   <div class="core-progress" ng-show="required">
     <div style="width: 15%; font-weight: bold;"
     class="progress-required label">Core Courses Remaining:</div>
-    <div ng-repeat="core in required.coreCourses"
+    <div ng-repeat="core in required.coreCourses | orderBy:'toString()'"
          style="width: {{ 85. / required.coreCourses.length }}%"
          class="progress-required">
          
