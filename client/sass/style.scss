@@ -41,6 +41,13 @@ $lightfont: #FFF;
 
 }
 
+.help.modal .content {
+  width: 90%;
+  height: 90%;
+  top: 10%;
+  max-height: 80%;
+}
+
 .disclaimer {
   color: $completed-bg;
 }
