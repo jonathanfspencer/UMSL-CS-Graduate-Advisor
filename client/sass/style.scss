@@ -121,6 +121,15 @@ li {
         right: 0px;
         z-index: 1000;
     }
+
+    .other-scheduled {
+      position: absolute;
+      right: 30px;
+      top: 0.4em;
+      font-size: 75%;
+      line-height: 20px;
+      color: lighten($darkfont, 40);
+    }
 }
 
 

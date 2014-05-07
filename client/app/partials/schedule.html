@@ -50,6 +50,11 @@ plan of study.
       <div class="info" ng-click="$parent.$parent.infoCourse = course; $event.stopPropagation();">
         <i class="icon-info-circled"></i>
       </div>
+      <div class="other-scheduled" ng-show="course.scheduledOffering
+                                            && (course.scheduledOffering.year != year ||
+                                            course.scheduledOffering.session != 'Spring')">
+        Scheduled {{ course.scheduledOffering.session + ' ' + course.scheduledOffering.year }}
+      </div>
     </li>
   </ul>
 
@@ -77,6 +82,11 @@ plan of study.
       <div class="info" ng-click="$parent.$parent.infoCourse = course; $event.stopPropagation();">
         <i class="icon-info-circled"></i>
       </div>
+      <div class="other-scheduled" ng-show="course.scheduledOffering
+                                            && (course.scheduledOffering.year != year ||
+                                            course.scheduledOffering.session != 'Summer')">
+        Scheduled {{ course.scheduledOffering.session + ' ' + course.scheduledOffering.year }}
+      </div>
     </li>
   </ul>
 
@@ -103,6 +113,11 @@ plan of study.
       </div>
       <div class="info" ng-click="$parent.$parent.infoCourse = course; $event.stopPropagation();">
         <i class="icon-info-circled"></i>
+      </div>
+      <div class="other-scheduled" ng-show="course.scheduledOffering
+                                            && (course.scheduledOffering.year != year ||
+                                            course.scheduledOffering.session != 'Fall')">
+        Scheduled {{ course.scheduledOffering.session + ' ' + course.scheduledOffering.year }}
       </div>
     </li>
   </ul>
