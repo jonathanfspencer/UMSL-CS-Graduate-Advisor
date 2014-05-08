@@ -37,7 +37,7 @@
 			templateUrl: 'partials/classlist.html'
 		};
 	}])
-  .directive('advNotify', ['classService', 'completion', 'userService', '$location', function(classSvc, completionSvc, userSvc, $location) {
+  .directive('advNotify', ['classService', 'completion', 'userService', '$location', '$q', function(classSvc, completionSvc, userSvc, $location, $q) {
     return {
       restrict: 'E',
       templateUrl: 'partials/notify.html',
@@ -46,12 +46,11 @@
 
         var notifyElement = angular.element(element.children()[1]);
 
-        // Adds margin to the bottom of ng-view if notifications are
-        // present so notifications don't cover any content.
+        // Hacky way to force a notifications refresh.
         scope.$on('$routeChangeSuccess', function() {
-          if(scope.notifications) {
-            notifyElement.parent().next().css('margin-bottom', scope.notifications.length * 26 + 'px');
-          }
+          classSvc.courses().then(function(courses) {
+            classSvc.save(courses);
+          });
         });
 
         scope.$watch('active', function(active) {
@@ -66,26 +65,39 @@
         classSvc.onChange(function(courses) {
 
           var completion;
+          
           classSvc.requirements().then(function(reqs) {
             completion = completionSvc(courses, reqs);
-            return classSvc.validate({
-              numberOfHoursCompleted: completion.completed,
-              numberOfHoursScheduled: completion.scheduled,
-              numberOfHoursRemaining: reqs.minTotalHours - (completion.completed + completion.scheduled),
-              numberOf6000HoursScheduled: completion.credits6000Level || 0,
-              numberOf5000HoursScheduled: completion.credits5000Level || 0,
-              numberOf4000HoursScheduled: completion.credits4000Level || 0,
-              courses: courses,
-              internationalStudent: userSvc.getUser().intl
-            });
-          }).then(function(result) {
-            scope.notifications = result.notifications;
+            return $q.all([ reqs, classSvc.validate({
+                numberOfHoursCompleted: completion.completed,
+                numberOfHoursScheduled: completion.scheduled,
+                numberOfHoursRemaining: reqs.minTotalHours - (completion.completed + completion.scheduled),
+                numberOf6000HoursScheduled: completion.credits6000Level || 0,
+                numberOf5000HoursScheduled: completion.credits5000Level || 0,
+                numberOf4000HoursScheduled: completion.credits4000Level || 0,
+                courses: courses,
+                internationalStudent: userSvc.getUser().intl
+              }) ]);
+
+          }).then(function(results) {
+
+            var requirements = results[0]
+            ,   validation = results[1];
+
+            scope.notifications = validation.notifications;
             
             if(completion.completed >= 21) {
               scope.notifications.push("After completing 21 hours, you must file paperwork for graduation");
             }
 
             if($location.path().indexOf('schedule') >= 0) {
+              scope.active = true;
+            } else {
+              scope.notifications = [];
+            }
+
+            if(completion.credits4000Level > requirements.max4000Hours) {
+              scope.notifications.push("A maxiumum of 12 hours of 4000 level classes count towards your degree requirements");
               scope.active = true;
             }
             

@@ -11,11 +11,16 @@
     border-top: 1px solid darken($nottaken-bg, 10);
     box-shadow: none;
     -webkit-box-shadow: none;
+    line-height: 30px;
+  }
+
+  .row {
+    height: 30px;
   }
 
   .close-btn, .open-btn {
     position: absolute;
-    top: 2px;
+    top: -1px;
     left: 2px;
 
     &:hover {     
