@@ -19,7 +19,11 @@ public class RotationResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public static Rotations getRotation() throws JAXBException  {
 		Rotations rotations = (Rotations) ContentFetcher.fetchContent(SOURCE_URL, Rotations.class);
-        return rotations;
+        return extrapolateRotations(rotations,6);
+	}
+	
+	private static Rotations extrapolateRotations(Rotations rotations, int years) {
+		return rotations;
 	}
 
 }

@@ -39,6 +39,7 @@ public class Preferences {
 	private int numberOf5000HoursScheduled = 0;
 	private int numberOf4000HoursScheduled = 0;
 	private boolean isInternationalStudent = false;
+	private boolean isSummerSchedulable = false;
 	private List<Course> courses;
 	
 	
@@ -87,10 +88,12 @@ public class Preferences {
 					sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME, preferences, requirements);
 				}
 				
-				//For each Summer
-				CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
-				if(summerSessionCourses != null) {
-					sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME, preferences, requirements);
+				if(isSummerSchedulable){
+					//For each Summer
+					CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
+					if(summerSessionCourses != null) {
+						sessionScheduler(year, summerSessionCourses, SUMMER_SESSION_NAME, preferences, requirements);
+					}
 				}
 				
 				//For each Fall
@@ -584,6 +587,14 @@ public class Preferences {
 
 	public void setInternationalStudent(boolean isInternationalStudent) {
 		this.isInternationalStudent = isInternationalStudent;
+	}
+
+	public boolean isSummerSchedulable() {
+		return isSummerSchedulable;
+	}
+
+	public void setSummerSchedulable(boolean isSummerSchedulable) {
+		this.isSummerSchedulable = isSummerSchedulable;
 	}
 	
 }
