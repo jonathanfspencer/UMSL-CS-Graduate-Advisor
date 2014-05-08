@@ -1,4 +1,4 @@
-<adv-modal show="startAuto">
+<adv-modal show="startAuto" class="js">
   <h3>Auto Schedule Settings</h3>
   <h5>How many hours per semester would you like to take?</h5>
   <div class="field">
@@ -9,6 +9,16 @@
     your degree</h5>
   <div class="field">
     <input ng-model="prefs.maxSemesters" class="narrow input" type="text" placeholder="Semesters"/>
+  </div>
+
+  <div class="field">
+    <label class="checkbox" for="summer" ng-class="{ checked:
+    prefs.scheduleSummer }">
+      <input ng-model="prefs.scheduleSummer" id="summer" type="checkbox">
+      <span><i class="icon-check"
+               ng-show="prefs.scheduleSummer"></i></span>
+      Schedule classes during summer sessions
+    </label>
   </div>
   <p class="disclaimer">
 Note: This system is not guaranteed to generate a complete and

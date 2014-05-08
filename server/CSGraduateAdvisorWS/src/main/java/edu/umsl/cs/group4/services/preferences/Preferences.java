@@ -88,7 +88,7 @@ public class Preferences {
 					sessionScheduler(year, springSessionCourses, SPRING_SESSION_NAME, preferences, requirements);
 				}
 				
-				if(isSummerSchedulable){
+				if(preferences.isSummerSchedulable()){
 					//For each Summer
 					CoursesBySession summerSessionCourses = coursesByYear.getCoursesBySession().get(SUMMER_SESSION_NAME);
 					if(summerSessionCourses != null) {
