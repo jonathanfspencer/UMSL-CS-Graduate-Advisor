@@ -244,7 +244,9 @@ public class Preferences {
 		int sessionHours = 0;
 		if(sessionCourses != null) {
 			for (Course course : sessionCourses.getCourses()) {
-				sessionHours += determineCourseHours(course.getCredits());
+				if(course.getScheduledOffering() != null && course.getScheduledOffering().getYear().equals(year) && course.getScheduledOffering().getSession().equals(sessionName)) {
+					sessionHours += determineCourseHours(course.getCredits());
+				}
 			}
 		}
 		if(sessionHours < Integer.valueOf(requirements.getInternationalRequiredSemesterHours())) {
