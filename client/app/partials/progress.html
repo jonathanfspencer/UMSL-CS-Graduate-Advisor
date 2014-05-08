@@ -7,18 +7,23 @@
     </div>
     <div ng-show="requiredPct > 0" class="completion progress-required" style="width: {{ requiredPct }}%;">
       {{ required.minTotalHours - completed - scheduled }} required
-      hours remaining <span ng-show="remaining6000">( {{ remaining6000
-      }} @ 6000 level )</span>
+      hours remaining 
     </div>
   <div class="core-progress" ng-show="required">
     <div style="width: 15%; font-weight: bold;"
     class="progress-required label">Core Courses Remaining:</div>
     <div ng-repeat="core in required.coreCourses | orderBy:'toString()'"
-         style="width: {{ 85. / required.coreCourses.length }}%"
+         style="width: {{ 85. / (required.coreCourses.length + 1) }}%"
          class="progress-required">
          
       {{ core }} <i class="icon-check"
          ng-show="coreRemaining.indexOf(core) < 0"></i>
+    </div>
+    <div style="width: {{ 85. / (required.coreCourses.length + 1) }}%"
+         class="progress-required">
+      {{ (required.min6000Hours) == 3 ? 'Any' : (remaining6000 / 3) }}
+      6000 level course{{ (required.min6000Hours > 3) ? 's':''}} <i class="icon-check"
+         ng-show="remaining6000 == 0"></i>
     </div>
   </div>
 </div>

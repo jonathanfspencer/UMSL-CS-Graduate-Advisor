@@ -77,6 +77,7 @@
 
             var completion = completionSvc($scope.courses, reqs);
             return classSvc.autoSchedule({
+              internationalStudent: userSvc.getUser().intl,
               maxClassesPerSemester: prefs.maxClasses,
               minClassesPerSemester: prefs.minClasses,
               canTakeDayClasses: false,
