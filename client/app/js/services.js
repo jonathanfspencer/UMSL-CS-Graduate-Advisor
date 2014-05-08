@@ -148,6 +148,22 @@
           return $http.post(url('preferences/apply'), preferences).then(function(resp) {
            return that.save(resp.data.courses);
          });
+        },
+        courseYears: function() {
+          return this.courses().then(function(courses) {
+
+            var years = [];
+
+            courses.forEach(function(course) {
+              course.offerings.forEach(function(offering) {
+                if(years.indexOf(offering.year) < 0 && offering.timeCodes && offering.timeCodes.length > 0) {
+                  years.push(offering.year);
+                }
+              });
+            });
+
+            return years;
+          });
         }
       };
     }]);

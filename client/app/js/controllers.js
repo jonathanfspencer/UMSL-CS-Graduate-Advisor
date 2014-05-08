@@ -53,8 +53,11 @@
       };
     })
     .controller('ScheduleCtrl', ['$scope', 'classService', 'completion', 'userService',function($scope, classSvc, completionSvc, userSvc) {
-      // TODO Don't hardcode these
-      $scope.years = [ '2014', '2015', '2016', '2017' ];
+
+      classSvc.courseYears().then(function(years) {
+        $scope.years = years.sort();
+      });
+
       $scope.courses = [];
       $scope.prefs = {};
       classSvc.courses().then(function(courses) {
