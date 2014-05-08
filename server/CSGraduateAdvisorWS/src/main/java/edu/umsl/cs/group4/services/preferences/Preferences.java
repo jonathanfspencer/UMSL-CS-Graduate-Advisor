@@ -163,17 +163,35 @@ public class Preferences {
 			}
 			Collections.sort(years);
 			//For each year
+			List<String> internationalSessionsLacking = new ArrayList<String>();
 			for(String year : years){
 				CoursesByYear coursesByYear = schedule.getCoursesByYear().get(year);
 				
 				//For each Spring
-				checkInternationalStudentSessionHours(messages, requirements,
+				checkInternationalStudentSessionHours(internationalSessionsLacking, requirements,
 						year, coursesByYear, SPRING_SESSION_NAME);
 				
 				//For each Fall
-				checkInternationalStudentSessionHours(messages, requirements,
+				checkInternationalStudentSessionHours(internationalSessionsLacking, requirements,
 						year, coursesByYear, FALL_SESSION_NAME);
 				
+			}
+			if(internationalSessionsLacking.size() > 0) {
+				StringBuffer internationalMessage = new StringBuffer();
+				internationalMessage.append("To satisfy the international student hours requirement, you must schedule at least ");
+				internationalMessage.append(requirements.getInternationalRequiredSemesterHours());
+				internationalMessage.append(" hours during the following semesters: ");
+				for(int internationalMessageCounter = 0; internationalMessageCounter < internationalSessionsLacking.size(); internationalMessageCounter++){	
+					if(internationalMessageCounter > 0 && internationalSessionsLacking.size() > 3) {
+						internationalMessage.append(", ");
+					}
+					if(internationalMessageCounter == internationalSessionsLacking.size() - 1) {
+						internationalMessage.append("and ");
+					}
+					internationalMessage.append(internationalSessionsLacking.get(internationalMessageCounter));
+				}
+				internationalMessage.append(".");
+				messages.add(internationalMessage.toString());
 			}
 		}
 		
@@ -237,7 +255,7 @@ public class Preferences {
 		return output;
 	}
 
-	private void checkInternationalStudentSessionHours(List<String> messages,
+	private void checkInternationalStudentSessionHours(List<String> internationalSessionsLacking,
 			Requirements requirements, String year, CoursesByYear coursesByYear, String sessionName) {
 		CoursesBySession sessionCourses = coursesByYear.getCoursesBySession().get(sessionName);
 		//are enough courses scheduled?
@@ -250,7 +268,7 @@ public class Preferences {
 			}
 		}
 		if(sessionHours < Integer.valueOf(requirements.getInternationalRequiredSemesterHours())) {
-			messages.add("You must take " + (Integer.valueOf(requirements.getInternationalRequiredSemesterHours()) - sessionHours) + " more hours during " + sessionName + " " + year + " to meet the international student minimum hours requirement.");
+			internationalSessionsLacking.add(sessionName + " " + year);
 		}
 	}
 	
