@@ -20,6 +20,10 @@ $lightfont: #FFF;
     margin: 0;
   }
 
+  #pref-nav {
+    float: left;
+  }
+
   #main-nav {
     float: right;
   }
@@ -39,6 +43,13 @@ $lightfont: #FFF;
     }
   }
 
+}
+
+.intl-mode label {
+  font-size: 18px;                     
+  font-size: 1.125rem;
+  font-weight: 300;
+  text-rendering: optimizeLegibility;
 }
 
 .help.modal .content {
