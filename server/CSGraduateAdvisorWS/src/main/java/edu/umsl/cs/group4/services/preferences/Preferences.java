@@ -23,6 +23,7 @@ import edu.umsl.cs.group4.services.requirements.Requirements;
 @Path("preferences")
 public class Preferences {
 
+	private static final String AND = "and";
 	private static final String DEFAULT_CREDIT_RANGE_HOURS = "3";
 	private static final String FALL_SESSION_NAME = "Fall";
 	private static final String SUMMER_SESSION_NAME = "Summer";
@@ -146,9 +147,17 @@ public class Preferences {
 			}
 		}
 		if(!coreCoursesRemaining.isEmpty()) {
-			for(String coreNumber : coreCoursesRemaining.values()){
-				messages.add("You must take " + coreNumber + " to graduate.");
+			StringBuffer coreMessage = new StringBuffer();
+			coreMessage.append("You must take");
+			List<String> sortedCores = new ArrayList<String>();
+			for(String coreNumber : coreCoursesRemaining.values()) {
+				sortedCores.add(coreNumber);
 			}
+			Collections.sort(sortedCores);
+			
+			listify(sortedCores, coreMessage, AND);
+			coreMessage.append(" to graduate.");
+			messages.add(coreMessage.toString());
 		}
 		
 		//check if international student has taken enough per semester
@@ -180,16 +189,8 @@ public class Preferences {
 				StringBuffer internationalMessage = new StringBuffer();
 				internationalMessage.append("To satisfy the international student hours requirement, you must schedule at least ");
 				internationalMessage.append(requirements.getInternationalRequiredSemesterHours());
-				internationalMessage.append(" hours during the following semesters: ");
-				for(int internationalMessageCounter = 0; internationalMessageCounter < internationalSessionsLacking.size(); internationalMessageCounter++){	
-					if(internationalMessageCounter > 0 && internationalSessionsLacking.size() > 3) {
-						internationalMessage.append(", ");
-					}
-					if(internationalMessageCounter == internationalSessionsLacking.size() - 1) {
-						internationalMessage.append("and ");
-					}
-					internationalMessage.append(internationalSessionsLacking.get(internationalMessageCounter));
-				}
+				internationalMessage.append(" hours during the following semesters:");
+				listify(internationalSessionsLacking, internationalMessage, AND);
 				internationalMessage.append(".");
 				messages.add(internationalMessage.toString());
 			}
@@ -221,6 +222,25 @@ public class Preferences {
 		ValidationResult result = new ValidationResult();
 		result.setNotifications(messages.toArray(new String[0]));
 		return result;
+	}
+
+	/**
+	 * Takes a list of any size and a conjunction of your choice and appends a grammatically
+	 * correct listing to your string buffer.  Do not put a leading space in your setup message.
+	 * @param listElements
+	 * @param stringBuffer
+	 * @param conjunction
+	 */
+	private void listify(List<String> listElements, StringBuffer stringBuffer, String conjunction) {
+		for(int messageCounter = 0; messageCounter < listElements.size(); messageCounter++){	
+			if(messageCounter > 0 && listElements.size() > 2) {
+				stringBuffer.append(", ");
+			}
+			if(messageCounter == listElements.size() - 1) {
+				stringBuffer.append(conjunction + " ");
+			}
+			stringBuffer.append(" " + listElements.get(messageCounter));
+		}
 	}
 	
 	private boolean hasTaken(List<String> prereqs, List<Course> courses) {
