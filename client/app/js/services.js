@@ -21,6 +21,15 @@
     }])
     .factory('completion', [function() {
         return function(courses, required) {
+          courses.sort(function(a, b) {
+            if(a.status === 'T') {
+              return -1;
+            } else if(a.status === 'W') {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
           return courses.reduce(
             function(counters, currVal, index, arr) {
               var credits = 0;
