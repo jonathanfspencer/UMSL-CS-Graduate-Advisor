@@ -17,8 +17,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
-import edu.umsl.cs.group4.services.descriptions.beans.Descriptions.Course.Prerequisite;
-import edu.umsl.cs.group4.services.requirements.Requirements;
 import edu.umsl.cs.group4.services.rotation.RotationResource;
 import edu.umsl.cs.group4.services.rotation.beans.Rotations;
 import edu.umsl.cs.group4.services.schedule.ScheduleResource;
@@ -148,6 +146,7 @@ public class Course {
 
 	private void addRotations(Map<String, Course> courseMap, Rotations rotations) {
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		SessionInfo currentSessionInfo = SessionInfo.getCurrentSessionInfo();
 		for(Rotations.RotationYear rotationYear:rotations.getRotationYear()){
 			if(rotationYear.getYear() >= currentYear){
 				for(Rotations.RotationYear.Course rotationCourse:rotationYear.getCourse()){
@@ -157,11 +156,14 @@ public class Course {
 							//There is a match in the course map, so add Offering information
 							List<Offering> offerings = new ArrayList<Offering>();
 							for(Rotations.RotationYear.Course.RotationTerm rotationTerm:rotationCourse.getRotationTerm()){
-								Offering offering = new Offering();
-								offering.setYear(Integer.toString(rotationYear.getYear()));
-								offering.setSession(rotationTerm.getTerm());
-								offering.setTimeCodes(rotationTerm.getTimeCode());
-								offerings.add(offering);
+								//do not add offerings for the current session
+								if(!(rotationYear.getYear() == currentSessionInfo.getYear() && rotationTerm.getTerm().equals(currentSessionInfo.getSession()))) {
+									Offering offering = new Offering();
+									offering.setYear(Integer.toString(rotationYear.getYear()));
+									offering.setSession(rotationTerm.getTerm());
+									offering.setTimeCodes(rotationTerm.getTimeCode());
+									offerings.add(offering);
+								}
 							}	
 							mapCourse.addOfferings(offerings);
 						} else {
@@ -192,24 +194,28 @@ public class Course {
 		return "";
 	}
 	private void addSchedule(Map<String, Course> courseMap, SimpleSchedule schedule) {
-		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		SessionInfo currentSessionInfo = SessionInfo.getCurrentSessionInfo();
 		for(SimpleSchedule.ScheduledCourse scheduledCourse:schedule.getScheduledCourse()){
-			if(Integer.valueOf(scheduledCourse.getYear()) >= currentYear){
-				//make a new Offering to add to all courses in this list
-				Offering offering = new Offering();
-				offering.setYear(scheduledCourse.getYear());
-				offering.setSession(translateScheduleTerm(scheduledCourse.getTerm()));
-				offering.getTimeCodes().add("S"); // Add a time-code, so it looks like there is an offering of this class. Even though it doesn't mean anything.
-				
-				for(SimpleSchedule.ScheduledCourse.Session session:scheduledCourse.getSession()){
-					for(SimpleSchedule.ScheduledCourse.Session.Course scheduleCourse:session.getCourse()){
-						if(scheduleCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && Integer.valueOf(scheduleCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER){
-							Course mapCourse = courseMap.get(scheduleCourse.getCourseNumber());
-							if(mapCourse != null){
-								//add this offering to the course map								
-								mapCourse.addOffering(offering);
-							} else {
-								//TODO add a new course that might lack information?
+			if(Integer.valueOf(scheduledCourse.getYear()) >= currentSessionInfo.getYear()){
+				//do not make Offerings for courses in the current session
+				if(!(scheduledCourse.getYear().equals(String.valueOf(currentSessionInfo.getYear())) && 
+						translateScheduleTerm(scheduledCourse.getTerm()).equals(currentSessionInfo.getSession()))) {
+					//make a new Offering to add to all courses in this list
+					Offering offering = new Offering();
+					offering.setYear(scheduledCourse.getYear());
+					offering.setSession(translateScheduleTerm(scheduledCourse.getTerm()));
+					offering.getTimeCodes().add("S"); // Add a time-code, so it looks like there is an offering of this class. Even though it doesn't mean anything.
+					
+					for(SimpleSchedule.ScheduledCourse.Session session:scheduledCourse.getSession()){
+						for(SimpleSchedule.ScheduledCourse.Session.Course scheduleCourse:session.getCourse()){
+							if(scheduleCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && Integer.valueOf(scheduleCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER){
+								Course mapCourse = courseMap.get(scheduleCourse.getCourseNumber());
+								if(mapCourse != null){
+									//add this offering to the course map								
+									mapCourse.addOffering(offering);
+								} else {
+									//TODO add a new course that might lack information?
+								}
 							}
 						}
 					}
