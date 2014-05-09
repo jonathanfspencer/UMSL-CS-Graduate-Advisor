@@ -17,6 +17,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
+import edu.umsl.cs.group4.services.descriptions.beans.Descriptions.Course.Prerequisite;
+import edu.umsl.cs.group4.services.requirements.Requirements;
 import edu.umsl.cs.group4.services.rotation.RotationResource;
 import edu.umsl.cs.group4.services.rotation.beans.Rotations;
 import edu.umsl.cs.group4.services.schedule.ScheduleResource;
@@ -43,6 +45,22 @@ public class Course {
 	private String status = COURSE_STATUS_NULL;
 	private Offering scheduledOffering;
 	
+	public Integer getCost() {
+		int cost = 3;
+		
+		// Increase the cost of the class by 3 for each prereq.
+		if(prequisite != null && prequisite.getOrChoice() != null && prequisite.getOrChoice().getAndRequired() != null) {
+			cost += prequisite.getOrChoice().getAndRequired().size() * 3;			
+		} 
+		
+		// Avoid Thesis, since most students elect not to write one.
+		if(name.contains("Thesis")) {
+			cost = cost * 10;
+		}
+		
+		return cost;
+	}
+
 	public static class Offering {
 		private String year;
 		private Collection<String> timeCodes;

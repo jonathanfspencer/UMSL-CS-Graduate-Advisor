@@ -1,7 +1,9 @@
 package edu.umsl.cs.group4.services.preferences;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -295,10 +297,21 @@ public class Preferences {
 		}
 	}
 	
+	private class CostComparator implements Comparator<Course> {
+
+		@Override
+		public int compare(Course c1, Course c2) {
+			return c1.getCost().compareTo(c2.getCost());
+		}
+		
+	}
+	
 
 	private void sessionScheduler(String year, CoursesBySession sessionCourses, String sessionName, Preferences preferences, Requirements requirements) {
 		//Determine how many units are scheduled this semester
 		int sessionHours = 0; //TODO use this in the conditionals below
+		
+		Collections.sort(sessionCourses.getCourses(), new CostComparator());
 		for(Course course : sessionCourses.getCourses()){
 			if (course.getScheduledOffering() != null){
 				if(course.getScheduledOffering().getYear().equals(year) && course.getScheduledOffering().getSession().equalsIgnoreCase(sessionName)){
