@@ -340,7 +340,9 @@ public class Preferences {
 					
 					// Modify credit counters
 					Integer courseCredits = determineCourseHours(course.getCredits());
-					preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);
+					if(preferences.getNumberOf4000HoursScheduled() < Integer.parseInt(requirements.getMax4000Hours())) {
+						preferences.setNumberOfHoursRemaining(preferences.getNumberOfHoursRemaining() - courseCredits);						
+					}
 					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
 					sessionHours += courseCredits;
 					
