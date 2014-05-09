@@ -122,5 +122,37 @@
         $scope.$emit('course_changed', $scope.courses);
       };
 
+    }])
+    .controller('SummaryCtrl', ['$scope', 'classService', 'completion', 'userService', function($scope, classSvc, completionSvc, userSvc) {
+
+      classSvc.courses().then(function(courses) {
+        courses.filter(function(course) {
+          return course.scheduledOffering;
+        }).forEach(function(course) {
+
+          var schedule = $scope.schedule = $scope.schedule || {};
+          var offering = course.scheduledOffering;
+          var year = schedule[offering.year] = schedule[offering.year] || {};
+          var session = year[offering.session] = year[offering.session] || [];
+          session.push(course);
+        });
+
+        classSvc.requirements().then(function(reqs) {
+          var completion = completionSvc(courses, reqs);
+          return classSvc.validate({
+            numberOfHoursCompleted: completion.completed,
+            numberOfHoursScheduled: completion.scheduled,
+            numberOfHoursRemaining: reqs.minTotalHours - (completion.completed + completion.scheduled),
+            numberOf6000HoursScheduled: completion.credits6000Level || 0,
+            numberOf5000HoursScheduled: completion.credits5000Level || 0,
+            numberOf4000HoursScheduled: completion.credits4000Level || 0,
+            courses: courses,
+            internationalStudent: userSvc.getUser().intl
+          });
+        }).then(function(validation) {
+          $scope.notifications = validation.notifications;
+        });
+      });
+
     }]);
 }());

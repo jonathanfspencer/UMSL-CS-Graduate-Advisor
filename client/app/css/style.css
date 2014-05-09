@@ -282,3 +282,26 @@ li.scheduledother {
   position: fixed;
   top: 0;
 }
+
+/* line 179, ../../sass/style.scss */
+h5.summary {
+  margin-bottom: 1em;
+  font-weight: 500;
+}
+
+/* line 186, ../../sass/style.scss */
+.summary p {
+  margin-bottom: 0.2em;
+}
+/* line 190, ../../sass/style.scss */
+.summary hr {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+/* line 196, ../../sass/style.scss */
+.summary.notes {
+  background-color: #D3D3D3;
+  border: 1px solid #333;
+  margin-top: 1em;
+  padding: 0.5em;
+}

@@ -16,6 +16,10 @@
       .when('/schedule', {
         templateUrl: 'partials/schedule.html',
         controller: 'ScheduleCtrl'
-      });
+      })
+      .when('/summary', {
+        templateUrl: 'partials/summary.html',
+        controller: 'SummaryCtrl'
+      })
 	}]);
 })();

@@ -1,0 +1,27 @@
+<h5 class="row summary" ng-show="schedule">Planned Schedule</h5>
+<div class="row summary" ng-repeat="(year, sessionObj) in schedule">
+  <div ng-repeat="(session, courses) in sessionObj">
+    <p><span class="bold">{{session}} {{year}}</span></p>
+    <hr>
+    <ul>
+      <li ng-repeat="course in courses">
+        CMP SCI <span class="bold">{{ course.number }}</span> // {{
+        course.name }}
+        
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="row summary" ng-show="!schedule">
+  <h5>No classes scheduled</h5>
+</div>
+
+<div class="row summary notes" ng-show="schedule">
+  <p><span class="bold">Notes:</span></p>
+  <ul class="notes">
+    <li ng-repeat="note in notifications">
+      {{ note }}
+    </li>
+  </ul>
+</div>

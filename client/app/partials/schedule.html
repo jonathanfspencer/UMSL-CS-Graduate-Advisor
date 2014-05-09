@@ -30,11 +30,13 @@ plan of study.
   </div>
 </adv-modal>
 
-  <h5 class="row">Choose your classes from those available
-    each semester or  <div class="medium primary btn"
-    ng-click="startAuto = true"><a href="">auto-schedule</a></div> 
-  </h5>
-</div>
+
+<h5 class="row">Choose your classes from those available
+  each semester or  <div class="medium primary btn"
+                         ng-click="startAuto = true"><a href="">auto-schedule</a></div> 
+  <a href="#/summary" style="margin-left: 8em;">View Summary<i class="icon-right-open-big"></i></a>
+</h5>
+
 <div ng-repeat="year in years" class="row schedule">
   <h4 class="term">Spring <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">

@@ -176,3 +176,27 @@ li.scheduledother {
 
 }
 
+h5.summary {
+  margin-bottom: 1em;
+  font-weight: 500;
+}
+
+
+.summary {
+  p {
+    margin-bottom: 0.2em;
+  }
+  
+  hr {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+
+
+  &.notes {
+    background-color: #D3D3D3;
+    border: 1px solid #333;
+    margin-top: 1em;
+    padding: 0.5em;
+  }
+}
