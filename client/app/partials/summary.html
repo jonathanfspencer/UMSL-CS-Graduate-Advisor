@@ -17,6 +17,27 @@
   <h5>No classes scheduled</h5>
 </div>
 
+<div class="row summary" ng-show="completed">
+  <p><span class="bold">Completed Classes</span></p>
+  <hr>
+  <ul>
+    <li ng-repeat="course in completed">
+      CMP SCI <span class="bold">{{ course.number }}</span> // {{
+      course.name }}
+    </li>
+  </ul>
+</div>
+
+<div class="row summary" ng-show="waived">
+  <p ng-show="waived"><span class="bold">Waived Classes</span></p>
+  <hr>
+  <ul>
+    <li ng-repeat="course in waived">
+      CMP SCI <span class="bold">{{ course.number }}</span> // {{
+      course.name }}
+    </li>
+  </ul>
+</div>
 <div class="row summary notes" ng-show="schedule">
   <p><span class="bold">Notes:</span></p>
   <ul class="notes">

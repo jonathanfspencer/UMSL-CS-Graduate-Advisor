@@ -126,6 +126,15 @@
     .controller('SummaryCtrl', ['$scope', 'classService', 'completion', 'userService', function($scope, classSvc, completionSvc, userSvc) {
 
       classSvc.courses().then(function(courses) {
+
+        $scope.completed = courses.filter(function(course) {
+          return course.status == 'T';
+        });
+
+        $scope.waived = courses.filter(function(course) {
+          return course.status == 'W';
+        });
+
         courses.filter(function(course) {
           return course.scheduledOffering;
         }).forEach(function(course) {
