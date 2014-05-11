@@ -1,7 +1,6 @@
 package edu.umsl.cs.group4.services.preferences;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -319,9 +318,32 @@ public class Preferences {
 				}
 			}
 		}
+		//TODO If room and restricted, try to schedule restricted courses
+		if(preferences.isRestricted() && sessionHours < preferences.getMaxClassesPerSemester()) {
+			for(Course course : sessionCourses.getCourses()) {
+				if(course.getStatus().equals("N") &&
+					course.isRestrictedCourse() &&
+					(sessionHours + determineCourseHours(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
+					
+					scheduleCourse(year, sessionName, course);
+					
+					// Modify credit counters
+					Integer courseCredits = determineCourseHours(course.getCredits());
+					preferences.setNumberOfHoursScheduled(preferences.getNumberOfHoursScheduled() + courseCredits);
+					sessionHours += courseCredits;
+					
+					//if we have scheduled enough courses for this session, do not schedule more
+					if(!scheduleMoreCoreCourses(preferences, sessionHours)) {
+						break;
+					}
+				}
+			}
+		}
+		
 		//If room and needed, schedule core courses
 		if(scheduleMoreCoreCourses(preferences, sessionHours)) {
-			//TODO try to schedule some core courses
+						
+			//try to schedule some core courses
 			//if successful, decrement numberOfHoursRemaining and increment corresponding hour counters for 4000 or 5000 level classes
 			for(Course course : sessionCourses.getCourses()) {
 				
@@ -330,13 +352,7 @@ public class Preferences {
 					preferences.getNumberOfHoursRemaining() > 0 && 
 					(sessionHours + determineCourseHours(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
-					course.setStatus("S");
-					
-					// Set the scheduled offering of this course to this session and year
-					Course.Offering scheduledOffering = new Course.Offering();
-					scheduledOffering.setSession(sessionName);
-					scheduledOffering.setYear(year);					
-					course.setScheduledOffering(scheduledOffering);
+					scheduleCourse(year, sessionName, course);
 					
 					// Modify credit counters
 					Integer courseCredits = determineCourseHours(course.getCredits());
@@ -365,7 +381,7 @@ public class Preferences {
 		}
 		//If room and needed, schedule a 6000 course
 		if(scheduleMore6000Courses(preferences, sessionHours)) {
-			//TODO try to schedule a 6000 level course
+			//try to schedule a 6000 level course
 			//if successful, decrement numberOfHoursRemaining and increment numberOf6000HoursScheduled
 			
 			int required6000Hours = Integer.parseInt(requirements.getMin6000Hours());
@@ -378,13 +394,7 @@ public class Preferences {
 					preferences.getNumberOfHoursRemaining() > 0 && 
 					(sessionHours + determineCourseHours(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
-					course.setStatus("S");
-					
-					// Set the scheduled offering of this course to this session and year
-					Course.Offering scheduledOffering = new Course.Offering();
-					scheduledOffering.setSession(sessionName);
-					scheduledOffering.setYear(year);					
-					course.setScheduledOffering(scheduledOffering);
+					scheduleCourse(year, sessionName, course);
 					
 					// Modify credit counters
 					Integer courseCredits = determineCourseHours(course.getCredits());
@@ -403,7 +413,7 @@ public class Preferences {
 		}
 		//If room and needed, schedule 5000 courses
 		if(scheduleMore5000Courses(preferences, requirements, sessionHours)) {
-			//TODO try to schedule some 5000 level classes
+			//try to schedule some 5000 level classes
 			//if successful, decrement numberOfHoursRemaining and increment numberOf5000HoursScheduled
 			
 			for(Course course : sessionCourses.getCourses()) {
@@ -413,13 +423,7 @@ public class Preferences {
 					preferences.getNumberOfHoursRemaining() > 0 && 
 					(sessionHours + determineCourseHours(course.getCredits())) <= preferences.getMaxClassesPerSemester()) {
 					
-					course.setStatus("S");
-					
-					// Set the scheduled offering of this course to this session and year
-					Course.Offering scheduledOffering = new Course.Offering();
-					scheduledOffering.setSession(sessionName);
-					scheduledOffering.setYear(year);					
-					course.setScheduledOffering(scheduledOffering);
+					scheduleCourse(year, sessionName, course);
 					
 					// Modify credit counters
 					Integer courseCredits = determineCourseHours(course.getCredits());
@@ -450,13 +454,7 @@ public class Preferences {
 					sessionHours < preferences.getMaxClassesPerSemester() && 
 					(determineCourseHours(course.getCredits()) + preferences.getNumberOf4000HoursScheduled()) <= 12) {
 					
-					course.setStatus("S");
-					
-					// Set the scheduled offering of this course to this session and year
-					Course.Offering scheduledOffering = new Course.Offering();
-					scheduledOffering.setSession(sessionName);
-					scheduledOffering.setYear(year);					
-					course.setScheduledOffering(scheduledOffering);
+					scheduleCourse(year, sessionName, course);
 					
 					// Modify credit counters
 					Integer courseCredits = determineCourseHours(course.getCredits());
@@ -473,6 +471,16 @@ public class Preferences {
 				}
 			}
 		}
+	}
+
+	private void scheduleCourse(String year, String sessionName, Course course) {
+		course.setStatus("S");
+		
+		// Set the scheduled offering of this course to this session and year
+		Course.Offering scheduledOffering = new Course.Offering();
+		scheduledOffering.setSession(sessionName);
+		scheduledOffering.setYear(year);					
+		course.setScheduledOffering(scheduledOffering);
 	}
 
 	private boolean scheduleMore4000Classes(Preferences preferences,
