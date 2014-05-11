@@ -40,7 +40,7 @@ plan of study.
 <div ng-repeat="year in years" class="row schedule">
   <h4 class="term">Spring <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">
-    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Spring' } | orderBy:'number'"  
+    <li ng-repeat="course in $parent.courses | restricted | available:{ year: year, session: 'Spring' } | orderBy:'number'"  
         ng-class="{
               scheduled: course.scheduledOffering &&
                         course.scheduledOffering.year == year && 
@@ -72,7 +72,7 @@ plan of study.
 
   <h4 class="term">Summer <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">
-    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Summer' } | orderBy:'number'"  
+    <li ng-repeat="course in $parent.courses | restricted | available:{ year: year, session: 'Summer' } | orderBy:'number'"  
         ng-class="{
               scheduled: course.scheduledOffering &&
                         course.scheduledOffering.year == year && 
@@ -104,7 +104,7 @@ plan of study.
 
   <h4 class="term">Fall <span class="year">{{ year }}</span></h4>
   <ul class="classlist three_up tiles twelve columns">
-    <li ng-repeat="course in $parent.courses | available:{ year: year, session: 'Fall' } | orderBy:'number'"  
+    <li ng-repeat="course in $parent.courses | restricted | available:{ year: year, session: 'Fall' } | orderBy:'number'"  
         ng-class="{
               scheduled: course.scheduledOffering &&
                         course.scheduledOffering.year == year && 
