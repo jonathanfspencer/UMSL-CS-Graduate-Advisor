@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import edu.umsl.cs.group4.services.descriptions.DescriptionsResource;
 import edu.umsl.cs.group4.services.descriptions.beans.Descriptions;
+import edu.umsl.cs.group4.services.requirements.Requirements;
 import edu.umsl.cs.group4.services.rotation.RotationResource;
 import edu.umsl.cs.group4.services.rotation.beans.Rotations;
 import edu.umsl.cs.group4.services.schedule.ScheduleResource;
@@ -111,29 +112,32 @@ public class Course {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Course> getCourses() throws JAXBException{
+		Requirements requirements = new Requirements();
 		//build a map of course numbers and courses
 		Map<String,Course> courseMap = new HashMap<String,Course>();		
 		
 		//first build a list of all the courses
 		Descriptions descriptions = DescriptionsResource.getDescriptions();
-		addDescriptions(courseMap,descriptions);
+		addDescriptions(courseMap,descriptions,requirements);
 		
 		//second add information about when courses are always offered
 		Rotations rotations = RotationResource.getRotation();
-		addRotations(courseMap,rotations);
+		addRotations(courseMap,rotations,requirements);
 		
 		//finally add information about additional offered courses
 		SimpleSchedule schedule = ScheduleResource.getSchedule();
-		addSchedule(courseMap,schedule);		
+		addSchedule(courseMap,schedule,requirements);		
 		
 		//return the final list of courses
 		return courseMap.values();
 	}
 
-	private void addDescriptions(Map<String, Course> courseMap, Descriptions descriptions) {
+	private void addDescriptions(Map<String, Course> courseMap, Descriptions descriptions, Requirements requirements) {
 		for(Descriptions.Course descriptionCourse:descriptions.getCourse()){
 			//make sure course meets advising system requirements
-    		if(descriptionCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && descriptionCourse.getCourseNumber() >= MINIMUM_COURSE_NUMBER){
+    		if(descriptionCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && 
+    				(descriptionCourse.getCourseNumber() >= MINIMUM_COURSE_NUMBER || 
+    					requirements.getRestrictedCourses().contains(String.valueOf(descriptionCourse.getCourseNumber())))){
     			Course newCourse = new Course();
     			newCourse.setCredits(descriptionCourse.getCredit());
     			newCourse.setDescription(descriptionCourse.getCourseDescription());
@@ -145,13 +149,15 @@ public class Course {
     	}
 	}
 
-	private void addRotations(Map<String, Course> courseMap, Rotations rotations) {
+	private void addRotations(Map<String, Course> courseMap, Rotations rotations, Requirements requirements) {
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		SessionInfo currentSessionInfo = SessionInfo.getCurrentSessionInfo();
 		for(Rotations.RotationYear rotationYear:rotations.getRotationYear()){
 			if(rotationYear.getYear() >= currentYear){
 				for(Rotations.RotationYear.Course rotationCourse:rotationYear.getCourse()){
-					if(rotationCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && Integer.valueOf(rotationCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER ){
+					if(rotationCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && 
+							(Integer.valueOf(rotationCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER  || 
+									requirements.getRestrictedCourses().contains(rotationCourse.getCourseNumber()))){
 						Course mapCourse = courseMap.get(rotationCourse.getCourseNumber());
 						if(mapCourse != null){
 							//There is a match in the course map, so add Offering information
@@ -194,7 +200,7 @@ public class Course {
 		// Should only happen if the term abbreviations change.
 		return "";
 	}
-	private void addSchedule(Map<String, Course> courseMap, SimpleSchedule schedule) {
+	private void addSchedule(Map<String, Course> courseMap, SimpleSchedule schedule, Requirements requirements) {
 		SessionInfo currentSessionInfo = SessionInfo.getCurrentSessionInfo();
 		for(SimpleSchedule.ScheduledCourse scheduledCourse:schedule.getScheduledCourse()){
 			if(Integer.valueOf(scheduledCourse.getYear()) >= currentSessionInfo.getYear()){
@@ -209,7 +215,9 @@ public class Course {
 					
 					for(SimpleSchedule.ScheduledCourse.Session session:scheduledCourse.getSession()){
 						for(SimpleSchedule.ScheduledCourse.Session.Course scheduleCourse:session.getCourse()){
-							if(scheduleCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && Integer.valueOf(scheduleCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER){
+							if(scheduleCourse.getSubject().equalsIgnoreCase(ADVISOR_SUBJECT) && 
+									(Integer.valueOf(scheduleCourse.getCourseNumber()) >= MINIMUM_COURSE_NUMBER || 
+											requirements.getRestrictedCourses().contains(scheduleCourse.getCourseNumber()))){
 								Course mapCourse = courseMap.get(scheduleCourse.getCourseNumber());
 								if(mapCourse != null){
 									//add this offering to the course map								
