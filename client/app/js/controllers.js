@@ -45,6 +45,24 @@
         });
       }
     })
+    .filter('restricted', ['userService', function(userSvc) {
+      return function(courses) {
+
+        if(!courses) return;
+
+        var restricted = userSvc.getUser().restricted;
+
+        // If in restricted mode, show all courses. Including required
+        // undergrad courses. Otherwise, filter out all undergrad courses.
+        if(restricted) {
+          return courses;
+        } else {
+          return courses.filter(function(course) {
+            return !(course.restrictedCourse);
+          });
+        }
+      };
+    }])
     .filter('shortenIntro', function() {
       return function(courseName) {
         return courseName
