@@ -22,6 +22,25 @@ $lightfont: #FFF;
 
   #pref-nav {
     float: left;
+
+    li:not(:first-child) {
+       padding-left: 1em;
+    }
+
+    li {
+    
+      input, label {
+        cursor: pointer;
+      }
+
+      &.ttip:after {
+        top: 50px;
+        bottom: auto;
+        z-index: 100000;
+      }   
+
+    }
+
   }
 
   #main-nav {

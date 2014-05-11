@@ -76,7 +76,8 @@
                 numberOf5000HoursScheduled: completion.credits5000Level || 0,
                 numberOf4000HoursScheduled: completion.credits4000Level || 0,
                 courses: courses,
-                internationalStudent: userSvc.getUser().intl
+                internationalStudent: userSvc.getUser().intl,
+                restricted: userSvc.getUser().restricted
               }) ]);
 
           }).then(function(results) {

@@ -24,11 +24,17 @@
 		</h3>
         <nav class="eight columns pull_right">
           <ul id="pref-nav">
-            <li>
+            <li class="ttip" data-tooltip="Adds minimum hours per
+                                           semester restriction">
               <input id="international-user" type="checkbox" ng-model="user.intl">
               <label for="international-user">International Student Mode</label>
             </li>
-
+            <li class="ttip" data-tooltip="For graduate students on
+                                          Restricted status">
+              <input id="restricted-mode" type="checkbox"
+                     ng-model="user.restricted">
+              <label for="restricted-mode">Restricted Mode</label>
+            </li>
           </ul>
           <ul id="main-nav">
             <li class="help"  ng-click="help = true">
