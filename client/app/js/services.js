@@ -33,6 +33,11 @@
           return courses.reduce(
             function(counters, currVal, index, arr) {
               var credits = 0;
+
+              // If this is an undergrad course, don't count it
+              // towards anything. (They will only be displayed in
+              // restricted mode)
+              if(currVal.restrictedCourse) return counters;
               
               // Some classes have a variable number of credit hours
               // Default to 3 if that is the case, per Dr. Janikow.
