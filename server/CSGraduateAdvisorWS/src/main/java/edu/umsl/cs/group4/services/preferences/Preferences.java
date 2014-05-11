@@ -202,7 +202,7 @@ public class Preferences {
 		
 		// Check prerequisites
 		for(Course course : preferences.getCourses()) {
-			if(course.getScheduledOffering() != null && course.getPrequisite() != null) {
+			if(course.getScheduledOffering() != null && course.getPrequisite() != null && !requirements.getRestrictedCourses().contains(course.getNumber())) {
 				
 				boolean satisfied = false;
 				
