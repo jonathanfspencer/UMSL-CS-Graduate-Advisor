@@ -34,11 +34,13 @@ $lightfont: #FFF;
   }
 
   .help {
-    font-size: 1.3em;
-    margin-left: 1em;
-    
+
+    i {
+      font-size: 1.3em;
+    }
+
     &:hover {
-      color: $completed-bg;
+      color: $waived-bg;
       cursor: pointer;
     }
   }
