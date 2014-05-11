@@ -144,6 +144,7 @@ public class Course {
     			newCourse.setName(descriptionCourse.getCourseName());
     			newCourse.setNumber(Integer.toString(descriptionCourse.getCourseNumber()));
     			newCourse.setPrequisite(descriptionCourse.getPrerequisite());
+    			newCourse.setRestrictedCourse(requirements.getRestrictedCourses().contains(String.valueOf(descriptionCourse.getCourseNumber())));
     			courseMap.put(newCourse.getNumber(),newCourse);
     		}
     	}
