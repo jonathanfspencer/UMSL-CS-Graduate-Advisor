@@ -18,6 +18,7 @@ public class Requirements {
 	private String maxYears = "6";
 	private String maxExternalCredits = "6";
 	private List<String> coreCourses = Arrays.asList("4760","4250","5700","5500","5130");
+	private List<String> restrictedCourses = Arrays.asList("1250", "2250", "2261", "2700", "2750", "3130");
 	private String internationalRequiredSemesterHours = "9";
 
 	@GET
@@ -101,6 +102,23 @@ public class Requirements {
 	public void setInternationalRequiredSemesterHours(
 			String internationalRequiredSemesterHours) {
 		this.internationalRequiredSemesterHours = internationalRequiredSemesterHours;
+	}
+
+	/**
+	 * @return the restrictedCourses
+	 */
+	@GET
+	@Path("/restrictedCourses")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> getRestrictedCourses() {
+		return restrictedCourses;
+	}
+
+	/**
+	 * @param restrictedCourses the restrictedCourses to set
+	 */
+	public void setRestrictedCourses(List<String> restrictedCourses) {
+		this.restrictedCourses = restrictedCourses;
 	}
 	
 	
