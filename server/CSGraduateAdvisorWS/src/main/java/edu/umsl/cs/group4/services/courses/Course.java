@@ -42,6 +42,7 @@ public class Course {
 	private Collection<Offering> offerings;
 	private String status = COURSE_STATUS_NULL;
 	private Offering scheduledOffering;
+	private boolean restrictedCourse = false;
 	
 	public Integer getCost() {
 		int cost = 3;
@@ -310,6 +311,19 @@ public class Course {
 
 	public void setScheduledOffering(Offering scheduledOffering) {
 		this.scheduledOffering = scheduledOffering;
+	}
+
+	/**
+	 * Is this course one that only students with a restricted status should
+	 * need to take?
+	 * @return <b>true</b> if it is a restricted course, <b>false</b> otherwise
+	 */
+	public boolean isRestrictedCourse() {
+		return restrictedCourse;
+	}
+
+	public void setRestrictedCourse(boolean restrictedCourse) {
+		this.restrictedCourse = restrictedCourse;
 	}
 	
 }

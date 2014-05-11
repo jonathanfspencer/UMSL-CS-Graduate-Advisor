@@ -43,7 +43,7 @@ public class Preferences {
 	private boolean isInternationalStudent = false;
 	private boolean isSummerSchedulable = false;
 	private List<Course> courses;
-	
+	private boolean isRestricted = false;
 	
 	
 	public Preferences() {
@@ -610,6 +610,20 @@ public class Preferences {
 
 	public void setSummerSchedulable(boolean isSummerSchedulable) {
 		this.isSummerSchedulable = isSummerSchedulable;
+	}
+
+	/**
+	 * @return the isRestricted
+	 */
+	public boolean isRestricted() {
+		return isRestricted;
+	}
+
+	/**
+	 * @param isRestricted the isRestricted to set
+	 */
+	public void setRestricted(boolean isRestricted) {
+		this.isRestricted = isRestricted;
 	}
 	
 }
