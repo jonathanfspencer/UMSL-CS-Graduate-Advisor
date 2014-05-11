@@ -155,7 +155,11 @@
         });
 
         courses.filter(function(course) {
-          return course.scheduledOffering;
+          if(course.restrictedCourse && !(userSvc.getUser().restricted)) {
+            return false;
+          } else {
+            return course.scheduledOffering 
+          }
         }).forEach(function(course) {
 
           var schedule = $scope.schedule = $scope.schedule || {};
