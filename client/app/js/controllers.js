@@ -77,7 +77,7 @@
       });
 
       $scope.courses = [];
-      $scope.prefs = { maxClasses: 12};
+      $scope.prefs = { };
       classSvc.courses().then(function(courses) {
         $scope.courses = courses;
       });
