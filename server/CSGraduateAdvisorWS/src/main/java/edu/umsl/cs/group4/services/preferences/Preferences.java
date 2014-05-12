@@ -240,8 +240,8 @@ public class Preferences {
 			if(messageCounter > 0 && listElements.size() > 2) {
 				stringBuffer.append(", ");
 			}
-			if(messageCounter == listElements.size() - 1) {
-				stringBuffer.append(conjunction + " ");
+			if(listElements.size() > 1 && messageCounter == listElements.size() - 1) {
+				stringBuffer.append(" " + conjunction + " ");
 			}
 			stringBuffer.append(" " + listElements.get(messageCounter));
 		}
