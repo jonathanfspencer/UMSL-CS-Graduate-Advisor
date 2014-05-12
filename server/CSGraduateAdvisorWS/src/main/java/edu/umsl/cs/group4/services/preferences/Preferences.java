@@ -29,7 +29,7 @@ public class Preferences {
 	private static final String FALL_SESSION_NAME = "Fall";
 	private static final String SUMMER_SESSION_NAME = "Summer";
 	private static final String SPRING_SESSION_NAME = "Spring";
-	private int maxClassesPerSemester = 18;  //TODO change Classes to Hours
+	private int maxClassesPerSemester = 12;  //TODO change Classes to Hours
 	private int minClassesPerSemester = 1;   //TODO change Classes to Hours
 	private boolean canTakeDayClasses = true;
 	private int maxSemestersToComplete = 12;
