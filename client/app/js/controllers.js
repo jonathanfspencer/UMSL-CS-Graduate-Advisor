@@ -142,6 +142,13 @@
       };
 
     }])
+    .filter('defined', function() {
+      return function(arr) {
+        return arr.filter(function(obj) {
+          return obj;
+        });
+      }
+    })
     .controller('SummaryCtrl', ['$scope', 'classService', 'completion', 'userService', function($scope, classSvc, completionSvc, userSvc) {
 
       classSvc.courses().then(function(courses) {
@@ -154,6 +161,16 @@
           return course.status == 'W';
         });
 
+        var sessionNum = function(session) {
+          if(session === 'Spring') {
+            return 0;
+          } else if(session === 'Fall') {
+            return 2;
+          } else if(session === 'Summer') {
+            return 1;
+          }
+        }
+
         courses.filter(function(course) {
           if(course.restrictedCourse && !(userSvc.getUser().restricted)) {
             return false;
@@ -164,9 +181,10 @@
 
           var schedule = $scope.schedule = $scope.schedule || {};
           var offering = course.scheduledOffering;
-          var year = schedule[offering.year] = schedule[offering.year] || {};
-          var session = year[offering.session] = year[offering.session] || [];
-          session.push(course);
+          var year = schedule[offering.year] = schedule[offering.year] || [];
+          var num = sessionNum(offering.session);
+          var session = year[num] = year[num] || { session: offering.session, courses: [] };
+          session.courses.push(course);
         });
 
         classSvc.requirements().then(function(reqs) {

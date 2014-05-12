@@ -1,8 +1,8 @@
 <h5 class="row summary" ng-show="schedule">Planned Schedule</h5>
-<div class="row summary" ng-repeat="(year, sessionObj) in schedule">
-  <div ng-repeat="(session, courses) in sessionObj">
+<div class="row summary" ng-repeat="(year, sessions) in schedule">
+  <div ng-repeat="session in sessions | defined">
     <p>
-      <span class="bold">{{session}} {{year}}</span>
+      <span class="bold">{{session.session}} {{year}}</span>
       <span ng-show="$parent.$last && $last && totalHours > 21"
             class="notify">
         <i class="icon-attention"></i>You
@@ -10,7 +10,7 @@
     </p>
     <hr>
     <ul>
-      <li ng-repeat="course in courses">
+      <li ng-repeat="course in session.courses">
         CMP SCI <span class="bold">{{ course.number }}</span> // {{
         course.name }}
         
