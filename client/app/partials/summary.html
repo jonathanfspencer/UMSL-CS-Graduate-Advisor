@@ -1,7 +1,13 @@
 <h5 class="row summary" ng-show="schedule">Planned Schedule</h5>
 <div class="row summary" ng-repeat="(year, sessionObj) in schedule">
   <div ng-repeat="(session, courses) in sessionObj">
-    <p><span class="bold">{{session}} {{year}}</span></p>
+    <p>
+      <span class="bold">{{session}} {{year}}</span>
+      <span ng-show="$parent.$last && $last && totalHours > 21"
+            class="notify">
+        <i class="icon-attention"></i>You
+      should file paperwork for graduation before this semester</span>
+    </p>
     <hr>
     <ul>
       <li ng-repeat="course in courses">

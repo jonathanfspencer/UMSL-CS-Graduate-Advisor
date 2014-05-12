@@ -318,3 +318,7 @@ h5.summary {
   margin-top: 1em;
   padding: 0.5em;
 }
+/* line 224, ../../sass/style.scss */
+.summary .notify {
+  color: #981e32;
+}

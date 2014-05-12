@@ -171,6 +171,7 @@
 
         classSvc.requirements().then(function(reqs) {
           var completion = completionSvc(courses, reqs);
+          $scope.totalHours = completion.completed + completion.scheduled;
           return classSvc.validate({
             numberOfHoursCompleted: completion.completed,
             numberOfHoursScheduled: completion.scheduled,

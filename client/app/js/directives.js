@@ -87,10 +87,6 @@
 
             scope.notifications = validation.notifications;
             
-            if(completion.completed >= 21) {
-              scope.notifications.push("After completing 21 hours, you must file paperwork for graduation");
-            }
-
             if($location.path().indexOf('schedule') >= 0) {
               scope.active = true;
             } else {
